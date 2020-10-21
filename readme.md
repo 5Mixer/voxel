@@ -1,0 +1,2 @@
+## Empty
+As the name suggests, this project is mostly empty but it is a convenient starting point for new Kha projects. The preferred way to manage Kha projects (the preferred way of Kha's author at least) is to manage all dependencies, including Kha itself, using git submodules. This project is setup to do just that but please keep in mind that it isn't updated very often and therefore usually just points to some random old revision of Kha. See the "Updating Kha" paragraph at https://github.com/Kode/Kha/wiki/Getting-Started for how to update the Kha submodule.

@@ -1,0 +1,1058 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Empty" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/Empty" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="/home/mixer/projects/Empty/build/linux-hl" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-std=c++11" />
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/Empty" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="/home/mixer/projects/Empty/build/linux-hl" />
+				<Option object_output="obj/Release/" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-std=c++11" />
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-std=c++11" />
+			<Add option="-Wall" />
+			<Add option="-DHXCPP_API_LEVEL=400" />
+			<Add option="-DHXCPP_DEBUG" />
+			<Add option="-DHXCPP_GC_GENERATIONAL" />
+			<Add option="-DKORE_MULTITHREADED_AUDIO" />
+			<Add option="-DKORE" />
+			<Add option="-DKOREC" />
+			<Add option="-DROTATE90" />
+			<Add option="-DLIBHL_STATIC" />
+			<Add option="-DKORE_G1" />
+			<Add option="-DKORE_G2" />
+			<Add option="-DKORE_G3" />
+			<Add option="-DKORE_A1" />
+			<Add option="-DKORE_A2" />
+			<Add option="-DKORE_LZ4X" />
+			<Add option="-DKORE_LINUX" />
+			<Add option="-DKORE_OPENGL" />
+			<Add option="-DKORE_POSIX" />
+			<Add option="-DKORE_G4" />
+			<Add option="-DKORE_G5" />
+			<Add option="-DKORE_G5ONG4" />
+			<Add option="-DKORE_A3" />
+			<Add directory="/home/mixer/projects/Empty/build/linux-hl-build" />
+			<Add directory="/home/mixer/projects/Empty/Kha/Backends/KoreHL/hl/src" />
+			<Add directory="/home/mixer/projects/Empty/Kha/Backends/KoreHL/hl/include/pcre" />
+			<Add directory="/home/mixer/projects/Empty/Kha/Kinc/Sources" />
+			<Add directory="/home/mixer/projects/Empty/Kha/Kinc/Backends/System/Linux/Sources" />
+			<Add directory="/home/mixer/projects/Empty/Kha/Kinc/Backends/System/POSIX/Sources" />
+			<Add directory="/home/mixer/projects/Empty/Kha/Kinc/Backends/Graphics4/OpenGL/Sources" />
+			<Add directory="/home/mixer/projects/Empty/Kha/Kinc/Backends/Graphics5/G5onG4/Sources" />
+			<Add directory="/home/mixer/projects/Empty/Kha/Kinc/Backends/Audio3/A3onA2/Sources" />
+		</Compiler>
+		<Linker>
+			<Add option="-pthread" />
+			<Add option="-static-libgcc" />
+			<Add option="-static-libstdc++" />
+			<Add option="-Wl,-rpath,." />
+			<Add library="asound" />
+			<Add library="dl" />
+			<Add library="X11" />
+			<Add library="Xcursor" />
+			<Add library="Xinerama" />
+			<Add library="Xrandr" />
+			<Add library="Xi" />
+			<Add library="GL" />
+		</Linker>
+		<Unit filename="/home/mixer/projects/Empty/build/linux-hl-build/kore_sources.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/KoreC/arrays.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/KoreC/compute.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/KoreC/cubemap.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/KoreC/display.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/KoreC/graphics.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/KoreC/indexbuffer.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/KoreC/kore.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/KoreC/shader.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/KoreC/sound.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/KoreC/system.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/KoreC/texture.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/KoreC/vertexbuffer.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/KoreC/video.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/hl/include/pcre/config.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/hl/include/pcre/pcre.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/hl/include/pcre/pcre16_ord2utf16.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/hl/include/pcre/pcre16_valid_utf16.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/hl/include/pcre/pcre_chartables.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/hl/include/pcre/pcre_compile.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/hl/include/pcre/pcre_dfa_exec.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/hl/include/pcre/pcre_exec.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/hl/include/pcre/pcre_fullinfo.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/hl/include/pcre/pcre_globals.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/hl/include/pcre/pcre_internal.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/hl/include/pcre/pcre_newline.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/hl/include/pcre/pcre_string_utils.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/hl/include/pcre/pcre_tables.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/hl/include/pcre/pcre_ucd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/hl/include/pcre/pcre_xclass.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/hl/include/pcre/ucp.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/hl/src/gc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/hl/src/hl.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/hl/src/hlc.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/hl/src/hlmodule.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/hl/src/opcodes.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/hl/src/std/array.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/hl/src/std/buffer.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/hl/src/std/bytes.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/hl/src/std/cast.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/hl/src/std/date.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/hl/src/std/error.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/hl/src/std/file.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/hl/src/std/fun.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/hl/src/std/maps.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/hl/src/std/maps.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/hl/src/std/math.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/hl/src/std/obj.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/hl/src/std/process.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/hl/src/std/random.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/hl/src/std/regexp.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/hl/src/std/socket.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/hl/src/std/sort.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/hl/src/std/string.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/hl/src/std/sys.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/hl/src/std/sys_android.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/hl/src/std/thread.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/hl/src/std/track.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/hl/src/std/types.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/hl/src/std/ucs2.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Backends/KoreHL/hl/src/std/unicase.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/Audio3/A3onA2/Sources/Kore/Audio.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/Audio3/A3onA2/Sources/Kore/TextToSpeech.winrt.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/Audio3/A3onA2/Sources/Kore/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/GL/eglew.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/GL/glew.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/GL/glew.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/GL/glxew.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/GL/wglew.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/Kore/ComputeImpl.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/Kore/ComputeImpl.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/Kore/GraphicsImpl.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/Kore/IndexBufferImpl.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/Kore/IndexBufferImpl.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/Kore/OpenGL.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/Kore/OpenGL.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/Kore/OpenGLWindow.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/Kore/OpenGLWindow.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/Kore/PipelineStateImpl.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/Kore/PipelineStateImpl.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/Kore/RenderTargetAndroid.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/Kore/RenderTargetImpl.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/Kore/RenderTargetImpl.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/Kore/ShaderImpl.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/Kore/ShaderImpl.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/Kore/ShaderStorageBufferImpl.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/Kore/ShaderStorageBufferImpl.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/Kore/TextureArrayImpl.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/Kore/TextureArrayImpl.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/Kore/TextureImpl.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/Kore/TextureImpl.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/Kore/VertexBufferImpl.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/Kore/VertexBufferImpl.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/Kore/VrInterface.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/Kore/ogl.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/Kore/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/Graphics5/G5onG4/Sources/Kore/CommandList5Impl.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/Graphics5/G5onG4/Sources/Kore/CommandList5Impl.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/Graphics5/G5onG4/Sources/Kore/ConstantBuffer5Impl.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/Graphics5/G5onG4/Sources/Kore/ConstantBuffer5Impl.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/Graphics5/G5onG4/Sources/Kore/G5onG4.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/Graphics5/G5onG4/Sources/Kore/G5onG4.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/Graphics5/G5onG4/Sources/Kore/Graphics5Impl.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/Graphics5/G5onG4/Sources/Kore/IndexBuffer5Impl.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/Graphics5/G5onG4/Sources/Kore/IndexBuffer5Impl.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/Graphics5/G5onG4/Sources/Kore/PipelineState5Impl.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/Graphics5/G5onG4/Sources/Kore/PipelineState5Impl.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/Graphics5/G5onG4/Sources/Kore/RenderTarget5Impl.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/Graphics5/G5onG4/Sources/Kore/RenderTarget5Impl.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/Graphics5/G5onG4/Sources/Kore/Shader5Impl.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/Graphics5/G5onG4/Sources/Kore/Shader5Impl.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/Graphics5/G5onG4/Sources/Kore/Texture5Impl.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/Graphics5/G5onG4/Sources/Kore/Texture5Impl.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/Graphics5/G5onG4/Sources/Kore/VertexBuffer5Impl.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/Graphics5/G5onG4/Sources/Kore/VertexBuffer5Impl.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/Graphics5/G5onG4/Sources/Kore/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/System/Linux/Sources/Kore/Display.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/System/Linux/Sources/Kore/DisplayData.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/System/Linux/Sources/Kore/Display_XRandr.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/System/Linux/Sources/Kore/Display_Xinerama.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/System/Linux/Sources/Kore/Linux.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/System/Linux/Sources/Kore/Sound.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/System/Linux/Sources/Kore/System.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/System/Linux/Sources/Kore/Video.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/System/Linux/Sources/Kore/VideoSoundStream.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/System/Linux/Sources/Kore/Window.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/System/Linux/Sources/Kore/WindowData.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/System/Linux/Sources/Kore/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/System/Linux/Sources/Kore/Input/Gamepad.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/System/Linux/Sources/Kore/Input/Gamepad.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/System/Linux/Sources/Kore/Input/Mouse.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/System/POSIX/Sources/Kore/AtomicImpl.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/System/POSIX/Sources/Kore/Event.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/System/POSIX/Sources/Kore/EventImpl.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/System/POSIX/Sources/Kore/Mutex.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/System/POSIX/Sources/Kore/MutexImpl.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/System/POSIX/Sources/Kore/Semaphore.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/System/POSIX/Sources/Kore/SemaphoreImpl.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/System/POSIX/Sources/Kore/Thread.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/System/POSIX/Sources/Kore/ThreadImpl.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/System/POSIX/Sources/Kore/ThreadLocal.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/System/POSIX/Sources/Kore/ThreadLocalImpl.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Backends/System/POSIX/Sources/Kore/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Convert.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Convert.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Display.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Display.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Error.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Error.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/ErrorArgs.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Log.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Log.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/LogArgs.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/System.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/System.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Window.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Window.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Audio1/Audio.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Audio1/Audio.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Audio1/Sound.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Audio1/Sound.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Audio1/SoundStream.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Audio1/SoundStream.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Audio1/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Audio2/Audio.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Audio2/Audio.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Audio2/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Audio3/Audio.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Audio3/Audio.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Audio3/TextToSpeech.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Audio3/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Compute/Compute.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Compute/Compute.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Compute/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Graphics1/Color.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Graphics1/Color.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Graphics1/Graphics.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Graphics1/Graphics.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Graphics1/Image.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Graphics1/Image.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Graphics1/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Graphics2/Graphics.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Graphics2/Graphics.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Graphics2/Kravur.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Graphics2/Kravur.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Graphics2/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Graphics3/Graphics.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Graphics3/Graphics.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Graphics3/Light.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Graphics3/Texture.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Graphics3/Texture.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Graphics3/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Graphics4/Graphics.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Graphics4/Graphics.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Graphics4/IndexBuffer.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Graphics4/PipelineState.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Graphics4/PipelineState.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Graphics4/RenderTarget.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Graphics4/Shader.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Graphics4/Shader.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Graphics4/Texture.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Graphics4/Texture.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Graphics4/TextureArray.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Graphics4/TextureArray.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Graphics4/VertexBuffer.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Graphics4/VertexStructure.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Graphics4/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Graphics5/CommandList.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Graphics5/CommandList.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Graphics5/ConstantBuffer.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Graphics5/ConstantBuffer.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Graphics5/Graphics.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Graphics5/Graphics.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Graphics5/PipelineState.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Graphics5/PipelineState.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Graphics5/RayTrace.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Graphics5/Shader.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Graphics5/Texture.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Graphics5/Texture.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Graphics5/VertexStructure.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Graphics5/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/IO/BufferReader.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/IO/BufferReader.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/IO/FileReader.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/IO/FileReader.winrt.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/IO/FileWriter.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/IO/FileWriter.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/IO/Reader.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/IO/Reader.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/IO/Writer.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/IO/Writer.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/IO/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Input/Gamepad.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Input/Gamepad.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Input/Keyboard.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Input/Keyboard.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Input/Mouse.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Input/Mouse.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Input/Pen.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Input/Pen.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Input/Sensor.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Input/Sensor.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Input/Surface.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Input/Surface.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Input/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Math/Core.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Math/Core.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Math/Matrix.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Math/Quaternion.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Math/Quaternion.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Math/Random.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Math/Random.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Math/Vector.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Math/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Network/Connection.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Network/Connection.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Network/Http.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Network/Http.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Network/Socket.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Network/Socket.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Network/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Simd/float32x4.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Threads/Atomic.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Threads/Event.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Threads/Event.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Threads/Mutex.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Threads/Mutex.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Threads/Semaphore.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Threads/Semaphore.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Threads/Thread.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Threads/Thread.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Threads/ThreadLocal.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Threads/ThreadLocal.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Threads/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Vr/CameraImage.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Vr/CameraImage.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Vr/SensorState.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Vr/SensorState.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Vr/VrInterface.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Vr/VrInterface.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Vr/VrPose.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Vr/VrPose.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Vr/VrPoseState.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Vr/VrPoseState.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/Kore/Vr/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/color.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/color.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/display.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/error.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/error.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/image.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/image.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/log.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/log.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/system.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/system.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/window.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/window.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/audio1/audio.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/audio1/audio.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/audio1/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/audio1/sound.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/audio1/sound.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/audio1/soundstream.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/audio1/soundstream.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/audio1/stb_vorbis.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/audio2/audio.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/audio2/audio.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/audio2/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/compute/compute.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/graphics1/graphics.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/graphics1/graphics.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/graphics1/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/graphics4/constantlocation.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/graphics4/graphics.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/graphics4/graphics.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/graphics4/indexbuffer.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/graphics4/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/graphics4/pipeline.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/graphics4/pipeline.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/graphics4/rendertarget.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/graphics4/shader.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/graphics4/texture.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/graphics4/texturearray.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/graphics4/textureunit.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/graphics4/vertexbuffer.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/graphics4/vertexbuffer.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/graphics4/vertexstructure.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/graphics5/commandlist.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/graphics5/commandlist.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/graphics5/constantbuffer.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/graphics5/constantbuffer.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/graphics5/constantlocation.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/graphics5/graphics.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/graphics5/graphics.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/graphics5/indexbuffer.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/graphics5/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/graphics5/pipeline.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/graphics5/pipeline.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/graphics5/raytrace.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/graphics5/rendertarget.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/graphics5/shader.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/graphics5/texture.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/graphics5/texture.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/graphics5/textureunit.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/graphics5/vertexbuffer.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/graphics5/vertexstructure.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/input/acceleration.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/input/acceleration.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/input/gamepad.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/input/gamepad.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/input/keyboard.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/input/keyboard.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/input/mouse.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/input/mouse.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/input/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/input/pen.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/input/pen.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/input/rotation.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/input/rotation.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/input/surface.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/input/surface.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/io/filereader.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/io/filereader.winrt.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/io/filewriter.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/io/filewriter.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/io/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/libs/lz4x.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/libs/stb_image.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/math/core.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/math/core.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/math/matrix.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/math/matrix.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/math/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/math/quaternion.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/math/random.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/math/random.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/math/vector.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/network/http.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/network/http.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/network/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/network/socket.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/network/socket.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/simd/float32x4.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/threads/atomic.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/threads/event.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/threads/fiber.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/threads/mutex.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/threads/semaphore.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/threads/thread.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/threads/threadlocal.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/Empty/Kha/Kinc/Sources/kinc/vr/vrinterface.h">
+		</Unit>
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

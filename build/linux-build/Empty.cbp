@@ -1,0 +1,2845 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Empty" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/Empty" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="/home/mixer/projects/blocks/build/linux" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/Empty" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="/home/mixer/projects/blocks/build/linux" />
+				<Option object_output="obj/Release/" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-DHXCPP_API_LEVEL=400" />
+			<Add option="-DHXCPP_DEBUG" />
+			<Add option="-DHXCPP_GC_GENERATIONAL" />
+			<Add option="-DHX_SMART_STRINGS" />
+			<Add option="-DKORE_MULTITHREADED_AUDIO" />
+			<Add option="-DHX_LINUX" />
+			<Add option="-DSTATIC_LINK" />
+			<Add option="-DPCRE_STATIC" />
+			<Add option="-DHXCPP_VISIT_ALLOCS" />
+			<Add option="-DKHA" />
+			<Add option="-DKORE" />
+			<Add option="-DROTATE90" />
+			<Add option="-DHAVE_CONFIG_H" />
+			<Add option="-DSUPPORT_UTF" />
+			<Add option="-DSUPPORT_UCP" />
+			<Add option="-DKORE_G1" />
+			<Add option="-DKORE_G2" />
+			<Add option="-DKORE_G3" />
+			<Add option="-DKORE_A1" />
+			<Add option="-DKORE_A2" />
+			<Add option="-DKORE_LZ4X" />
+			<Add option="-DKORE_LINUX" />
+			<Add option="-DKORE_OPENGL" />
+			<Add option="-DKORE_POSIX" />
+			<Add option="-DKORE_G4" />
+			<Add option="-DKORE_G5" />
+			<Add option="-DKORE_G5ONG4" />
+			<Add option="-DKORE_A3" />
+			<Add directory="/home/mixer/projects/blocks/build/linux-build/Sources/include" />
+			<Add directory="/home/mixer/tools/Kha/Backends/Kore/lib" />
+			<Add directory="/home/mixer/tools/Kha/Backends/Kore/khacpp/include" />
+			<Add directory="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42" />
+			<Add directory="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/zlib-1.2.11" />
+			<Add directory="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/libs/nekoapi" />
+			<Add directory="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include" />
+			<Add directory="/home/mixer/tools/Kha/Kinc/Sources" />
+			<Add directory="/home/mixer/tools/Kha/Kinc/Backends/System/Linux/Sources" />
+			<Add directory="/home/mixer/tools/Kha/Kinc/Backends/System/POSIX/Sources" />
+			<Add directory="/home/mixer/tools/Kha/Kinc/Backends/Graphics4/OpenGL/Sources" />
+			<Add directory="/home/mixer/tools/Kha/Kinc/Backends/Graphics5/G5onG4/Sources" />
+			<Add directory="/home/mixer/tools/Kha/Kinc/Backends/Audio3/A3onA2/Sources" />
+		</Compiler>
+		<Linker>
+			<Add option="-pthread" />
+			<Add option="-static-libgcc" />
+			<Add option="-static-libstdc++" />
+			<Add option="-Wl,-rpath,." />
+			<Add library="asound" />
+			<Add library="dl" />
+			<Add library="X11" />
+			<Add library="Xcursor" />
+			<Add library="Xinerama" />
+			<Add library="Xi" />
+			<Add library="GL" />
+		</Linker>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/Date.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/Lambda.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/Main.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/Reflect.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/Std.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/StringTools.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/Type.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/cpp/vm/Gc.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/haxe/Exception.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/haxe/IMap.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/haxe/Log.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/haxe/NativeStackTrace.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/haxe/Timer.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/haxe/Unserializer.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/haxe/ValueException.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/haxe/_Unserializer/DefaultResolver.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/haxe/ds/IntMap.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/haxe/ds/List.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/haxe/ds/ObjectMap.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/haxe/ds/StringMap.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/haxe/ds/_List/ListNode.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/haxe/io/Bytes.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/haxe/io/BytesBuffer.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/haxe/io/BytesInput.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/haxe/io/BytesOutput.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/haxe/io/Encoding.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/haxe/io/Eof.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/haxe/io/Error.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/haxe/io/FPHelper.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/haxe/io/Input.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/haxe/io/Output.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/haxe/io/Path.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/haxe/iterators/ArrayIterator.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/AlignedQuad.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/Assets.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/BlobCallback.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/Canvas.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/Display.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/DisplayMode.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/FrameTask.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/Framebuffer.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/FramebufferOptions.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/Image.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/ImageCallback.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/Kravur.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/KravurImage.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/LoaderImpl.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/Resource.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/Scheduler.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/Shaders.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/Sound.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/SoundCallback.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/System.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/SystemImpl.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/SystemOptions.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/TimeTask.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/Video.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/Window.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/WindowOptions.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/Worker.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/_Assets/BlobList.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/_Assets/FontList.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/_Assets/ImageList.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/_Assets/SoundList.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/_Assets/VideoList.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/_Color/Color_Impl_.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/_WindowOptions/WindowFeatures_Impl_.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/arrays/Float32ArrayPrivate.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/arrays/Int16ArrayPrivate.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/arrays/Int32ArrayPrivate.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/arrays/Uint32ArrayPrivate.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/arrays/_Float32Array/Float32Array_Impl_.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/arrays/_Int16Array/Int16Array_Impl_.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/arrays/_Int32Array/Int32Array_Impl_.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/arrays/_Uint32Array/Uint32Array_Impl_.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/audio1/AudioChannel.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/audio2/Audio.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/audio2/Audio1.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/audio2/AudioChannel.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/audio2/Buffer.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/audio2/ResamplingAudioChannel.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/audio2/StreamChannel.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/audio2/ogg/tools/Crc32.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/audio2/ogg/tools/MathTools.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/audio2/ogg/tools/Mdct.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/audio2/ogg/vorbis/Reader.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/audio2/ogg/vorbis/VorbisDecodeState.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/audio2/ogg/vorbis/VorbisDecoder.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/audio2/ogg/vorbis/VorbisTools.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/audio2/ogg/vorbis/_VorbisDecodeState/FindPageResult.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/audio2/ogg/vorbis/data/Codebook.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/audio2/ogg/vorbis/data/Comment.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/audio2/ogg/vorbis/data/Floor.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/audio2/ogg/vorbis/data/Floor0.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/audio2/ogg/vorbis/data/Floor1.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/audio2/ogg/vorbis/data/Header.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/audio2/ogg/vorbis/data/IntPoint.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/audio2/ogg/vorbis/data/Mapping.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/audio2/ogg/vorbis/data/MappingChannel.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/audio2/ogg/vorbis/data/Mode.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/audio2/ogg/vorbis/data/Page.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/audio2/ogg/vorbis/data/PageFlag.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/audio2/ogg/vorbis/data/ProbedPage.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/audio2/ogg/vorbis/data/ReaderError.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/audio2/ogg/vorbis/data/ReaderErrorType.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/audio2/ogg/vorbis/data/Residue.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/audio2/ogg/vorbis/data/Setting.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/compute/ConstantLocation.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/compute/Shader.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/compute/TextureUnit.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/graphics1/Graphics.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/graphics2/Graphics.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/graphics2/Graphics1.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/graphics2/truetype/StbTruetype.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/graphics2/truetype/Stbtt__active_edge.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/graphics2/truetype/Stbtt__bitmap.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/graphics2/truetype/Stbtt__buf.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/graphics2/truetype/Stbtt__csctx.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/graphics2/truetype/Stbtt__edge.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/graphics2/truetype/Stbtt__point.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/graphics2/truetype/Stbtt_aligned_quad.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/graphics2/truetype/Stbtt_bakedchar.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/graphics2/truetype/Stbtt_fontinfo.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/graphics2/truetype/Stbtt_pack_context.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/graphics2/truetype/Stbtt_pack_range.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/graphics2/truetype/Stbtt_packedchar.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/graphics2/truetype/Stbtt_temp_font_v_metrics.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/graphics2/truetype/Stbtt_temp_glyph_h_metrics.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/graphics2/truetype/Stbtt_temp_rect.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/graphics2/truetype/Stbtt_temp_region.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/graphics2/truetype/Stbtt_vertex.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/graphics2/truetype/VectorOfIntPointer.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/graphics4/ColoredShaderPainter.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/graphics4/ConstantLocation.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/graphics4/CubeMap.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/graphics4/FragmentShader.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/graphics4/GeometryShader.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/graphics4/Graphics.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/graphics4/Graphics2.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/graphics4/ImageShaderPainter.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/graphics4/IndexBuffer.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/graphics4/InternalPipeline.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/graphics4/PerFramebufferPipelineCache.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/graphics4/PipelineCache.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/graphics4/PipelineState.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/graphics4/PipelineStateBase.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/graphics4/SimplePipelineCache.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/graphics4/StencilValue.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/graphics4/TessellationControlShader.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/graphics4/TessellationEvaluationShader.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/graphics4/TextShaderPainter.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/graphics4/TextureUnit.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/graphics4/VertexBuffer.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/graphics4/VertexElement.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/graphics4/VertexShader.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/graphics4/VertexStructure.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/input/BlockInterventions.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/input/Gamepad.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/input/Keyboard.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/input/Mouse.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/input/MouseCursor.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/input/MouseEventBlockBehavior.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/input/MouseImpl.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/input/Pen.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/input/Sensor.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/input/Surface.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/input/TouchDownEventBlockBehavior.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/internal/BytesBlob.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/internal/IntBox.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/kore/Keyboard.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/kore/Video.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/kore/graphics4/ConstantLocation.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/kore/graphics4/Graphics.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/kore/graphics4/Graphics2.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/kore/graphics4/TextureUnit.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/math/FastMatrix3.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/math/FastMatrix4.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/math/FastVector2.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/math/FastVector3.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/math/FastVector4.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/math/Matrix3.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/math/Matrix4.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/math/Quaternion.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/math/Vector2.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/math/Vector3.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/math/Vector4.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/netsync/Client.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/netsync/Controller.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/netsync/ControllerBuilder.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/netsync/Entity.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/netsync/LocalClient.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/netsync/Network.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/netsync/Session.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/netsync/State.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/netsync/SyncBuilder.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/vr/Pose.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/vr/PoseState.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/vr/SensorState.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/vr/TimeWarpImage.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/vr/TimeWarpParms.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/vr/VrInterface.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/kha/vr/VrInterfaceEmulated.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/sys/FileSystem.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/sys/io/File.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/sys/io/FileInput.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/sys/io/FileSeek.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/sys/thread/Mutex.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/include/hxinc/sys/thread/_Thread/Thread_Impl_.h">
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/Date.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/Lambda.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/Main.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/Reflect.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/Std.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/StringTools.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/Type.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/__boot__.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/__files__.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/__lib__.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/__resources__.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/cpp/vm/Gc.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/haxe/Exception.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/haxe/IMap.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/haxe/Log.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/haxe/NativeStackTrace.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/haxe/Timer.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/haxe/Unserializer.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/haxe/ValueException.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/haxe/_Unserializer/DefaultResolver.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/haxe/ds/IntMap.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/haxe/ds/List.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/haxe/ds/ObjectMap.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/haxe/ds/StringMap.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/haxe/ds/_List/ListNode.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/haxe/io/Bytes.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/haxe/io/BytesBuffer.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/haxe/io/BytesInput.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/haxe/io/BytesOutput.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/haxe/io/Encoding.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/haxe/io/Eof.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/haxe/io/Error.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/haxe/io/FPHelper.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/haxe/io/Input.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/haxe/io/Output.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/haxe/io/Path.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/haxe/iterators/ArrayIterator.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/AlignedQuad.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/Assets.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/BlobCallback.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/Canvas.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/Display.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/DisplayMode.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/FrameTask.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/Framebuffer.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/FramebufferOptions.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/Image.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/ImageCallback.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/Kravur.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/KravurImage.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/LoaderImpl.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/Resource.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/Scheduler.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/Shaders.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/Sound.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/SoundCallback.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/System.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/SystemImpl.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/SystemOptions.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/TimeTask.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/Video.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/Window.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/WindowOptions.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/Worker.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/_Assets/BlobList.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/_Assets/FontList.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/_Assets/ImageList.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/_Assets/SoundList.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/_Assets/VideoList.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/_Color/Color_Impl_.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/_WindowOptions/WindowFeatures_Impl_.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/arrays/Float32ArrayPrivate.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/arrays/Int16ArrayPrivate.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/arrays/Int32ArrayPrivate.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/arrays/Uint32ArrayPrivate.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/arrays/_Float32Array/Float32Array_Impl_.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/arrays/_Int16Array/Int16Array_Impl_.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/arrays/_Int32Array/Int32Array_Impl_.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/arrays/_Uint32Array/Uint32Array_Impl_.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/audio1/AudioChannel.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/audio2/Audio.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/audio2/Audio1.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/audio2/AudioChannel.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/audio2/Buffer.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/audio2/ResamplingAudioChannel.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/audio2/StreamChannel.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/audio2/ogg/tools/Crc32.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/audio2/ogg/tools/MathTools.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/audio2/ogg/tools/Mdct.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/audio2/ogg/vorbis/Reader.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/audio2/ogg/vorbis/VorbisDecodeState.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/audio2/ogg/vorbis/VorbisDecoder.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/audio2/ogg/vorbis/VorbisTools.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/audio2/ogg/vorbis/_VorbisDecodeState/FindPageResult.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/audio2/ogg/vorbis/data/Codebook.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/audio2/ogg/vorbis/data/Comment.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/audio2/ogg/vorbis/data/Floor.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/audio2/ogg/vorbis/data/Floor0.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/audio2/ogg/vorbis/data/Floor1.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/audio2/ogg/vorbis/data/Header.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/audio2/ogg/vorbis/data/IntPoint.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/audio2/ogg/vorbis/data/Mapping.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/audio2/ogg/vorbis/data/MappingChannel.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/audio2/ogg/vorbis/data/Mode.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/audio2/ogg/vorbis/data/Page.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/audio2/ogg/vorbis/data/PageFlag.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/audio2/ogg/vorbis/data/ProbedPage.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/audio2/ogg/vorbis/data/ReaderError.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/audio2/ogg/vorbis/data/ReaderErrorType.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/audio2/ogg/vorbis/data/Residue.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/audio2/ogg/vorbis/data/Setting.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/compute/ConstantLocation.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/compute/Shader.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/compute/TextureUnit.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/graphics1/Graphics.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/graphics2/Graphics.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/graphics2/Graphics1.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/graphics2/truetype/StbTruetype.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/graphics2/truetype/Stbtt__active_edge.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/graphics2/truetype/Stbtt__bitmap.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/graphics2/truetype/Stbtt__buf.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/graphics2/truetype/Stbtt__csctx.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/graphics2/truetype/Stbtt__edge.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/graphics2/truetype/Stbtt__point.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/graphics2/truetype/Stbtt_aligned_quad.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/graphics2/truetype/Stbtt_bakedchar.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/graphics2/truetype/Stbtt_fontinfo.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/graphics2/truetype/Stbtt_pack_context.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/graphics2/truetype/Stbtt_pack_range.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/graphics2/truetype/Stbtt_packedchar.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/graphics2/truetype/Stbtt_temp_font_v_metrics.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/graphics2/truetype/Stbtt_temp_glyph_h_metrics.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/graphics2/truetype/Stbtt_temp_rect.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/graphics2/truetype/Stbtt_temp_region.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/graphics2/truetype/Stbtt_vertex.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/graphics2/truetype/VectorOfIntPointer.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/graphics4/ColoredShaderPainter.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/graphics4/ConstantLocation.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/graphics4/CubeMap.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/graphics4/FragmentShader.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/graphics4/GeometryShader.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/graphics4/Graphics.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/graphics4/Graphics2.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/graphics4/ImageShaderPainter.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/graphics4/IndexBuffer.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/graphics4/InternalPipeline.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/graphics4/PerFramebufferPipelineCache.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/graphics4/PipelineCache.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/graphics4/PipelineState.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/graphics4/PipelineStateBase.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/graphics4/SimplePipelineCache.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/graphics4/StencilValue.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/graphics4/TessellationControlShader.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/graphics4/TessellationEvaluationShader.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/graphics4/TextShaderPainter.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/graphics4/TextureUnit.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/graphics4/VertexBuffer.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/graphics4/VertexElement.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/graphics4/VertexShader.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/graphics4/VertexStructure.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/input/BlockInterventions.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/input/Gamepad.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/input/Keyboard.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/input/Mouse.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/input/MouseCursor.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/input/MouseEventBlockBehavior.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/input/MouseImpl.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/input/Pen.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/input/Sensor.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/input/Surface.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/input/TouchDownEventBlockBehavior.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/internal/BytesBlob.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/internal/IntBox.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/kore/Keyboard.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/kore/Video.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/kore/graphics4/ConstantLocation.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/kore/graphics4/Graphics.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/kore/graphics4/Graphics2.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/kore/graphics4/TextureUnit.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/math/FastMatrix3.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/math/FastMatrix4.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/math/FastVector2.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/math/FastVector3.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/math/FastVector4.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/math/Matrix3.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/math/Matrix4.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/math/Quaternion.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/math/Vector2.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/math/Vector3.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/math/Vector4.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/netsync/Client.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/netsync/Controller.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/netsync/ControllerBuilder.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/netsync/Entity.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/netsync/LocalClient.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/netsync/Network.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/netsync/Session.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/netsync/State.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/netsync/SyncBuilder.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/vr/Pose.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/vr/PoseState.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/vr/SensorState.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/vr/TimeWarpImage.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/vr/TimeWarpParms.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/vr/VrInterface.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/kha/vr/VrInterfaceEmulated.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/sys/FileSystem.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/sys/io/File.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/sys/io/FileInput.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/sys/io/FileSeek.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/sys/thread/Mutex.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/projects/blocks/build/linux-build/Sources/src/sys/thread/_Thread/Thread_Impl_.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/main.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/Array.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/Dynamic.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/Enum.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/cpp_float32array.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/cpp_int16array.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/cpp_int32array.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/cpp_uint32array.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/hxMath.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/hxString.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/hxcpp.h">
+			<Option compile="1" />
+			<Option weight="0" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/null.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/cpp/CppInt32__.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/cpp/FastIterator.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/cpp/Int64.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/cpp/Pointer.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/cpp/Variant.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/cpp/VirtualArray.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/hx/Anon.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/hx/Boot.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/hx/CFFI.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/hx/CFFIAPI.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/hx/CFFIJsPrime.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/hx/CFFILoader.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/hx/CFFINekoLoader.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/hx/CFFIPrime.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/hx/Class.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/hx/Debug.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/hx/DynamicImpl.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/hx/ErrorCodes.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/hx/FieldRef.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/hx/Functions.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/hx/GC.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/hx/GcTypeInference.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/hx/HeaderVersion.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/hx/HxcppMain.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/hx/IndexRef.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/hx/Interface.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/hx/LessThanEq.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/hx/Macros.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/hx/MacrosFixed.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/hx/MacrosJumbo.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/hx/Memory.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/hx/Native.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/hx/NekoFunc.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/hx/OS.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/hx/ObjcHelpers.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/hx/Object.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/hx/Operators.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/hx/QuickVec.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/hx/Scriptable.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/hx/StackContext.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/hx/StdLibs.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/hx/StdString.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/hx/StringAlloc.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/hx/Telemetry.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/hx/Thread.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/hx/Tls.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/hx/Undefine.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/include/hx/Unordered.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/aes.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/aesni.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/arc4.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/asn1.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/asn1write.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/base64.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/bignum.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/blowfish.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/bn_mul.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/camellia.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/ccm.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/certs.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/check_config.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/cipher.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/cipher_internal.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/cmac.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/compat-1.3.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/config.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/ctr_drbg.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/debug.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/des.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/dhm.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/ecdh.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/ecdsa.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/ecjpake.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/ecp.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/ecp_internal.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/entropy.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/entropy_poll.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/error.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/gcm.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/havege.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/hmac_drbg.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/md.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/md2.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/md4.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/md5.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/md_internal.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/memory_buffer_alloc.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/net.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/net_sockets.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/oid.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/padlock.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/pem.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/pk.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/pk_internal.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/pkcs11.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/pkcs12.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/pkcs5.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/platform.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/platform_time.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/ripemd160.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/rsa.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/rsa_internal.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/sha1.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/sha256.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/sha512.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/ssl.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/ssl_cache.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/ssl_ciphersuites.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/ssl_cookie.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/ssl_internal.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/ssl_ticket.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/threading.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/threading_alt.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/timing.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/version.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/x509.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/x509_crl.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/x509_crt.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/x509_csr.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/include/mbedtls/xtea.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/aes.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/aesni.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/arc4.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/asn1parse.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/asn1write.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/base64.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/bignum.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/blowfish.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/camellia.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/ccm.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/certs.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/cipher.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/cipher_wrap.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/cmac.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/ctr_drbg.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/debug.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/des.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/dhm.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/ecdh.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/ecdsa.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/ecjpake.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/ecp.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/ecp_curves.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/entropy.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/entropy_poll.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/error.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/gcm.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/havege.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/hmac_drbg.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/md.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/md2.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/md4.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/md5.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/md_wrap.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/memory_buffer_alloc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/net_sockets.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/oid.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/padlock.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/pem.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/pk.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/pk_wrap.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/pkcs11.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/pkcs12.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/pkcs5.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/pkparse.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/pkwrite.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/platform.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/ripemd160.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/rsa.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/rsa_internal.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/sha1.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/sha256.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/sha512.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/ssl_cache.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/ssl_ciphersuites.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/ssl_cli.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/ssl_cookie.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/ssl_srv.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/ssl_ticket.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/ssl_tls.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/threading.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/timing.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/version.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/version_features.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/x509.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/x509_create.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/x509_crl.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/x509_crt.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/x509_csr.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/x509write_crt.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/x509write_csr.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/mbedtls-2.9.0/library/xtea.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/config.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre16_byte_order.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre16_chartables.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre16_compile.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre16_config.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre16_dfa_exec.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre16_exec.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre16_fullinfo.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre16_get.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre16_globals.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre16_jit_compile.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre16_maketables.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre16_newline.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre16_ord2utf16.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre16_refcount.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre16_string_utils.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre16_study.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre16_tables.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre16_ucd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre16_utf16_utils.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre16_valid_utf16.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre16_version.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre16_xclass.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre32_byte_order.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre32_chartables.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre32_compile.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre32_config.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre32_dfa_exec.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre32_exec.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre32_fullinfo.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre32_get.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre32_globals.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre32_jit_compile.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre32_maketables.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre32_newline.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre32_ord2utf32.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre32_refcount.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre32_string_utils.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre32_study.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre32_tables.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre32_ucd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre32_utf32_utils.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre32_valid_utf32.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre32_version.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre32_xclass.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre_byte_order.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre_chartables.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre_compile.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre_config.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre_dfa_exec.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre_exec.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre_fullinfo.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre_get.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre_globals.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre_internal.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre_jit_compile.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre_maketables.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre_newline.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre_ord2utf8.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre_refcount.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre_scanner.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre_string_utils.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre_study.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre_tables.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre_ucd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre_valid_utf8.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre_version.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcre_xclass.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcrecpp.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcrecpp_internal.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcreposix.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/pcreposix.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/pcre-8.42/ucp.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/zlib-1.2.11/adler32.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/zlib-1.2.11/compress.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/zlib-1.2.11/crc32.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/zlib-1.2.11/crc32.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/zlib-1.2.11/deflate.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/zlib-1.2.11/deflate.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/zlib-1.2.11/gzguts.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/zlib-1.2.11/infback.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/zlib-1.2.11/inffast.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/zlib-1.2.11/inffast.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/zlib-1.2.11/inffixed.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/zlib-1.2.11/inflate.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/zlib-1.2.11/inflate.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/zlib-1.2.11/inftrees.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/zlib-1.2.11/inftrees.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/zlib-1.2.11/trees.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/zlib-1.2.11/trees.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/zlib-1.2.11/uncompr.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/zlib-1.2.11/zconf.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/zlib-1.2.11/zlib.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/zlib-1.2.11/zutil.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/zlib-1.2.11/zutil.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/zlib-1.2.11/contrib/blast/blast.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/zlib-1.2.11/contrib/infback9/infback9.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/zlib-1.2.11/contrib/infback9/inffix9.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/zlib-1.2.11/contrib/infback9/inflate9.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/zlib-1.2.11/contrib/infback9/inftree9.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/zlib-1.2.11/contrib/iostream/zfstream.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/zlib-1.2.11/contrib/iostream2/zstream.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/zlib-1.2.11/contrib/iostream3/zfstream.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/zlib-1.2.11/contrib/minizip/crypt.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/zlib-1.2.11/contrib/minizip/ioapi.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/zlib-1.2.11/contrib/minizip/iowin32.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/zlib-1.2.11/contrib/minizip/mztools.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/zlib-1.2.11/contrib/minizip/unzip.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/zlib-1.2.11/contrib/minizip/zip.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/zlib-1.2.11/contrib/puff/puff.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/project/thirdparty/zlib-1.2.11/examples/gzlog.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/src/Array.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/src/Dynamic.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/src/Enum.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/src/Math.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/src/String.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/src/hxcpp.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/src/hx/AbcOpCodes.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/src/hx/Anon.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/src/hx/Boot.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/src/hx/CFFI.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/src/hx/Class.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/src/hx/Date.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/src/hx/Debug.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/src/hx/Hash.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/src/hx/Hash.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/src/hx/Interface.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/src/hx/Lib.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/src/hx/Object.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/src/hx/RunLibs.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/src/hx/StdLibs.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/src/hx/Thread.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/src/hx/Unicase.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/src/hx/gc/GcCommon.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/src/hx/gc/GcRegCapture.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/src/hx/gc/GcRegCapture.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/src/hx/gc/Immix.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/src/hx/libs/regexp/RegExp.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/src/hx/libs/ssl/SSL.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/src/hx/libs/std/File.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/src/hx/libs/std/Process.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/src/hx/libs/std/Random.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/src/hx/libs/std/Socket.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/src/hx/libs/std/Sys.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/khacpp/src/hx/libs/zlib/ZLib.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/lib/khalib/float32x4.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/lib/khalib/loader.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/lib/khalib/loader.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/lib/khalib/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Backends/Kore/lib/khalib/stb_ds.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/Audio3/A3onA2/Sources/Kore/Audio.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/Audio3/A3onA2/Sources/Kore/TextToSpeech.winrt.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/Audio3/A3onA2/Sources/Kore/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/GL/eglew.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/GL/glew.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/GL/glew.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/GL/glxew.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/GL/wglew.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/Kore/ComputeImpl.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/Kore/ComputeImpl.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/Kore/GraphicsImpl.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/Kore/IndexBufferImpl.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/Kore/IndexBufferImpl.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/Kore/OpenGL.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/Kore/OpenGL.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/Kore/OpenGLWindow.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/Kore/OpenGLWindow.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/Kore/PipelineStateImpl.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/Kore/PipelineStateImpl.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/Kore/RenderTargetAndroid.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/Kore/RenderTargetImpl.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/Kore/RenderTargetImpl.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/Kore/ShaderImpl.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/Kore/ShaderImpl.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/Kore/ShaderStorageBufferImpl.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/Kore/ShaderStorageBufferImpl.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/Kore/TextureArrayImpl.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/Kore/TextureArrayImpl.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/Kore/TextureImpl.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/Kore/TextureImpl.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/Kore/VertexBufferImpl.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/Kore/VertexBufferImpl.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/Kore/VrInterface.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/Kore/ogl.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/Graphics4/OpenGL/Sources/Kore/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/Graphics5/G5onG4/Sources/Kore/CommandList5Impl.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/Graphics5/G5onG4/Sources/Kore/CommandList5Impl.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/Graphics5/G5onG4/Sources/Kore/ConstantBuffer5Impl.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/Graphics5/G5onG4/Sources/Kore/ConstantBuffer5Impl.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/Graphics5/G5onG4/Sources/Kore/G5onG4.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/Graphics5/G5onG4/Sources/Kore/G5onG4.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/Graphics5/G5onG4/Sources/Kore/Graphics5Impl.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/Graphics5/G5onG4/Sources/Kore/IndexBuffer5Impl.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/Graphics5/G5onG4/Sources/Kore/IndexBuffer5Impl.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/Graphics5/G5onG4/Sources/Kore/PipelineState5Impl.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/Graphics5/G5onG4/Sources/Kore/PipelineState5Impl.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/Graphics5/G5onG4/Sources/Kore/RenderTarget5Impl.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/Graphics5/G5onG4/Sources/Kore/RenderTarget5Impl.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/Graphics5/G5onG4/Sources/Kore/Shader5Impl.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/Graphics5/G5onG4/Sources/Kore/Shader5Impl.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/Graphics5/G5onG4/Sources/Kore/Texture5Impl.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/Graphics5/G5onG4/Sources/Kore/Texture5Impl.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/Graphics5/G5onG4/Sources/Kore/VertexBuffer5Impl.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/Graphics5/G5onG4/Sources/Kore/VertexBuffer5Impl.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/Graphics5/G5onG4/Sources/Kore/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/System/Linux/Sources/Kore/Display.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/System/Linux/Sources/Kore/DisplayData.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/System/Linux/Sources/Kore/Display_XRandr.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/System/Linux/Sources/Kore/Display_Xinerama.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/System/Linux/Sources/Kore/Linux.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/System/Linux/Sources/Kore/Sound.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/System/Linux/Sources/Kore/System.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/System/Linux/Sources/Kore/Video.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/System/Linux/Sources/Kore/VideoSoundStream.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/System/Linux/Sources/Kore/Window.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/System/Linux/Sources/Kore/WindowData.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/System/Linux/Sources/Kore/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/System/Linux/Sources/Kore/Input/Gamepad.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/System/Linux/Sources/Kore/Input/Gamepad.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/System/Linux/Sources/Kore/Input/Mouse.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/System/POSIX/Sources/Kore/AtomicImpl.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/System/POSIX/Sources/Kore/Event.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/System/POSIX/Sources/Kore/EventImpl.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/System/POSIX/Sources/Kore/Mutex.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/System/POSIX/Sources/Kore/MutexImpl.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/System/POSIX/Sources/Kore/Semaphore.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/System/POSIX/Sources/Kore/SemaphoreImpl.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/System/POSIX/Sources/Kore/Thread.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/System/POSIX/Sources/Kore/ThreadImpl.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/System/POSIX/Sources/Kore/ThreadLocal.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/System/POSIX/Sources/Kore/ThreadLocalImpl.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Backends/System/POSIX/Sources/Kore/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Convert.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Convert.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Display.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Display.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Error.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Error.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/ErrorArgs.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Log.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Log.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/LogArgs.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/System.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/System.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Window.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Window.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Audio1/Audio.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Audio1/Audio.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Audio1/Sound.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Audio1/Sound.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Audio1/SoundStream.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Audio1/SoundStream.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Audio1/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Audio2/Audio.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Audio2/Audio.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Audio2/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Audio3/Audio.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Audio3/Audio.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Audio3/TextToSpeech.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Audio3/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Compute/Compute.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Compute/Compute.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Compute/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Graphics1/Color.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Graphics1/Color.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Graphics1/Graphics.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Graphics1/Graphics.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Graphics1/Image.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Graphics1/Image.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Graphics1/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Graphics2/Graphics.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Graphics2/Graphics.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Graphics2/Kravur.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Graphics2/Kravur.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Graphics2/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Graphics3/Graphics.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Graphics3/Graphics.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Graphics3/Light.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Graphics3/Texture.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Graphics3/Texture.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Graphics3/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Graphics4/Graphics.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Graphics4/Graphics.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Graphics4/IndexBuffer.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Graphics4/PipelineState.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Graphics4/PipelineState.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Graphics4/RenderTarget.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Graphics4/Shader.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Graphics4/Shader.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Graphics4/Texture.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Graphics4/Texture.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Graphics4/TextureArray.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Graphics4/TextureArray.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Graphics4/VertexBuffer.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Graphics4/VertexStructure.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Graphics4/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Graphics5/CommandList.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Graphics5/CommandList.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Graphics5/ConstantBuffer.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Graphics5/ConstantBuffer.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Graphics5/Graphics.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Graphics5/Graphics.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Graphics5/PipelineState.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Graphics5/PipelineState.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Graphics5/RayTrace.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Graphics5/Shader.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Graphics5/Texture.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Graphics5/Texture.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Graphics5/VertexStructure.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Graphics5/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/IO/BufferReader.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/IO/BufferReader.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/IO/FileReader.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/IO/FileReader.winrt.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/IO/FileWriter.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/IO/FileWriter.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/IO/Reader.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/IO/Reader.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/IO/Writer.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/IO/Writer.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/IO/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Input/Gamepad.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Input/Gamepad.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Input/Keyboard.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Input/Keyboard.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Input/Mouse.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Input/Mouse.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Input/Pen.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Input/Pen.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Input/Sensor.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Input/Sensor.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Input/Surface.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Input/Surface.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Input/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Math/Core.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Math/Core.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Math/Matrix.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Math/Quaternion.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Math/Quaternion.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Math/Random.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Math/Random.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Math/Vector.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Math/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Network/Connection.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Network/Connection.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Network/Http.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Network/Http.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Network/Socket.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Network/Socket.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Network/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Simd/float32x4.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Threads/Atomic.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Threads/Event.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Threads/Event.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Threads/Mutex.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Threads/Mutex.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Threads/Semaphore.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Threads/Semaphore.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Threads/Thread.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Threads/Thread.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Threads/ThreadLocal.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Threads/ThreadLocal.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Threads/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Vr/CameraImage.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Vr/CameraImage.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Vr/SensorState.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Vr/SensorState.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Vr/VrInterface.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Vr/VrInterface.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Vr/VrPose.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Vr/VrPose.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Vr/VrPoseState.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Vr/VrPoseState.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/Kore/Vr/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/bridge.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/bridge.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/color.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/color.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/display.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/error.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/error.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/image.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/image.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/log.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/log.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/system.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/system.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/window.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/window.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/audio1/audio.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/audio1/audio.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/audio1/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/audio1/sound.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/audio1/sound.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/audio1/soundstream.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/audio1/soundstream.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/audio1/stb_vorbis.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/audio2/audio.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/audio2/audio.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/audio2/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/compute/compute.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/graphics1/graphics.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/graphics1/graphics.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/graphics1/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/graphics4/constantlocation.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/graphics4/graphics.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/graphics4/graphics.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/graphics4/indexbuffer.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/graphics4/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/graphics4/pipeline.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/graphics4/pipeline.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/graphics4/rendertarget.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/graphics4/shader.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/graphics4/texture.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/graphics4/texturearray.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/graphics4/textureunit.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/graphics4/vertexbuffer.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/graphics4/vertexbuffer.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/graphics4/vertexstructure.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/graphics5/commandlist.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/graphics5/commandlist.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/graphics5/constantbuffer.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/graphics5/constantbuffer.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/graphics5/constantlocation.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/graphics5/graphics.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/graphics5/graphics.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/graphics5/indexbuffer.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/graphics5/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/graphics5/pipeline.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/graphics5/pipeline.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/graphics5/raytrace.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/graphics5/rendertarget.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/graphics5/shader.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/graphics5/texture.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/graphics5/texture.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/graphics5/textureunit.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/graphics5/vertexbuffer.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/graphics5/vertexstructure.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/input/acceleration.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/input/acceleration.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/input/gamepad.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/input/gamepad.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/input/keyboard.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/input/keyboard.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/input/mouse.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/input/mouse.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/input/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/input/pen.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/input/pen.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/input/rotation.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/input/rotation.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/input/surface.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/input/surface.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/io/filereader.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/io/filereader.winrt.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/io/filewriter.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/io/filewriter.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/io/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/libs/lz4x.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/libs/stb_image.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/math/core.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/math/core.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/math/matrix.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/math/matrix.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/math/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/math/quaternion.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/math/random.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/math/random.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/math/vector.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/network/http.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/network/http.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/network/pch.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/network/socket.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/network/socket.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/simd/float32x4.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/threads/atomic.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/threads/event.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/threads/fiber.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/threads/mutex.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/threads/semaphore.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/threads/thread.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/threads/threadlocal.h">
+		</Unit>
+		<Unit filename="/home/mixer/tools/Kha/Kinc/Sources/kinc/vr/vrinterface.h">
+		</Unit>
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
