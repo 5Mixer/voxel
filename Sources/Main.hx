@@ -18,7 +18,7 @@ class Main {
 	function render(framebuffer: Framebuffer): Void {
 		var g4 = framebuffer.g4;
 		g4.begin();
-		g4.clear();
+		g4.clear(kha.Color.fromBytes(49, 61, 82));
 		scene.render(g4);
 		g4.end();
 	}
