@@ -10,8 +10,8 @@ class Block {
 	
 	public function new(x,y,z) {
 		colour = kha.Color.Green;
-		this.x=x;
-		this.y=y;
-		this.z=z;
+		this.x = x;
+		this.y = y;
+		this.z = z;
 	}
 }

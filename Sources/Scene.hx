@@ -33,25 +33,24 @@ class Scene {
 		0, 1, 0,
 		1, 1, 0,
 		1, 0, 0,
-		0, 0, 0, // Bottom
+		0, 0, 0,
 
-		0, 0, 1, // Top
+		0, 0, 1,
 		1, 0, 1,
 		1, 1, 1,
 		0, 1, 1,
-		////
 
-		1, 0, 0, // Front left (Actually top)
+		1, 0, 0,
 		1, 1, 0,
 		1, 1, 1,
 		1, 0, 1,
 
-		1, 1, 0, // Front right
+		1, 1, 0,
 		0, 1, 0,
 		0, 1, 1,
 		1, 1, 1,
 
-		1, 0, 1, // Back left
+		1, 0, 1,
 		0, 0, 1,
 		0, 0, 0,
 		1, 0, 0,
@@ -59,16 +58,16 @@ class Scene {
 		0, 0, 1,
 		0, 1, 1,
 		0, 1, 0,
-		0, 0, 0 // Back right
+		0, 0, 0
 	];
 	var blockIndices = [
-		0, 1, 2, //l1
+		0, 1, 2,
 		0, 2, 3,
 
-		4, 5, 6, //r1
+		4, 5, 6,
 		4, 6, 7,
 
-		8, 9, 10, //f?
+		8, 9, 10,
 		8,10, 11,
 
 		12, 13, 14,
@@ -82,12 +81,12 @@ class Scene {
 
 	];
 	var uv = [
-		1, 1, //FL
+		1, 1,
 		0, 1,
 		0, 0,
 		1, 0,
 
-		1, 1, //BL
+		1, 1,
 		2, 1,
 		2, 0,
 		1, 0,
@@ -97,7 +96,7 @@ class Scene {
 		2, 0,
 		2, 1,
 
-		4, 1, //TOP?
+		4, 1,
 		4, 0,
 		3, 0,
 		3, 1,
@@ -112,20 +111,6 @@ class Scene {
 		6, 0,
 		6, 1
 	];
-	/*var blockIndices = [
-		0, 1, 3,
-		1, 3, 2,
-		0, 1, 5,
-		5, 0, 4,
-		0, 3, 7,
-		0, 4, 7,
-		1, 5, 6,
-		1, 2, 6,
-		2, 3, 7,
-		2, 6, 7,
-		5, 6, 4,
-		6, 4, 7
-	];*/
 
 	var mvp:FastMatrix4;
 	var mvpID:ConstantLocation;
@@ -141,20 +126,22 @@ class Scene {
 		for (x in 0...chunkSize)
 			for (y in 0...chunkSize)
 				for (z in 0...chunkSize) {
-					blocks.push(Math.sqrt(Math.pow(x-50,2)+Math.pow(y-50,2)+Math.pow(z-50,2)) < 50 ? 1 : 0);
+					blocks.push(0);
+					// blocks.push(Math.sqrt(Math.pow(x-50,2)+Math.pow(y-50,2)+Math.pow(z-50,2)) < 50 ? 1 : 0);
 				}
+		
+		for (x in 0...chunkSize)
+			for (z in 0...chunkSize)
+				setBlock(x,0,z,1);
 
-		// for (x in -50...50)
-		// 	for (y in -50...50)
-		// 		blocks.push(1);
-				// blocks.push(new Block(x,-Std.int(Math.sqrt(Math.pow(x,2)+Math.pow(y,2))/4),y));
-				// blocks.push(new Block(0,0,0));
-				// blocks.push(new Block(1,1,0));
 		constructGeometry();
 	}
 
 	inline public function getBlock(x, y, z) {
 		return blocks[x*(chunkSize*chunkSize) + y*chunkSize + z];
+	}
+	function setBlock(x,y,z,b){
+		blocks[x*(chunkSize*chunkSize) + y*chunkSize + z] = b;
 	}
 	inline public function isAir(x:Int, y:Int, z:Int) {
 		if (x<min.x||y<min.y||z<min.z||x>max.x||y>max.y||z>max.z)
@@ -240,14 +227,11 @@ class Scene {
 					generatedVertexData.push(uv[v*2]  *16/256);
 					generatedVertexData.push(uv[v*2+1]*16/256);
 
-					// generatedIndexData.push(blockIndices[v]+vertexIndex);
-
 					vertexIndex++;
 				}
 			}
 			blockIndex++;
 		}
-		// vertexBuffer = new VertexBuffer(Std.int(blocks.length * blockStructure.length/3), structure, StaticUsage);
 		vertexBuffer = new VertexBuffer(Std.int(generatedVertexData.length/5), structure, StaticUsage);
 		var vertexBufferData = vertexBuffer.lock();
 		for (i in 0...generatedVertexData.length)
@@ -266,7 +250,14 @@ class Scene {
 
 	function calculateMVP() {
 		var projection = FastMatrix4.perspectiveProjection(45, kha.Window.get(0).width / kha.Window.get(0).height, .1, 100);
-		var view = FastMatrix4.lookAt(camera.position.fast(), camera.lookAt.fast(), new FastVector3(0,1,0));
+
+		var lookVector = new FastVector3(
+			Math.cos(camera.verticalAngle) * Math.sin(camera.horizontalAngle),
+			Math.sin(camera.verticalAngle),
+			Math.cos(camera.verticalAngle) * Math.cos(camera.horizontalAngle)
+		);
+
+		var view = FastMatrix4.lookAt(camera.position.fast(), camera.position.fast().add(lookVector), new FastVector3(0,1,0));
 		var model = FastMatrix4.identity();
 
 		mvp = FastMatrix4.identity();
