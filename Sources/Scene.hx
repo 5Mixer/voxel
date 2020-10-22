@@ -126,12 +126,12 @@ class Scene {
 			for (y in 0...chunkSize)
 				for (z in 0...chunkSize) {
 					blocks.push(0);
-					// blocks.push(Math.sqrt(Math.pow(x-50,2)+Math.pow(y-50,2)+Math.pow(z-50,2)) < 50 ? 1 : 0);
 				}
 		
 		for (x in 0...chunkSize)
 			for (z in 0...chunkSize)
-				setBlock(x,0,z,1);
+				for (y in 0...Math.ceil(6*Math.sin(x/10)+6*Math.cos(z/10)))
+					setBlock(x,y,z,1);
 
 		constructGeometry();
 	}
@@ -233,13 +233,15 @@ class Scene {
 			}
 			blockIndex++;
 		}
+
+		// Load the generated vertex data into a buffer
 		vertexBuffer = new VertexBuffer(Std.int(generatedVertexData.length/5), structure, StaticUsage);
 		var vertexBufferData = vertexBuffer.lock();
 		for (i in 0...generatedVertexData.length)
 			vertexBufferData[i] = generatedVertexData[i];
 		vertexBuffer.unlock();
 
-		// Index Data
+		// Load the generated index data into a buffer
 		indexBuffer = new IndexBuffer(Std.int(generatedIndexData.length), StaticUsage);
 		var indexBufferData = indexBuffer.lock();
 		for (i in 0...Std.int(generatedIndexData.length))
@@ -252,6 +254,7 @@ class Scene {
 	function calculateMVP() {
 		var projection = FastMatrix4.perspectiveProjection(70*Math.PI/180, kha.Window.get(0).width / kha.Window.get(0).height, .1, 100);
 
+		// Conversion from spherical to cartesian coordinates uses projection
 		var lookVector = new FastVector3(
 			Math.cos(camera.verticalAngle) * Math.sin(camera.horizontalAngle),
 			Math.sin(camera.verticalAngle),

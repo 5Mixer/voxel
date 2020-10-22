@@ -11,6 +11,9 @@ class Input {
     public var focused = false;
     public var jumpAttemptCallback:Void->Void = function(){};
 
+    public var space = false;
+    public var shift = false;
+
     public function new(camera:Camera) {
 
 		Mouse.get().notify(
@@ -36,6 +39,8 @@ class Input {
 			if (key == A) {	left = true; }
 			if (key == S) {	backwards = true; }
             if (key == D) {	right = true; }
+            if (key == Space) {	space = true; }
+            if (key == Shift) {	shift = true; }
 
             if (key == Escape) {
                 focused = false;
@@ -46,6 +51,8 @@ class Input {
 			if (key == A) {	left = false; }
 			if (key == S) {	backwards = false; }
             if (key == D) {	right = false; }
+            if (key == Space) {	space = false; }
+            if (key == Shift) {	shift = false; }
 		});
     }
 }

@@ -28,8 +28,20 @@ class Main {
 	function update(): Void {
 		camera.position = player.position.add(new Vector3(0,1,0));
 		scene.update();
-		if (player.position.y > 2) {
-			player.position.y -= .1;
+		player.update();
+
+		var footPosition = player.position.add(new Vector3(0,-player.size.y,0));
+		var onGround = !scene.isAir(Math.floor(footPosition.x), Math.floor(footPosition.y),Math.floor(footPosition.z));
+		if (onGround) {
+			player.velocity.y = Math.max(0, player.velocity.y);
+		}else{
+			player.velocity.y -= .01;
+		}
+		if (input.space && onGround) {
+			player.velocity.y = .2;
+		}
+		if (input.shift && !onGround) {
+			player.position.y -= .2;
 		}
 
 		var localMovementVector = new Vector2(0,0);
@@ -46,8 +58,16 @@ class Main {
 			localMovementVector.x -= 1;
 		}
 		var movement = FastMatrix3.rotation(Math.PI/2-camera.horizontalAngle).multvec(localMovementVector.fast()).normalized().mult(1/60*5);
-		player.position.x += movement.x;
-		player.position.z += movement.y;
+
+		var newPlayerPosition = player.position.add(new Vector3(movement.x, 0, movement.y));
+		if (scene.isAir(Math.floor(newPlayerPosition.x),Math.floor(player.position.y),Math.floor(player.position.z)) && 
+		    scene.isAir(Math.floor(newPlayerPosition.x),Math.ceil(player.position.y-player.size.y),Math.floor(player.position.z))) {
+			player.position.x += movement.x;
+		}
+		if (scene.isAir(Math.floor(player.position.x),Math.floor(player.position.y),Math.floor(newPlayerPosition.z)) &&
+		    scene.isAir(Math.floor(player.position.x),Math.ceil(player.position.y-player.size.y),Math.floor(newPlayerPosition.z))) {
+			player.position.z += movement.y;
+		}
 	}
 
 	function render(framebuffer: Framebuffer): Void {
