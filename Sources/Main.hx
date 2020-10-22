@@ -33,6 +33,7 @@ class Main {
 		camera.position.x = 5+zoom * Math.cos(lat/300);
 		camera.position.y = 5+zoom * long/300;
 		camera.position.z = 5+zoom * Math.sin(lat/300);
+		// trace(camera.position);
 		scene.update();
 	}
 

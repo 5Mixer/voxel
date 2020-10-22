@@ -1,5 +1,6 @@
 package ;
 
+import kha.math.Vector3;
 import kha.graphics5_.MipMapFilter;
 import kha.graphics5_.TextureFilter;
 import kha.graphics5_.TextureAddressing;
@@ -40,7 +41,7 @@ class Scene {
 		0, 1, 1,
 		////
 
-		1, 0, 0, // Front left
+		1, 0, 0, // Front left (Actually top)
 		1, 1, 0,
 		1, 1, 1,
 		1, 0, 1,
@@ -130,7 +131,9 @@ class Scene {
 	var mvpID:ConstantLocation;
 	var textureID:TextureUnit;
 
-	var chunkSize = 10;
+	static inline var chunkSize = 100;
+	var min = new Vector3(0,0,0);
+	var max = new Vector3(chunkSize-1,chunkSize-1,chunkSize-1);
 
 	public function new(camera:Camera) {
 		this.camera = camera;
@@ -138,7 +141,7 @@ class Scene {
 		for (x in 0...chunkSize)
 			for (y in 0...chunkSize)
 				for (z in 0...chunkSize) {
-					blocks.push(Math.sqrt(Math.pow(x-5,2)+Math.pow(y-5,2)+Math.pow(z-5,2)) < 5 ? 1 : 0);
+					blocks.push(Math.sqrt(Math.pow(x-5,2)+Math.pow(y-5,2)+Math.pow(z-5,2)) < 50 ? 1 : 0);
 				}
 
 		// for (x in -50...50)
@@ -152,6 +155,11 @@ class Scene {
 
 	inline public function getBlock(x, y, z) {
 		return blocks[x*(chunkSize*chunkSize) + y*chunkSize + z];
+	}
+	inline public function isAir(x:Int, y:Int, z:Int) {
+		if (x<min.x||y<min.y||z<min.z||x>max.x||y>max.y||z>max.z)
+			return true;
+		return getBlock(x,y,z) == 0;
 	}
 
 	function constructGeometry() {
@@ -169,7 +177,6 @@ class Scene {
 		pipeline.depthWrite = true;
 		pipeline.depthMode = CompareMode.Less;
 
-
 		pipeline.compile();
 
 		// Graphics variables
@@ -178,11 +185,10 @@ class Scene {
 		textureID = pipeline.getTextureUnit("textureSampler");
 
 		// Vertex Data
-		vertexBuffer = new VertexBuffer(Std.int(blocks.length * blockStructure.length/3), structure, StaticUsage);
-		var vertexBufferData = vertexBuffer.lock();
+		var generatedVertexData:Array<Float> = [];
+		var generatedIndexData:Array<Int> = [];
 		var blockIndex = 0;
-		var offset = 0;
-		var blockIndex = 0;
+		var vertexIndex = 0;
 		for (block in blocks) {
 			if (block == 0){
 				blockIndex++;
@@ -193,37 +199,61 @@ class Scene {
 			var y = Math.floor(blockIndex/chunkSize)%chunkSize;
 			var z = blockIndex%chunkSize;
 
-			for (v in 0...Std.int(blockStructure.length/3)) {
-				var face = Std.int(v/4);
-				if (face == 0 && getBlock(x,y,z-1)==1)
+			for (face in 0...6) {
+				if (face == 0 && !isAir(x,y,z-1)) // Right
 					continue;
 
-				vertexBufferData[offset++] = blockStructure[v*3+0]+x;
-				vertexBufferData[offset++] = blockStructure[v*3+1]+y;
-				vertexBufferData[offset++] = blockStructure[v*3+2]+z;
+				if (face == 1 && !isAir(x,y,z+1)) // Left
+					continue;
 
-				vertexBufferData[offset++] = uv[v*2]  *16/256;
-				vertexBufferData[offset++] = uv[v*2+1]*16/256;
+				if (face == 2 && !isAir(x+1,y,z)) // Front (facing camera)
+					continue;
+
+				if (face == 3 && !isAir(x,y+1,z)) // Top
+					continue;
+
+				if (face == 4 && !isAir(x,y-1,z)) //Under/bottom
+					continue;
+				
+				if (face == 5 && !isAir(x-1,y,z)) //back
+					continue;
+
+				generatedIndexData.push(vertexIndex);
+				generatedIndexData.push(vertexIndex+1);
+				generatedIndexData.push(vertexIndex+2);
+				generatedIndexData.push(vertexIndex);
+				generatedIndexData.push(vertexIndex+2);
+				generatedIndexData.push(vertexIndex+3);
+				for (triangleVertex in 0...4) {
+					var v = face*4 + triangleVertex;
+					
+
+					generatedVertexData.push(blockStructure[v*3+0]+x);
+					generatedVertexData.push(blockStructure[v*3+1]+y);
+					generatedVertexData.push(blockStructure[v*3+2]+z);
+
+					generatedVertexData.push(uv[v*2]  *16/256);
+					generatedVertexData.push(uv[v*2+1]*16/256);
+
+					// generatedIndexData.push(blockIndices[v]+vertexIndex);
+
+					vertexIndex++;
+				}
 			}
 			blockIndex++;
 		}
+		// vertexBuffer = new VertexBuffer(Std.int(blocks.length * blockStructure.length/3), structure, StaticUsage);
+		vertexBuffer = new VertexBuffer(Std.int(generatedVertexData.length/5), structure, StaticUsage);
+		var vertexBufferData = vertexBuffer.lock();
+		for (i in 0...generatedVertexData.length)
+			vertexBufferData[i] = generatedVertexData[i];
 		vertexBuffer.unlock();
 
 		// Index Data
-		indexBuffer = new IndexBuffer(blocks.length * blockIndices.length, StaticUsage);
+		indexBuffer = new IndexBuffer(Std.int(generatedIndexData.length), StaticUsage);
 		var indexBufferData = indexBuffer.lock();
-		var offset = 0;
-		var blockIndex = 0;
-		for (block in blocks) {
-			if (block == 0) {
-				continue;
-			}
-			for (i in 0...blockIndices.length) {
-				indexBufferData[offset] = blockIndices[i]+blockIndex*(6*4);
-				offset++;
-			}
-			blockIndex++;
-		}
+		for (i in 0...Std.int(generatedIndexData.length))
+			indexBufferData[i] = generatedIndexData[i];
 		indexBuffer.unlock();
 
 		trace('Generated geometry. VB size: ${vertexBuffer.count()} IB size: ${indexBuffer.count()}');
