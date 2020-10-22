@@ -19,7 +19,8 @@ import kha.graphics4.VertexBuffer;
 import kha.graphics4.Graphics;
 
 class Scene {
-	var blocks:Array<Block> = [];
+	var blockRegistry = [];
+	var blocks:Array<Int> = [];
 	var indices:Array<Int> = [];
 
 	var vertexBuffer:VertexBuffer;
@@ -128,14 +129,27 @@ class Scene {
 	var mvpID:ConstantLocation;
 	var textureID:TextureUnit;
 
-	public function new() {
+	var chunkSize = 10;
 
-		for (x in -50...50)
-			for (y in -50...50)
-				blocks.push(new Block(x,-Std.int(Math.sqrt(Math.pow(x,2)+Math.pow(y,2))/4),y));
+	public function new() {
+		var offset = 0;
+		for (x in 0...chunkSize)
+			for (y in 0...chunkSize)
+				for (z in 0...chunkSize) {
+					blocks.push(Math.sqrt(Math.pow(x-5,2)+Math.pow(y-5,2)+Math.pow(z-5,2)) < 5 ? 1 : 0);
+				}
+
+		// for (x in -50...50)
+		// 	for (y in -50...50)
+		// 		blocks.push(1);
+				// blocks.push(new Block(x,-Std.int(Math.sqrt(Math.pow(x,2)+Math.pow(y,2))/4),y));
 				// blocks.push(new Block(0,0,0));
 				// blocks.push(new Block(1,1,0));
 		constructGeometry();
+	}
+
+	inline public function getBlock(x, y, z) {
+		return blocks[x*(chunkSize*chunkSize) + y*chunkSize + z];
 	}
 
 	function constructGeometry() {
@@ -166,7 +180,17 @@ class Scene {
 		var vertexBufferData = vertexBuffer.lock();
 		var blockIndex = 0;
 		var offset = 0;
+		var blockIndex = 0;
 		for (block in blocks) {
+			if (block == 0){
+				blockIndex++;
+				continue;
+			}
+
+			var x = Math.floor(blockIndex/(chunkSize*chunkSize));
+			var y = Math.floor(blockIndex/chunkSize)%chunkSize;
+			var z = blockIndex%chunkSize;
+
 			for (v in 0...Std.int(blockStructure.length/3)) {
 				// vertexBufferData[(v+blockIndex*4)*5+0] = blockStructure[v*3+0]+block.x;
 				// vertexBufferData[(v+blockIndex*4)*5+1] = blockStructure[v*3+1]+block.y;
@@ -174,9 +198,9 @@ class Scene {
 
 				// vertexBufferData[(v+blockIndex*4)*5+3] = uv[v*2]  *16/256;
 				// vertexBufferData[(v+blockIndex*4)*5+4] = uv[v*2+1]*16/256;
-				vertexBufferData[offset++] = blockStructure[v*3+0]+block.x;
-				vertexBufferData[offset++] = blockStructure[v*3+1]+block.y;
-				vertexBufferData[offset++] = blockStructure[v*3+2]+block.z;
+				vertexBufferData[offset++] = blockStructure[v*3+0]+x;
+				vertexBufferData[offset++] = blockStructure[v*3+1]+y;
+				vertexBufferData[offset++] = blockStructure[v*3+2]+z;
 
 				vertexBufferData[offset++] = uv[v*2]  *16/256;
 				vertexBufferData[offset++] = uv[v*2+1]*16/256;
@@ -191,6 +215,9 @@ class Scene {
 		var offset = 0;
 		var blockIndex = 0;
 		for (block in blocks) {
+			if (block == 0) {
+				continue;
+			}
 			for (i in 0...blockIndices.length) {
 				indexBufferData[offset] = blockIndices[i]+blockIndex*(6*4);
 				offset++;
@@ -198,6 +225,8 @@ class Scene {
 			blockIndex++;
 		}
 		indexBuffer.unlock();
+
+		trace('Generated geometry. VB size: ${vertexBuffer.count()} IB size: ${indexBuffer.count()}');
 	}
 
 	function calculateMVP() {
