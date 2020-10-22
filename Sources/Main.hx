@@ -30,9 +30,9 @@ class Main {
 	function update(): Void {
 		// camera.position = new FastVector3(30*Math.cos(Scheduler.realTime()*.3),10,30*Math.sin(Scheduler.realTime()*.3));
 		// camera.position = new Vector3(30*Math.cos(Scheduler.realTime()*.3),10,30*Math.sin(Scheduler.realTime()*.3));
-		camera.position.x = 5+zoom * Math.cos(lat/300);
-		camera.position.y = 5+zoom * long/300;
-		camera.position.z = 5+zoom * Math.sin(lat/300);
+		camera.position.x = camera.lookAt.x+zoom * Math.cos(lat/300);
+		camera.position.y = camera.lookAt.y+zoom * long/300;
+		camera.position.z = camera.lookAt.z+zoom * Math.sin(lat/300);
 		// trace(camera.position);
 		scene.update();
 	}
@@ -40,7 +40,7 @@ class Main {
 	function render(framebuffer: Framebuffer): Void {
 		var g4 = framebuffer.g4;
 		g4.begin();
-		g4.clear(kha.Color.fromBytes(49, 61, 82));
+		g4.clear(kha.Color.fromBytes(49, 61, 82),1.0);
 		scene.render(g4);
 		g4.end();
 	}

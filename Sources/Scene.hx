@@ -30,10 +30,10 @@ class Scene {
 	var camera:Camera;
 
 	var blockStructure = [
-		0, 0, 0, // Bottom
-		1, 0, 0,
-		1, 1, 0,
 		0, 1, 0,
+		1, 1, 0,
+		1, 0, 0,
+		0, 0, 0, // Bottom
 
 		0, 0, 1, // Top
 		1, 0, 1,
@@ -56,10 +56,10 @@ class Scene {
 		0, 0, 0,
 		1, 0, 0,
 
-		0, 0, 0, // Back right
-		0, 1, 0,
+		0, 0, 1,
 		0, 1, 1,
-		0, 0, 1
+		0, 1, 0,
+		0, 0, 0 // Back right
 	];
 	var blockIndices = [
 		0, 1, 2, //l1
@@ -97,10 +97,10 @@ class Scene {
 		2, 0,
 		2, 1,
 
-		4-.05, 1-.05, //TOP?
-		4-.05, 0+.05,
-		3+.05, 0+.05,
-		3+.05, 1-.05,
+		4, 1, //TOP?
+		4, 0,
+		3, 0,
+		3, 1,
 
 		5, 1,
 		5, 0,
@@ -141,7 +141,7 @@ class Scene {
 		for (x in 0...chunkSize)
 			for (y in 0...chunkSize)
 				for (z in 0...chunkSize) {
-					blocks.push(Math.sqrt(Math.pow(x-5,2)+Math.pow(y-5,2)+Math.pow(z-5,2)) < 50 ? 1 : 0);
+					blocks.push(Math.sqrt(Math.pow(x-50,2)+Math.pow(y-50,2)+Math.pow(z-50,2)) < 50 ? 1 : 0);
 				}
 
 		// for (x in -50...50)
@@ -176,6 +176,11 @@ class Scene {
 
 		pipeline.depthWrite = true;
 		pipeline.depthMode = CompareMode.Less;
+
+        pipeline.colorAttachmentCount = 1;
+		pipeline.colorAttachments[0] = kha.graphics4.TextureFormat.RGBA32;
+		pipeline.depthStencilAttachment = kha.graphics4.DepthStencilFormat.Depth16;
+		pipeline.cullMode = Clockwise;
 
 		pipeline.compile();
 
@@ -261,7 +266,7 @@ class Scene {
 
 	function calculateMVP() {
 		var projection = FastMatrix4.perspectiveProjection(45, kha.Window.get(0).width / kha.Window.get(0).height, .1, 100);
-		var view = FastMatrix4.lookAt(camera.position.fast(), new FastVector3(5,5,5), new FastVector3(0,1,0));
+		var view = FastMatrix4.lookAt(camera.position.fast(), camera.lookAt.fast(), new FastVector3(0,1,0));
 		var model = FastMatrix4.identity();
 
 		mvp = FastMatrix4.identity();
