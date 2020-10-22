@@ -26,6 +26,7 @@ class Scene {
 	var vertexBuffer:VertexBuffer;
 	var indexBuffer:IndexBuffer;
 	var pipeline:PipelineState;
+	var camera:Camera;
 
 	var blockStructure = [
 		0, 0, 0, // Bottom
@@ -131,8 +132,9 @@ class Scene {
 
 	var chunkSize = 10;
 
-	public function new() {
-		var offset = 0;
+	public function new(camera:Camera) {
+		this.camera = camera;
+
 		for (x in 0...chunkSize)
 			for (y in 0...chunkSize)
 				for (z in 0...chunkSize) {
@@ -192,12 +194,10 @@ class Scene {
 			var z = blockIndex%chunkSize;
 
 			for (v in 0...Std.int(blockStructure.length/3)) {
-				// vertexBufferData[(v+blockIndex*4)*5+0] = blockStructure[v*3+0]+block.x;
-				// vertexBufferData[(v+blockIndex*4)*5+1] = blockStructure[v*3+1]+block.y;
-				// vertexBufferData[(v+blockIndex*4)*5+2] = blockStructure[v*3+2]+block.z;
+				var face = Std.int(v/4);
+				if (face == 0 && getBlock(x,y,z-1)==1)
+					continue;
 
-				// vertexBufferData[(v+blockIndex*4)*5+3] = uv[v*2]  *16/256;
-				// vertexBufferData[(v+blockIndex*4)*5+4] = uv[v*2+1]*16/256;
 				vertexBufferData[offset++] = blockStructure[v*3+0]+x;
 				vertexBufferData[offset++] = blockStructure[v*3+1]+y;
 				vertexBufferData[offset++] = blockStructure[v*3+2]+z;
@@ -231,7 +231,7 @@ class Scene {
 
 	function calculateMVP() {
 		var projection = FastMatrix4.perspectiveProjection(45, kha.Window.get(0).width / kha.Window.get(0).height, .1, 100);
-		var view = FastMatrix4.lookAt(new FastVector3(30*Math.cos(Scheduler.realTime()*.3),10,30*Math.sin(Scheduler.realTime()*.3)), new FastVector3(0,0,0), new FastVector3(0,1,0));
+		var view = FastMatrix4.lookAt(camera.position.fast(), new FastVector3(5,5,5), new FastVector3(0,1,0));
 		var model = FastMatrix4.identity();
 
 		mvp = FastMatrix4.identity();
