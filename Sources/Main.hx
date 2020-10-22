@@ -1,8 +1,8 @@
 package;
 
-import kha.input.Keyboard;
+import kha.math.Vector2;
+import kha.math.FastMatrix3;
 import kha.math.Vector3;
-import kha.input.Mouse;
 import kha.Assets;
 import kha.Framebuffer;
 import kha.Scheduler;
@@ -12,50 +12,42 @@ class Main {
 	var scene:Scene;
 	var camera:Camera;
 	var player:Player;
+	var input:Input;
 
 	var zoom = 10;
 	var down = false;
 
-	var forwards = false;
 
 	function new () {
 		camera = new Camera();
+		input = new Input(camera);
 		scene = new Scene(camera);
 		player = new Player();
-		Mouse.get().notify(function(b,x,y){down=true;Mouse.get().lock();}, function(b,x,y){down=false;Mouse.get().unlock();}, function(x,y,dx,dy){
-			if (!down)
-				return;
-			camera.horizontalAngle -= dx/400;
-			camera.verticalAngle -= dy/400;
-		}, function(delta){
-			zoom += delta;
-		});
-
-		Keyboard.get().notify(function down(key){
-			if (key == W) {
-				forwards = true;
-			}
-		}, function up(key){
-			if (key == W) {
-				forwards = false;
-			}
-
-		});
 	}
 
 	function update(): Void {
-		// camera.position = new FastVector3(30*Math.cos(Scheduler.realTime()*.3),10,30*Math.sin(Scheduler.realTime()*.3));
-		// camera.position = new Vector3(30*Math.cos(Scheduler.realTime()*.3),10,30*Math.sin(Scheduler.realTime()*.3));
 		camera.position = player.position.add(new Vector3(0,1,0));
-		// trace(camera.position);
 		scene.update();
 		if (player.position.y > 2) {
 			player.position.y -= .1;
 		}
-		if (forwards) {
-			player.position.z += Math.cos(camera.horizontalAngle) * 1/60 * 5;
-			player.position.x += Math.sin(camera.horizontalAngle) * 1/60 * 5;
+
+		var localMovementVector = new Vector2(0,0);
+		if (input.forwards) {
+			localMovementVector.x += 1;
 		}
+		if (input.left) {
+			localMovementVector.y -= 1;
+		}
+		if (input.right) {
+			localMovementVector.y += 1;
+		}
+		if (input.backwards) {
+			localMovementVector.x -= 1;
+		}
+		var movement = FastMatrix3.rotation(Math.PI/2-camera.horizontalAngle).multvec(localMovementVector.fast()).normalized().mult(1/60*5);
+		player.position.x += movement.x;
+		player.position.z += movement.y;
 	}
 
 	function render(framebuffer: Framebuffer): Void {
@@ -67,7 +59,7 @@ class Main {
 	}
 
 	public static function main() {
-		System.start({title: "Kha", width: 800, height: 600}, function (_) {
+		System.start({title: "Blocks", width: 800, height: 600}, function (_) {
 			Assets.loadEverything(function () {
 				var main = new Main();
 				Scheduler.addTimeTask(function () { main.update(); }, 0, 1 / 60);
