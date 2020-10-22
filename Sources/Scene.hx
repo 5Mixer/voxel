@@ -3,14 +3,11 @@ package ;
 import kha.math.Vector3;
 import kha.graphics5_.MipMapFilter;
 import kha.graphics5_.TextureFilter;
-import kha.graphics5_.TextureAddressing;
-import kha.Scheduler;
 import kha.graphics4.TextureUnit;
 import kha.graphics5_.CompareMode;
 import kha.math.FastVector3;
 import kha.math.FastMatrix4;
 import kha.graphics4.ConstantLocation;
-import kha.math.FastMatrix3;
 import kha.Shaders;
 import kha.graphics5_.VertexData;
 import kha.graphics4.VertexStructure;
@@ -123,6 +120,8 @@ class Scene {
 	public function new(camera:Camera) {
 		this.camera = camera;
 
+		kha.Assets.images.sprites.generateMipmaps(3);
+
 		for (x in 0...chunkSize)
 			for (y in 0...chunkSize)
 				for (z in 0...chunkSize) {
@@ -192,6 +191,7 @@ class Scene {
 			var z = blockIndex%chunkSize;
 
 			for (face in 0...6) {
+				// For faces that face anything other than air, skip
 				if (face == 0 && !isAir(x,y,z-1)) // Right
 					continue;
 
@@ -210,15 +210,16 @@ class Scene {
 				if (face == 5 && !isAir(x-1,y,z)) //back
 					continue;
 
+				// Register quad as two triangles through index buffer
 				generatedIndexData.push(vertexIndex);
 				generatedIndexData.push(vertexIndex+1);
 				generatedIndexData.push(vertexIndex+2);
 				generatedIndexData.push(vertexIndex);
 				generatedIndexData.push(vertexIndex+2);
 				generatedIndexData.push(vertexIndex+3);
+
 				for (triangleVertex in 0...4) {
-					var v = face*4 + triangleVertex;
-					
+					var v = face*4 + triangleVertex; // v is the [0-4) vertices of the quad
 
 					generatedVertexData.push(blockStructure[v*3+0]+x);
 					generatedVertexData.push(blockStructure[v*3+1]+y);
@@ -249,7 +250,7 @@ class Scene {
 	}
 
 	function calculateMVP() {
-		var projection = FastMatrix4.perspectiveProjection(45, kha.Window.get(0).width / kha.Window.get(0).height, .1, 100);
+		var projection = FastMatrix4.perspectiveProjection(70*Math.PI/180, kha.Window.get(0).width / kha.Window.get(0).height, .1, 100);
 
 		var lookVector = new FastVector3(
 			Math.cos(camera.verticalAngle) * Math.sin(camera.horizontalAngle),
@@ -257,7 +258,7 @@ class Scene {
 			Math.cos(camera.verticalAngle) * Math.cos(camera.horizontalAngle)
 		);
 
-		var view = FastMatrix4.lookAt(camera.position.fast(), camera.position.fast().add(lookVector), new FastVector3(0,1,0));
+		var view = FastMatrix4.lookAt(camera.position.fast(), camera.position.fast().add(lookVector), new FastVector3(0,1.6,0));
 		var model = FastMatrix4.identity();
 
 		mvp = FastMatrix4.identity();
@@ -274,7 +275,8 @@ class Scene {
 
 		g.setMatrix(mvpID, mvp);
 		g.setTexture(textureID, kha.Assets.images.sprites);
-		g.setTextureParameters(textureID, Clamp, Clamp, TextureFilter.PointFilter, TextureFilter.PointFilter, MipMapFilter.NoMipFilter);
+		g.setTextureParameters(textureID, Clamp, Clamp, TextureFilter.PointFilter, TextureFilter.PointFilter, MipMapFilter.LinearMipFilter);
+		
 
 		g.setVertexBuffer(vertexBuffer);
 		g.setIndexBuffer(indexBuffer);

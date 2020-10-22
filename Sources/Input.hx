@@ -26,6 +26,7 @@ class Input {
                     return;
                 camera.horizontalAngle -= dx/400;
                 camera.verticalAngle -= dy/400;
+                camera.verticalAngle = Math.max(-Math.PI/2+0.01, Math.min(camera.verticalAngle, 2));
             }, function onScroll(delta){
             }
         );
