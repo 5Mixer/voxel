@@ -42,7 +42,7 @@ class Scene {
 		1, 1, 1,
 		1, 0, 1,
 
-		1, 1, 0,
+		1, 1, 0, //top
 		0, 1, 0,
 		0, 1, 1,
 		1, 1, 1,
@@ -153,6 +153,7 @@ class Scene {
 		var structure = new VertexStructure();
 		structure.add("pos", VertexData.Float3);
 		structure.add("uv", VertexData.Float2);
+		structure.add("colour", VertexData.Float3);
 
 		// Pipeline
 		pipeline = new PipelineState();
@@ -219,14 +220,53 @@ class Scene {
 				generatedIndexData.push(vertexIndex+3);
 
 				for (triangleVertex in 0...4) {
-					var v = face*4 + triangleVertex; // v is the [0-4) vertices of the quad
+					var v = face*4 + triangleVertex; // v is the [0-24) vertices of the quad
 
-					generatedVertexData.push(blockStructure[v*3+0]+x);
-					generatedVertexData.push(blockStructure[v*3+1]+y);
-					generatedVertexData.push(blockStructure[v*3+2]+z);
+					// position (xyz)
+					var position = new Vector3(blockStructure[v*3+0]+x, blockStructure[v*3+1]+y, blockStructure[v*3+2]+z);
+					generatedVertexData.push(position.x);
+					generatedVertexData.push(position.y);
+					generatedVertexData.push(position.z);
 
+					// texture (uv)
 					generatedVertexData.push(uv[v*2]  *16/256);
 					generatedVertexData.push((uv[v*2+1]+block-1)*16/256);
+
+
+					// colour (rgb)
+					var light = 1.0;
+						var side1 = false, side2 = false, corner = false;
+						// if (triangleVertex == 0) {
+						// 	side1 =  !isAir(x+1, y+1, z);
+						// 	side2 =  !isAir(x,   y+1, z-1);
+						// 	corner = !isAir(x+1, y+1, z-1);
+						// }
+						// if (triangleVertex == 1) {
+						// 	side1 =  !isAir(x-1, y+1, z);
+						// 	side2 =  !isAir(x,   y+1, z-1);
+						// 	corner = !isAir(x-1, y+1, z-1);
+						// }
+						// if (triangleVertex == 2) {
+						// 	side1 =  !isAir(x-1, y+1, z);
+						// 	side2 =  !isAir(x,   y+1, z+1);
+						// 	corner = !isAir(x-1, y+1, z+1);
+						// }
+						// if (triangleVertex == 3) {
+						// 	side1 =  !isAir(x+1, y+1, z);
+						// 	side2 =  !isAir(x,   y+1, z+1);
+						// 	corner = !isAir(x+1, y+1, z+1);
+						// }
+						side1 = !isAir(x + (blockStructure[v*3+0]==1?1:-1), y+(blockStructure[v*3+1]==1?1:-1), z);
+						side2 = !isAir(x, y+(blockStructure[v*3+1]==1?1:-1), z+(blockStructure[v*3+2]==1?1:-1));
+						corner = !isAir(x + (blockStructure[v*3+0]==1?1:-1), y+(blockStructure[v*3+1]==1?1:-1), z+(blockStructure[v*3+2]==1?1:-1));
+
+						light = (3 - ((side1?1:0)+(side2?1:0)+(corner?1:0)))/3;
+
+						// light = .5 + .5*light;
+
+					generatedVertexData.push(light);
+					generatedVertexData.push(light);
+					generatedVertexData.push(light);
 
 					vertexIndex++;
 				}
@@ -234,8 +274,9 @@ class Scene {
 			blockIndex++;
 		}
 
+		var vertexByteSize = 8;
 		// Load the generated vertex data into a buffer
-		vertexBuffer = new VertexBuffer(Std.int(generatedVertexData.length/5), structure, StaticUsage);
+		vertexBuffer = new VertexBuffer(Std.int(generatedVertexData.length/vertexByteSize), structure, StaticUsage);
 		var vertexBufferData = vertexBuffer.lock();
 		for (i in 0...generatedVertexData.length)
 			vertexBufferData[i] = generatedVertexData[i];
@@ -247,12 +288,10 @@ class Scene {
 		for (i in 0...Std.int(generatedIndexData.length))
 			indexBufferData[i] = generatedIndexData[i];
 		indexBuffer.unlock();
-
-		trace('Generated geometry. VB size: ${vertexBuffer.count()} IB size: ${indexBuffer.count()}');
 	}
 
 	function calculateMVP() {
-		var projection = FastMatrix4.perspectiveProjection(70*Math.PI/180, kha.Window.get(0).width / kha.Window.get(0).height, .1, 100);
+		var projection = FastMatrix4.perspectiveProjection(80*Math.PI/180, kha.Window.get(0).width / kha.Window.get(0).height, .1, 100);
 
 		// Conversion from spherical to cartesian coordinates uses projection
 		var lookVector = new FastVector3(
@@ -272,6 +311,7 @@ class Scene {
 
 	public function update() {
 		calculateMVP();
+		constructGeometry();
 	}
 	public function render(g:Graphics) {
 		g.setPipeline(pipeline);
