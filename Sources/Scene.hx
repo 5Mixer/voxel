@@ -130,8 +130,8 @@ class Scene {
 		
 		for (x in 0...chunkSize)
 			for (z in 0...chunkSize)
-				for (y in 0...Math.ceil(6*Math.sin(x/10)+6*Math.cos(z/10)))
-					setBlock(x,y,z,1);
+				for (y in 0...20+Math.ceil(5*Math.sin(x/10)+5*Math.cos(z/10)))
+					setBlock(x,y,z,Math.random()>.5?1:2);
 
 		constructGeometry();
 	}
@@ -226,7 +226,7 @@ class Scene {
 					generatedVertexData.push(blockStructure[v*3+2]+z);
 
 					generatedVertexData.push(uv[v*2]  *16/256);
-					generatedVertexData.push(uv[v*2+1]*16/256);
+					generatedVertexData.push((uv[v*2+1]+block-1)*16/256);
 
 					vertexIndex++;
 				}

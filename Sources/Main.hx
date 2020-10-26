@@ -37,7 +37,7 @@ class Main {
 		}else{
 			player.velocity.y -= .01;
 		}
-		if (input.space && onGround) {
+		if (input.space && true) {
 			player.velocity.y = .2;
 		}
 		if (input.shift && !onGround) {
