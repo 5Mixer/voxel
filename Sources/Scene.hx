@@ -57,31 +57,11 @@ class Scene {
 		0, 1, 0,
 		0, 0, 0
 	];
-	var blockIndices = [
-		0, 1, 2,
-		0, 2, 3,
-
-		4, 5, 6,
-		4, 6, 7,
-
-		8, 9, 10,
-		8,10, 11,
-
-		12, 13, 14,
-		12, 14, 15,
-
-		16, 17, 18,
-		16, 18, 19,
-
-		20, 21, 22,
-		20, 22, 23
-
-	];
 	var uv = [
-		1, 1,
-		0, 1,
+		1, 0,
 		0, 0,
-		1, 0,
+		0, 1,
+		1, 1,
 
 		1, 1,
 		2, 1,
@@ -103,10 +83,10 @@ class Scene {
 		4, 0,
 		4, 1,
 
-		5, 1,
-		5, 0,
+		6, 1,
 		6, 0,
-		6, 1
+		5, 0,
+		5, 1
 	];
 
 	var mvp:FastMatrix4;
@@ -211,13 +191,7 @@ class Scene {
 				if (face == 5 && !isAir(x-1,y,z)) //back
 					continue;
 
-				// Register quad as two triangles through index buffer
-				generatedIndexData.push(vertexIndex);
-				generatedIndexData.push(vertexIndex+1);
-				generatedIndexData.push(vertexIndex+2);
-				generatedIndexData.push(vertexIndex);
-				generatedIndexData.push(vertexIndex+2);
-				generatedIndexData.push(vertexIndex+3);
+				var ao:Array<Float> = [];
 
 				for (triangleVertex in 0...4) {
 					var v = face*4 + triangleVertex; // v is the [0-24) vertices of the quad
@@ -235,41 +209,44 @@ class Scene {
 
 					// colour (rgb)
 					var light = 1.0;
-						var side1 = false, side2 = false, corner = false;
-						// if (triangleVertex == 0) {
-						// 	side1 =  !isAir(x+1, y+1, z);
-						// 	side2 =  !isAir(x,   y+1, z-1);
-						// 	corner = !isAir(x+1, y+1, z-1);
-						// }
-						// if (triangleVertex == 1) {
-						// 	side1 =  !isAir(x-1, y+1, z);
-						// 	side2 =  !isAir(x,   y+1, z-1);
-						// 	corner = !isAir(x-1, y+1, z-1);
-						// }
-						// if (triangleVertex == 2) {
-						// 	side1 =  !isAir(x-1, y+1, z);
-						// 	side2 =  !isAir(x,   y+1, z+1);
-						// 	corner = !isAir(x-1, y+1, z+1);
-						// }
-						// if (triangleVertex == 3) {
-						// 	side1 =  !isAir(x+1, y+1, z);
-						// 	side2 =  !isAir(x,   y+1, z+1);
-						// 	corner = !isAir(x+1, y+1, z+1);
-						// }
-						side1 = !isAir(x + (blockStructure[v*3+0]==1?1:-1), y+(blockStructure[v*3+1]==1?1:-1), z);
-						side2 = !isAir(x, y+(blockStructure[v*3+1]==1?1:-1), z+(blockStructure[v*3+2]==1?1:-1));
-						corner = !isAir(x + (blockStructure[v*3+0]==1?1:-1), y+(blockStructure[v*3+1]==1?1:-1), z+(blockStructure[v*3+2]==1?1:-1));
+					var side1 = false, side2 = false, corner = false;
 
-						light = (3 - ((side1?1:0)+(side2?1:0)+(corner?1:0)))/3;
+					side1 = !isAir(x + (blockStructure[v*3+0]==1?1:-1), y+(blockStructure[v*3+1]==1?1:-1), z);
+					side2 = !isAir(x, y+(blockStructure[v*3+1]==1?1:-1), z+(blockStructure[v*3+2]==1?1:-1));
+					corner = !isAir(x + (blockStructure[v*3+0]==1?1:-1), y+(blockStructure[v*3+1]==1?1:-1), z+(blockStructure[v*3+2]==1?1:-1));
 
-						// light = .5 + .5*light;
+					light = (3 - ((side1?1:0)+(side2?1:0)+(corner?1:0)))/3;
+					light = .5 + .5 * light;
+
+					ao.push(light);
 
 					generatedVertexData.push(light);
 					generatedVertexData.push(light);
 					generatedVertexData.push(light);
-
-					vertexIndex++;
 				}
+
+
+				// Register quad as two triangles through index buffer
+				// Flip if AO is backwards
+				if (ao[0] + ao[2] > ao[1] + ao[3]) {
+					generatedIndexData.push(vertexIndex+0);
+					generatedIndexData.push(vertexIndex+1);
+					generatedIndexData.push(vertexIndex+2);
+
+					generatedIndexData.push(vertexIndex+0);
+					generatedIndexData.push(vertexIndex+2);
+					generatedIndexData.push(vertexIndex+3);
+				}else{
+					generatedIndexData.push(vertexIndex+1);
+					generatedIndexData.push(vertexIndex+2);
+					generatedIndexData.push(vertexIndex+3);
+
+					generatedIndexData.push(vertexIndex+1);
+					generatedIndexData.push(vertexIndex+3);
+					generatedIndexData.push(vertexIndex+0);
+
+				}
+				vertexIndex += 4;
 			}
 			blockIndex++;
 		}
@@ -311,7 +288,6 @@ class Scene {
 
 	public function update() {
 		calculateMVP();
-		constructGeometry();
 	}
 	public function render(g:Graphics) {
 		g.setPipeline(pipeline);
