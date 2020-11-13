@@ -33,14 +33,16 @@ class Main {
 		var footPosition = player.position.add(new Vector3(0,-player.size.y,0));
 		var onGround = !scene.isAir(Math.floor(footPosition.x), Math.floor(footPosition.y),Math.floor(footPosition.z));
 		if (onGround) {
-			player.velocity.y = Math.max(0, player.velocity.y);
+			// player.velocity.y = Math.max(0, player.velocity.y);
 		}else{
-			player.velocity.y -= .01;
+			// player.velocity.y -= .01;
 		}
-		if (input.space && true) {
-			player.velocity.y = .2;
+		if (input.space) {
+			// player.velocity.y = .2;
+			player.position.y += .2;
 		}
-		if (input.shift && !onGround) {
+		// if (input.shift && !onGround) {
+		if (input.shift) {
 			player.position.y -= .2;
 		}
 
@@ -68,6 +70,12 @@ class Main {
 		    scene.isAir(Math.floor(player.position.x),Math.ceil(player.position.y-player.size.y),Math.floor(newPlayerPosition.z))) {
 			player.position.z += movement.y;
 		}
+
+		{
+			player.position.x += movement.x;
+			player.position.z += movement.y;
+		}
+		trace(player.position);
 	}
 
 	function render(framebuffer: Framebuffer): Void {
