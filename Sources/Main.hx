@@ -75,7 +75,6 @@ class Main {
 			player.position.x += movement.x;
 			player.position.z += movement.y;
 		}
-		trace(player.position);
 	}
 
 	function render(framebuffer: Framebuffer): Void {

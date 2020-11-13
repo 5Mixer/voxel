@@ -153,7 +153,7 @@ class Scene {
 		pipeline.colorAttachmentCount = 1;
 		pipeline.colorAttachments[0] = kha.graphics4.TextureFormat.RGBA32;
 		pipeline.depthStencilAttachment = kha.graphics4.DepthStencilFormat.Depth16;
-		// pipeline.cullMode = Clockwise;
+		pipeline.cullMode = Clockwise;
 		
 		pipeline.compile();
 		
@@ -178,14 +178,13 @@ class Scene {
 		chunk.indexData = [];
 
 		var vertexIndex = 0;
-		var blockIndex = 0;
 
 		var _facesProduced = 0;
 
-		for (block in chunk.blocks) {
+		for (blockIndex in 0...Chunk.chunkSizeCubed) {
+			var block = chunk.blocks.get(blockIndex);
 			// Skip air
 			if (block == 0) {
-				blockIndex++;
 				continue;
 			}
 			
@@ -269,7 +268,6 @@ class Scene {
 				_facesProduced++;
 				vertexIndex += 4;
 			}
-			blockIndex++;
 		}
 
 		var vertexByteSize = 8;
@@ -324,7 +322,7 @@ class Scene {
 
 		var radius = 4;
 		for (x in -radius...radius+1)
-			for (y in 0...3)
+			for (y in 0...1)
 				for (z in -radius...radius+1)
 					if (getChunk(cameraChunkX+x,y,cameraChunkZ+z) == null) {
 						isNewChunks = true;

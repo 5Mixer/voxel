@@ -1,12 +1,15 @@
 package ;
 
+import haxe.io.Bytes;
 import kha.graphics4.IndexBuffer;
 import kha.graphics4.VertexBuffer;
 
 class Chunk {
-	public var blocks:Array<Int> = [];
+	public var blocks:Bytes;
 
-	public static inline var chunkSize = 128;
+	public static inline var chunkSize = 20;
+	public static inline var chunkSizeSquared = chunkSize * chunkSize;
+	public static inline var chunkSizeCubed = chunkSize * chunkSize * chunkSize;
 	var min = 0;
     var max = chunkSize-1;
     
@@ -25,24 +28,19 @@ class Chunk {
         this.wy = wy;
 		this.wz = wz;
 		
-		// Bytes.alloc(chunkSize * chunkSize * chunkSize).fill;
-
-		for (x in 0...chunkSize)
-			for (y in 0...chunkSize)
-				for (z in 0...chunkSize) {
-					blocks.push(wy*chunkSize+y<2?1:0);
-					// blocks.push(wy*chunkSize+y<Math.abs(Math.sin((wx*chunkSize+x)/15)*5+Math.cos((wz*chunkSize+z)/15)*5)?1:0);
-					// blocks.push(wy*chunkSize+y<(.5+Math.sin((wx*chunkSize+x)/10)*5)?1:0);
-					// blocks.push(wy*chunkSize+y<(.5+Math.sin((wx*chunkSize+x)/10)*5)?1:0);
-					// blocks.push(Math.random()>.5?1:0);
-				}
+		blocks = Bytes.alloc(chunkSizeCubed);
+		blocks.fill(0, chunkSizeCubed, 0);
+		for(x in 0...chunkSize)
+			for(z in 0...chunkSize)
+				for(y in 0...Std.int(10*(1+Math.cos((wx*chunkSize+x)/20)+Math.sin((wz*chunkSize+z)/20))))
+					setBlock(x,y,z,1);
     }
     
     inline public function getBlock(x, y, z) {
-		return blocks[x*(chunkSize*chunkSize) + y*chunkSize + z];
+		return blocks.get(x*(chunkSizeSquared) + y*chunkSize + z);
 	}
     inline public function setBlock(x, y, z, b) {
-		blocks[x*(chunkSize*chunkSize) + y*chunkSize + z] = b;
+		blocks.set(x*(chunkSizeSquared) + y*chunkSize + z, b);
 	}
 
 	public function hasGeometry() {
