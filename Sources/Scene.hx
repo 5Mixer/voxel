@@ -5,12 +5,10 @@ import kha.graphics5_.MipMapFilter;
 import kha.graphics5_.TextureFilter;
 import kha.graphics4.TextureUnit;
 import kha.graphics5_.CompareMode;
-import kha.math.FastVector3;
-import kha.math.FastMatrix4;
 import kha.graphics4.ConstantLocation;
 import kha.Shaders;
-import kha.graphics5_.VertexData;
 import kha.graphics4.VertexStructure;
+import kha.graphics4.VertexData;
 import kha.graphics4.PipelineState;
 import kha.graphics4.IndexBuffer;
 import kha.graphics4.VertexBuffer;
@@ -85,12 +83,10 @@ class Scene {
 	var indexBuffer:IndexBuffer;
 	var pipeline:PipelineState;
 	
-	var mvp:FastMatrix4;
 	var mvpID:ConstantLocation;
 	var textureID:TextureUnit;
 	
 	var camera:Camera;
-	// var chunks:Array<Chunk> = new Array<Chunk>();
 	var chunks:Map<String,Chunk> = new Map<String,Chunk>();
 	
 	public function new(camera:Camera) {
@@ -105,17 +101,12 @@ class Scene {
 	
 	public function getChunk(cx:Int, cy:Int, cz:Int) {
 		return chunks.get('$cx,$cy,$cz');
-		// for (chunk in chunks)
-		// 	if (chunk.wx == cx && chunk.wy == cy && chunk.wz == cz)
-		// 		return chunk;
-		
-		// return null;
 	}
 	public function registerChunk(chunk:Chunk) {
 		chunks.set(chunk.wx+','+chunk.wy+','+chunk.wz, chunk);
 	}
 	
-	inline public function getBlock(x, y, z) {
+	inline public function getBlock(x, y, z):Null<Int> {
 		var chunk = getChunk(Math.floor(x / Chunk.chunkSize), Math.floor(y / Chunk.chunkSize), Math.floor(z / Chunk.chunkSize));
 		if (chunk == null)
 			return null;
@@ -159,7 +150,7 @@ class Scene {
 		
 		// Graphics variables
 		mvpID = pipeline.getConstantLocation("MVP");
-		calculateMVP();
+		camera.recalculateMVP();
 		textureID = pipeline.getTextureUnit("textureSampler");
 	}
 	
@@ -178,8 +169,6 @@ class Scene {
 		chunk.indexData = [];
 
 		var vertexIndex = 0;
-
-		var _facesProduced = 0;
 
 		for (blockIndex in 0...Chunk.chunkSizeCubed) {
 			var block = chunk.blocks.get(blockIndex);
@@ -265,7 +254,6 @@ class Scene {
 					chunk.indexData.push(vertexIndex+3);
 					chunk.indexData.push(vertexIndex+0);
 				}
-				_facesProduced++;
 				vertexIndex += 4;
 			}
 		}
@@ -292,31 +280,9 @@ class Scene {
 		}
 	}
 	
-	function calculateMVP() {
-		var projection = FastMatrix4.perspectiveProjection(80*Math.PI/180, kha.Window.get(0).width / kha.Window.get(0).height, .1, 100);
-		
-		// Conversion from spherical to cartesian coordinates uses projection
-		var lookVector = new FastVector3(
-			Math.cos(camera.verticalAngle) * Math.sin(camera.horizontalAngle),
-			Math.sin(camera.verticalAngle),
-			Math.cos(camera.verticalAngle) * Math.cos(camera.horizontalAngle)
-		);
-		
-		var view = FastMatrix4.lookAt(camera.position.fast(), camera.position.fast().add(lookVector), new FastVector3(0,1,0));
-		var model = FastMatrix4.identity();
-		
-		mvp = FastMatrix4.identity();
-		mvp = mvp.multmat(projection);
-		mvp = mvp.multmat(view);
-		mvp = mvp.multmat(model);
-	}
-	
 	public function update() {
-		calculateMVP();
-		
 		var cameraChunkX = Math.floor(camera.position.x/Chunk.chunkSize);
 		var cameraChunkZ = Math.floor(camera.position.z/Chunk.chunkSize);
-		
 		
 		var isNewChunks = false;
 
@@ -337,7 +303,6 @@ class Scene {
 				chunk = null;
 			}
 		}
-		// chunks.filter(function(c) return c.hasGeometry());
 		
 		if (isNewChunks) {
 			constructGeometry();
@@ -347,7 +312,7 @@ class Scene {
 	public function render(g:Graphics) {
 		g.setPipeline(pipeline);
 		
-		g.setMatrix(mvpID, mvp);
+		g.setMatrix(mvpID, camera.mvp);
 		g.setTexture(textureID, kha.Assets.images.sprites);
 		g.setTextureParameters(textureID, Clamp, Clamp, TextureFilter.PointFilter, TextureFilter.PointFilter, MipMapFilter.LinearMipFilter);
 		

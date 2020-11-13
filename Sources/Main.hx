@@ -1,5 +1,6 @@
 package;
 
+import kha.math.FastVector4;
 import kha.math.Vector2;
 import kha.math.FastMatrix3;
 import kha.math.Vector3;
@@ -13,16 +14,14 @@ class Main {
 	var camera:Camera;
 	var player:Player;
 	var input:Input;
-
-	var zoom = 10;
-	var down = false;
-
+	var lineRenderer:LineRenderer;
 
 	function new () {
 		camera = new Camera();
 		input = new Input(camera);
 		scene = new Scene(camera);
 		player = new Player();
+		lineRenderer = new LineRenderer(camera);
 	}
 
 	function update(): Void {
@@ -79,10 +78,32 @@ class Main {
 
 	function render(framebuffer: Framebuffer): Void {
 		var g4 = framebuffer.g4;
+		camera.recalculateMVP();
 		g4.begin();
 		g4.clear(kha.Color.fromBytes(49, 61, 82),1.0);
 		scene.render(g4);
+		lineRenderer.start(g4);
+		lineRenderer.renderLine(new Vector3(0,0,0), new Vector3(1,0,0), kha.Color.Red);
+		lineRenderer.renderLine(new Vector3(0,0,0), new Vector3(0,1,0), kha.Color.Green);
+		lineRenderer.renderLine(new Vector3(0,0,0), new Vector3(0,0,1), kha.Color.Blue);
+		
+		g4.clear(null, 1.0);
+		var playerGizmoPos = camera.position.add(camera.getLookVector().mult(5));
+		lineRenderer.renderLine(playerGizmoPos.add(new Vector3(0,0,0)), playerGizmoPos.add(new Vector3(1,0,0)), kha.Color.Red);
+		lineRenderer.renderLine(playerGizmoPos.add(new Vector3(0,0,0)), playerGizmoPos.add(new Vector3(0,1,0)), kha.Color.Green);
+		lineRenderer.renderLine(playerGizmoPos.add(new Vector3(0,0,0)), playerGizmoPos.add(new Vector3(0,0,1)), kha.Color.Blue);
+		lineRenderer.end(g4);
 		g4.end();
+
+		// var g2 = framebuffer.g2;
+		// g2.begin(false);
+		// camera.recalculateMVP();
+		// var start = camera.mvp.multvec(new FastVector4(0,0,0,0));
+		// var end = camera.mvp.multvec(new FastVector4(0,10,0,0));
+		// g2.color = kha.Color.Red;
+		// g2.drawLine(start.x, start.y, end.x, end.y, 5);
+		// g2.fillRect(start.x, start.y, 100,100);
+		// g2.end();
 	}
 
 	public static function main() {
