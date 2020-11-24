@@ -122,6 +122,13 @@ class Scene {
 		var chunk = getChunk(Math.floor(x / Chunk.chunkSize), Math.floor(y / Chunk.chunkSize), Math.floor(z / Chunk.chunkSize));
 		if (chunk == null)
 			return;
+
+		// Set neighboring chunks to dirty geom so that lighting, ao, etc is recalculated
+		for (xOffset in -1...2)
+			for (yOffset in -1...2)
+				for (zOffset in -1...2)
+					getChunk(Math.floor((x+xOffset) / Chunk.chunkSize), Math.floor((y+yOffset) / Chunk.chunkSize), Math.floor((z+zOffset) / Chunk.chunkSize)).dirtyGeometry = true;
+
 		chunk.setBlock(chunkMod(x, Chunk.chunkSize), chunkMod(y, Chunk.chunkSize), chunkMod(z, Chunk.chunkSize), b);
 	}
 	inline public function isAir(x:Int, y:Int, z:Int) {
@@ -239,7 +246,7 @@ class Scene {
 					corner = !isExposed(x + (blockStructure[v*3+0]==1?1:-1), y+(blockStructure[v*3+1]==1?1:-1), z+(blockStructure[v*3+2]==1?1:-1));
 					
 					light = (3 - ((side1?1:0)+(side2?1:0)+(corner?1:0)))/3;
-					light = .5 + .5 * light;
+					// light = .5 + .5 * light;
 					
 					ao.push(light);
 					
@@ -337,7 +344,7 @@ class Scene {
 		}
 	}
 
-	public function ray() {
+	public function ray(place) {
 		var look = camera.getLookVector().normalized();
 		var stepSize = .1;
 		var delta = look.mult(stepSize);
@@ -349,8 +356,11 @@ class Scene {
 			rayPos = rayPos.add(delta);
 			rayBlock = getBlock(Math.floor(rayPos.x), Math.floor(rayPos.y), Math.floor(rayPos.z));
 		}
-		var rayEnd = rayPos.sub(delta);
-		trace("Setting "+rayEnd);
-		setBlock(Math.floor(rayEnd.x), Math.floor(rayEnd.y),Math.floor(rayEnd.z), 1);
+		if (!place) {
+			setBlock(Math.floor(rayPos.x), Math.floor(rayPos.y),Math.floor(rayPos.z), 0);
+		}else{
+			var rayEnd = rayPos.sub(delta);
+			setBlock(Math.floor(rayEnd.x), Math.floor(rayEnd.y),Math.floor(rayEnd.z), 3);
+		}
 	}
 }

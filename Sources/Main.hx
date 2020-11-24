@@ -1,6 +1,5 @@
 package;
 
-import kha.math.FastVector4;
 import kha.math.Vector2;
 import kha.math.FastMatrix3;
 import kha.math.Vector3;
@@ -23,7 +22,9 @@ class Main {
 		player = new Player();
 		lineRenderer = new LineRenderer(camera);
 
-		input.clickListeners.push(scene.ray);
+		input.clickListeners.push(function(button) {
+			scene.ray(button == 0);
+		});
 	}
 
 	function update(): Void {
