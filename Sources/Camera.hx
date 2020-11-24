@@ -24,13 +24,12 @@ class Camera {
 	
 	public function recalculateMVP() {
 		var projection = FastMatrix4.perspectiveProjection(80*Math.PI/180, kha.Window.get(0).width / kha.Window.get(0).height, .1, 100);
-		
 		var view = FastMatrix4.lookAt(position.fast(), position.add(getLookVector()).fast(), new FastVector3(0,1,0));
-		var model = FastMatrix4.identity();
+		// var model = FastMatrix4.identity();
 		
 		mvp = FastMatrix4.identity();
 		mvp = mvp.multmat(projection);
 		mvp = mvp.multmat(view);
-		mvp = mvp.multmat(model);
+		// mvp = mvp.multmat(model);
 	}
 }

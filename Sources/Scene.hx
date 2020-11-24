@@ -1,14 +1,15 @@
 package ;
 
+import haxe.display.JsonModuleTypes.JsonClassKindKind;
+import kha.graphics4.CompareMode;
 import kha.math.Vector3;
-import kha.graphics5_.MipMapFilter;
-import kha.graphics5_.TextureFilter;
 import kha.graphics4.TextureUnit;
-import kha.graphics5_.CompareMode;
 import kha.graphics4.ConstantLocation;
 import kha.Shaders;
 import kha.graphics4.VertexStructure;
 import kha.graphics4.VertexData;
+import kha.graphics4.TextureFilter;
+import kha.graphics4.MipMapFilter;
 import kha.graphics4.PipelineState;
 import kha.graphics4.IndexBuffer;
 import kha.graphics4.VertexBuffer;
@@ -95,8 +96,6 @@ class Scene {
 		kha.Assets.images.sprites.generateMipmaps(3);
 		
 		setupPipeline();
-		
-		constructGeometry();
 	}
 	
 	public function getChunk(cx:Int, cy:Int, cz:Int) {
@@ -105,18 +104,23 @@ class Scene {
 	public function registerChunk(chunk:Chunk) {
 		chunks.set(chunk.wx+','+chunk.wy+','+chunk.wz, chunk);
 	}
+
+	inline function chunkMod(n:Int,chunkSize:Int):Int {
+		// Mod (%) normally wraps negative numbers so that -5 % 4 = -1. It should = 4
+		return (n%chunkSize + chunkSize) % chunkSize;
+	}
 	
 	inline public function getBlock(x, y, z):Null<Int> {
 		var chunk = getChunk(Math.floor(x / Chunk.chunkSize), Math.floor(y / Chunk.chunkSize), Math.floor(z / Chunk.chunkSize));
 		if (chunk == null)
 			return null;
-		return chunk.getBlock(Std.int(Math.abs(x % Chunk.chunkSize)), Std.int(Math.abs(y % Chunk.chunkSize)), Std.int(Math.abs(z % Chunk.chunkSize)));
+		return chunk.getBlock(chunkMod(x, Chunk.chunkSize), chunkMod(y, Chunk.chunkSize), chunkMod(z, Chunk.chunkSize));
 	}
 	function setBlock(x,y,z,b){
 		var chunk = getChunk(Math.floor(x / Chunk.chunkSize), Math.floor(y / Chunk.chunkSize), Math.floor(z / Chunk.chunkSize));
 		if (chunk == null)
 			return;
-		chunk.setBlock(Std.int(Math.abs(x % Chunk.chunkSize)), Std.int(Math.abs(y % Chunk.chunkSize)), Std.int(Math.abs(z % Chunk.chunkSize)), b);
+		chunk.setBlock(chunkMod(x, Chunk.chunkSize), chunkMod(y, Chunk.chunkSize), chunkMod(z, Chunk.chunkSize), b);
 	}
 	inline public function isAir(x:Int, y:Int, z:Int) {
 		return getBlock(x,y,z) == null || getBlock(x,y,z) == 0;
@@ -154,21 +158,25 @@ class Scene {
 		textureID = pipeline.getTextureUnit("textureSampler");
 	}
 	
-	function isChunkSurrounded(cx,cy,cz) {
+	function shouldGenerateChunkGeometry(cx,cy,cz) {
 		return (getChunk(cx+1,cy,cz) != null) && (getChunk(cx-1,cy,cz) != null) && (getChunk(cx,cy,cz+1) != null) && (getChunk(cx,cy,cz-1) != null)
 			&& (getChunk(cx+1,cy,cz+1) != null) && (getChunk(cx+1,cy,cz-1) != null) && (getChunk(cx-1,cy,cz+1) != null) && (getChunk(cx-1,cy,cz-1) != null);
 	}
 	
 	function constructChunkGeometry(chunk:Chunk) {
-		if (!isChunkSurrounded(chunk.wx, chunk.wy, chunk.wz)) {
+		if (!shouldGenerateChunkGeometry(chunk.wx, chunk.wy, chunk.wz)) {
 			return;
 		}
 		if (chunk.hasGeometry())
 			return;
-		chunk.vertexData = [];
-		chunk.indexData = [];
+		var vertexData:Array<Float> = [];
+		var indexData:Array<Int> = [];
 
 		var vertexIndex = 0;
+
+		var chunkOriginWorldscaleX = chunk.wx * Chunk.chunkSize;
+		var chunkOriginWorldscaleY = chunk.wy * Chunk.chunkSize;
+		var chunkOriginWorldscaleZ = chunk.wz * Chunk.chunkSize;
 
 		for (blockIndex in 0...Chunk.chunkSizeCubed) {
 			var block = chunk.blocks.get(blockIndex);
@@ -177,9 +185,9 @@ class Scene {
 				continue;
 			}
 			
-			var x = (chunk.wx * Chunk.chunkSize) + (Math.floor(blockIndex/(Chunk.chunkSize*Chunk.chunkSize)));
-			var y = (chunk.wy * Chunk.chunkSize) + (Math.floor(blockIndex/Chunk.chunkSize)%Chunk.chunkSize);
-			var z = (chunk.wz * Chunk.chunkSize) + (blockIndex%Chunk.chunkSize);
+			var x = chunkOriginWorldscaleX + Math.floor(blockIndex/Chunk.chunkSizeSquared);
+			var y = chunkOriginWorldscaleY + Math.floor(blockIndex/Chunk.chunkSize)%Chunk.chunkSize;
+			var z = chunkOriginWorldscaleZ + blockIndex%Chunk.chunkSize;
 			
 			for (face in 0...6) {
 				// For faces that face anything other than air, skip
@@ -207,15 +215,13 @@ class Scene {
 					var v = face*4 + triangleVertex; // v is the [0-24) vertices of the quad
 					
 					// position (xyz)
-					var position = new Vector3(blockStructure[v*3+0]+x, blockStructure[v*3+1]+y, blockStructure[v*3+2]+z);
-					
-					chunk.vertexData.push(position.x);
-					chunk.vertexData.push(position.y);
-					chunk.vertexData.push(position.z);
+					vertexData.push(blockStructure[v*3+0]+x); // pos x
+					vertexData.push(blockStructure[v*3+1]+y); // pos y
+					vertexData.push(blockStructure[v*3+2]+z); // pos z
 					
 					// texture (uv)
-					chunk.vertexData.push(uv[v*2]  *16/256);
-					chunk.vertexData.push((uv[v*2+1]+block-1)*16/256);
+					vertexData.push(uv[v*2]  *16/256);
+					vertexData.push((uv[v*2+1]+block-1)*16/256);
 					
 					// colour (rgb)
 					var light = 1.0;
@@ -230,29 +236,29 @@ class Scene {
 					
 					ao.push(light);
 					
-					chunk.vertexData.push(light);
-					chunk.vertexData.push(light);
-					chunk.vertexData.push(light);
+					vertexData.push(light);
+					vertexData.push(light);
+					vertexData.push(light);
 				}
 				
 				// Register quad as two triangles through index buffer
 				// Flip if AO is backwards
 				if (ao[0] + ao[2] > ao[1] + ao[3]) {
-					chunk.indexData.push(vertexIndex+0);
-					chunk.indexData.push(vertexIndex+1);
-					chunk.indexData.push(vertexIndex+2);
+					indexData.push(vertexIndex+0);
+					indexData.push(vertexIndex+1);
+					indexData.push(vertexIndex+2);
 					
-					chunk.indexData.push(vertexIndex+0);
-					chunk.indexData.push(vertexIndex+2);
-					chunk.indexData.push(vertexIndex+3);
+					indexData.push(vertexIndex+0);
+					indexData.push(vertexIndex+2);
+					indexData.push(vertexIndex+3);
 				}else{
-					chunk.indexData.push(vertexIndex+1);
-					chunk.indexData.push(vertexIndex+2);
-					chunk.indexData.push(vertexIndex+3);
+					indexData.push(vertexIndex+1);
+					indexData.push(vertexIndex+2);
+					indexData.push(vertexIndex+3);
 					
-					chunk.indexData.push(vertexIndex+1);
-					chunk.indexData.push(vertexIndex+3);
-					chunk.indexData.push(vertexIndex+0);
+					indexData.push(vertexIndex+1);
+					indexData.push(vertexIndex+3);
+					indexData.push(vertexIndex+0);
 				}
 				vertexIndex += 4;
 			}
@@ -260,29 +266,27 @@ class Scene {
 
 		var vertexByteSize = 8;
 		// Load the generated vertex data into a buffer
-		chunk.vertexBuffer = new VertexBuffer(Std.int(chunk.vertexData.length/vertexByteSize), structure, StaticUsage);
+		chunk.vertexBuffer = new VertexBuffer(Std.int(vertexData.length/vertexByteSize), structure, StaticUsage);
 		var vertexBufferData = chunk.vertexBuffer.lock();
-		for (i in 0...chunk.vertexData.length)
-			vertexBufferData[i] = chunk.vertexData[i];
+		for (i in 0...vertexData.length)
+			vertexBufferData[i] = vertexData[i];
 		chunk.vertexBuffer.unlock();
 		
 		// Load the generated index data into a buffer
-		chunk.indexBuffer = new IndexBuffer(chunk.indexData.length, StaticUsage);
+		chunk.indexBuffer = new IndexBuffer(indexData.length, StaticUsage);
 		var indexBufferData = chunk.indexBuffer.lock();
-		for (i in 0...Std.int(chunk.indexData.length))
-			indexBufferData[i] = chunk.indexData[i];
+		for (i in 0...Std.int(indexData.length))
+			indexBufferData[i] = indexData[i];
 		chunk.indexBuffer.unlock();
-	}
-	
-	function constructGeometry() {
-		for (chunk in chunks.iterator()) {
-			constructChunkGeometry(chunk);
-		}
+
+		vertexData = null;
+		indexData = null;
 	}
 	
 	public function update() {
 		var cameraChunkX = Math.floor(camera.position.x/Chunk.chunkSize);
 		var cameraChunkZ = Math.floor(camera.position.z/Chunk.chunkSize);
+		trace('$cameraChunkX $cameraChunkZ');
 		
 		var isNewChunks = false;
 
@@ -292,8 +296,7 @@ class Scene {
 				for (z in -radius...radius+1)
 					if (getChunk(cameraChunkX+x,y,cameraChunkZ+z) == null) {
 						isNewChunks = true;
-						var newChunk = new Chunk(cameraChunkX+x,y,cameraChunkZ+z);
-						registerChunk(newChunk);
+						registerChunk(new Chunk(cameraChunkX+x,y,cameraChunkZ+z));
 					}
 		
 		for (chunk in chunks.iterator()) {
@@ -305,7 +308,9 @@ class Scene {
 		}
 		
 		if (isNewChunks) {
-			constructGeometry();
+			for (chunk in chunks.iterator()) {
+				constructChunkGeometry(chunk);
+			}
 		}
 	}
 

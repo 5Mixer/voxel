@@ -3,6 +3,15 @@
         {
             "type": "electron",
             "request": "launch",
+            "name": "Launch Electron",
+            "appDir": "/home/mixer/projects/blocks/build/debug-html5",
+            "cwd": "/home/mixer/projects/blocks/build/debug-html5",
+            "preLaunchTask": "Kha: Build for Debug HTML5",
+            "sourceMaps": true
+        },
+        {
+            "type": "electron",
+            "request": "launch",
             "name": "Kha: HTML5",
             "appDir": "${workspaceFolder}/build/debug-html5",
             "cwd": "${workspaceFolder}/build/debug-html5",

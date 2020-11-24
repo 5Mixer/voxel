@@ -70,10 +70,8 @@ class Main {
 			player.position.z += movement.y;
 		}
 
-		{
-			player.position.x += movement.x;
-			player.position.z += movement.y;
-		}
+		player.position.x += movement.x;
+		player.position.z += movement.y;
 	}
 
 	function render(framebuffer: Framebuffer): Void {
@@ -82,12 +80,9 @@ class Main {
 		g4.begin();
 		g4.clear(kha.Color.fromBytes(49, 61, 82),1.0);
 		scene.render(g4);
+
 		lineRenderer.start(g4);
-		lineRenderer.renderLine(new Vector3(0,0,0), new Vector3(1,0,0), kha.Color.Red);
-		lineRenderer.renderLine(new Vector3(0,0,0), new Vector3(0,1,0), kha.Color.Green);
-		lineRenderer.renderLine(new Vector3(0,0,0), new Vector3(0,0,1), kha.Color.Blue);
-		
-		g4.clear(null, 1.0);
+		g4.clear(null, 1.0); // Clear depth
 		var playerGizmoPos = camera.position.add(camera.getLookVector().mult(5));
 		lineRenderer.renderLine(playerGizmoPos.add(new Vector3(0,0,0)), playerGizmoPos.add(new Vector3(1,0,0)), kha.Color.Red);
 		lineRenderer.renderLine(playerGizmoPos.add(new Vector3(0,0,0)), playerGizmoPos.add(new Vector3(0,1,0)), kha.Color.Green);
@@ -95,15 +90,11 @@ class Main {
 		lineRenderer.end(g4);
 		g4.end();
 
-		// var g2 = framebuffer.g2;
-		// g2.begin(false);
-		// camera.recalculateMVP();
-		// var start = camera.mvp.multvec(new FastVector4(0,0,0,0));
-		// var end = camera.mvp.multvec(new FastVector4(0,10,0,0));
-		// g2.color = kha.Color.Red;
-		// g2.drawLine(start.x, start.y, end.x, end.y, 5);
-		// g2.fillRect(start.x, start.y, 100,100);
-		// g2.end();
+		var g2 = framebuffer.g2;
+		g2.begin(false);
+		g2.color = kha.Color.White;
+		g2.drawImage(Assets.images.cursor,kha.Window.get(0).width/2-Assets.images.cursor.width/2,kha.Window.get(0).height/2-Assets.images.cursor.height/2);
+		g2.end();
 	}
 
 	public static function main() {

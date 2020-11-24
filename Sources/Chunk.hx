@@ -17,9 +17,6 @@ class Chunk {
     public var wy:Int;
     public var wz:Int;
 
-    public var vertexData:Array<Float> = [];
-    public var indexData:Array<Int> = [];
-
     public var vertexBuffer:VertexBuffer;
     public var indexBuffer:IndexBuffer;
 
@@ -32,27 +29,25 @@ class Chunk {
 		blocks.fill(0, chunkSizeCubed, 0);
 		for(x in 0...chunkSize)
 			for(z in 0...chunkSize)
-				for(y in 0...Std.int(10*(1+Math.cos((wx*chunkSize+x)/20)+Math.sin((wz*chunkSize+z)/20))))
+				for(y in 0...Std.int(10*(2+Math.cos((wx*chunkSize+x)/20)+Math.sin((wz*chunkSize+z)/20))))
 					setBlock(x,y,z,1);
     }
     
     inline public function getBlock(x, y, z) {
-		return blocks.get(x*(chunkSizeSquared) + y*chunkSize + z);
+		return blocks.get(x*chunkSizeSquared + y*chunkSize + z);
 	}
     inline public function setBlock(x, y, z, b) {
-		blocks.set(x*(chunkSizeSquared) + y*chunkSize + z, b);
+		blocks.set(x*chunkSizeSquared + y*chunkSize + z, b);
 	}
 
 	public function hasGeometry() {
-		return vertexBuffer != null && indexBuffer != null && vertexBuffer.count() != 0;
+		return vertexBuffer != null && indexBuffer != null;
 	}
 	public function destroyGeometry() {
 		if (!hasGeometry())
 			return;
 		vertexBuffer.delete();
 		indexBuffer.delete();
-		vertexData = null;
-		indexData = null;
 		vertexBuffer = null;
 		indexBuffer = null;
 	}
