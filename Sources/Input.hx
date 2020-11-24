@@ -10,6 +10,7 @@ class Input {
     public var right = false;
     public var focused = false;
     public var jumpAttemptCallback:Void->Void = function(){};
+    public var clickListeners:Array<()->Void> = [];
 
     public var space = false;
     public var shift = false;
@@ -20,6 +21,8 @@ class Input {
             function mouseDown(b,x,y){
                 focused=true;
                 Mouse.get().lock();
+                for (listener in clickListeners)
+                    listener();
             },
             function(b,x,y){
                 // Mouse.get().unlock();

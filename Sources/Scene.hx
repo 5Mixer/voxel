@@ -89,9 +89,11 @@ class Scene {
 	
 	var camera:Camera;
 	var chunks:Map<String,Chunk> = new Map<String,Chunk>();
+	var generator:WorldGenerator;
 	
 	public function new(camera:Camera) {
 		this.camera = camera;
+		generator = new FlatWorldGenerator();
 		
 		kha.Assets.images.sprites.generateMipmaps(3);
 		
@@ -167,8 +169,13 @@ class Scene {
 		if (!shouldGenerateChunkGeometry(chunk.wx, chunk.wy, chunk.wz)) {
 			return;
 		}
-		if (chunk.hasGeometry())
+		if (chunk.hasGeometry() && !chunk.dirtyGeometry)
 			return;
+
+		trace('Generating for ${chunk.wx} ${chunk.wy} ${chunk.wz}');
+
+		chunk.dirtyGeometry = false;
+
 		var vertexData:Array<Float> = [];
 		var indexData:Array<Int> = [];
 
@@ -285,33 +292,33 @@ class Scene {
 	
 	public function update() {
 		var cameraChunkX = Math.floor(camera.position.x/Chunk.chunkSize);
+		var cameraChunkY = Math.floor(camera.position.y/Chunk.chunkSize);
 		var cameraChunkZ = Math.floor(camera.position.z/Chunk.chunkSize);
-		trace('$cameraChunkX $cameraChunkZ');
 		
 		var isNewChunks = false;
 
 		var radius = 4;
 		for (x in -radius...radius+1)
-			for (y in 0...1)
+			for (y in -radius...radius+1)
 				for (z in -radius...radius+1)
-					if (getChunk(cameraChunkX+x,y,cameraChunkZ+z) == null) {
+					if (getChunk(cameraChunkX+x,cameraChunkY+y,cameraChunkZ+z) == null) {
 						isNewChunks = true;
-						registerChunk(new Chunk(cameraChunkX+x,y,cameraChunkZ+z));
+						registerChunk(new Chunk(cameraChunkX+x,cameraChunkY+y,cameraChunkZ+z, generator));
 					}
 		
 		for (chunk in chunks.iterator()) {
-			if (Math.min(Math.abs(chunk.wx - cameraChunkX), Math.abs(chunk.wz - cameraChunkZ)) > radius) {
+			if (Math.min(chunk.wx - cameraChunkX, Math.min(chunk.wy-cameraChunkY, chunk.wz - cameraChunkZ)) > radius) {
 				chunk.destroyGeometry();
 				chunks.remove('${chunk.wx},${chunk.wy},${chunk.wz}');
 				chunk = null;
 			}
 		}
 		
-		if (isNewChunks) {
+		// if (isNewChunks) {
 			for (chunk in chunks.iterator()) {
 				constructChunkGeometry(chunk);
 			}
-		}
+		// }
 	}
 
 	public function render(g:Graphics) {
@@ -328,5 +335,22 @@ class Scene {
 			g.setIndexBuffer(chunk.indexBuffer);
 			g.drawIndexedVertices();
 		}
+	}
+
+	public function ray() {
+		var look = camera.getLookVector().normalized();
+		var stepSize = .1;
+		var delta = look.mult(stepSize);
+		var rayBlock = 0;
+		var iterations = 0;
+		var rayLength = 10;
+		var rayPos = camera.position.mult(1);
+		while (rayBlock == 0 && iterations++ < rayLength/stepSize) {
+			rayPos = rayPos.add(delta);
+			rayBlock = getBlock(Math.floor(rayPos.x), Math.floor(rayPos.y), Math.floor(rayPos.z));
+		}
+		var rayEnd = rayPos.sub(delta);
+		trace("Setting "+rayEnd);
+		setBlock(Math.floor(rayEnd.x), Math.floor(rayEnd.y),Math.floor(rayEnd.z), 1);
 	}
 }

@@ -20,17 +20,19 @@ class Chunk {
     public var vertexBuffer:VertexBuffer;
     public var indexBuffer:IndexBuffer;
 
-    public function new(wx, wy, wz) {
+	public var dirtyGeometry = false;
+
+    public function new(wx, wy, wz, worldGenerator) {
         this.wx = wx;
         this.wy = wy;
 		this.wz = wz;
 		
 		blocks = Bytes.alloc(chunkSizeCubed);
-		blocks.fill(0, chunkSizeCubed, 0);
+		// blocks.fill(0, chunkSizeCubed, 0);
 		for(x in 0...chunkSize)
-			for(z in 0...chunkSize)
-				for(y in 0...Std.int(10*(2+Math.cos((wx*chunkSize+x)/20)+Math.sin((wz*chunkSize+z)/20))))
-					setBlock(x,y,z,1);
+			for(y in 0...chunkSize)
+				for(z in 0...chunkSize)
+					setBlock(x,y,z,worldGenerator.getBlock(wx*chunkSize+x,wy*chunkSize+y,wz*chunkSize+z));
     }
     
     inline public function getBlock(x, y, z) {
@@ -38,6 +40,7 @@ class Chunk {
 	}
     inline public function setBlock(x, y, z, b) {
 		blocks.set(x*chunkSizeSquared + y*chunkSize + z, b);
+		dirtyGeometry = true;
 	}
 
 	public function hasGeometry() {

@@ -22,6 +22,8 @@ class Main {
 		scene = new Scene(camera);
 		player = new Player();
 		lineRenderer = new LineRenderer(camera);
+
+		input.clickListeners.push(scene.ray);
 	}
 
 	function update(): Void {
@@ -82,18 +84,18 @@ class Main {
 		scene.render(g4);
 
 		lineRenderer.start(g4);
-		g4.clear(null, 1.0); // Clear depth
-		var playerGizmoPos = camera.position.add(camera.getLookVector().mult(5));
-		lineRenderer.renderLine(playerGizmoPos.add(new Vector3(0,0,0)), playerGizmoPos.add(new Vector3(1,0,0)), kha.Color.Red);
-		lineRenderer.renderLine(playerGizmoPos.add(new Vector3(0,0,0)), playerGizmoPos.add(new Vector3(0,1,0)), kha.Color.Green);
-		lineRenderer.renderLine(playerGizmoPos.add(new Vector3(0,0,0)), playerGizmoPos.add(new Vector3(0,0,1)), kha.Color.Blue);
-		lineRenderer.end(g4);
-		g4.end();
+		// g4.clear(null, 1.0); // Clear depth
+		// var playerGizmoPos = camera.position.add(camera.getLookVector().mult(5));
+		// lineRenderer.renderLine(playerGizmoPos.add(new Vector3(0,0,0)), playerGizmoPos.add(new Vector3(1,0,0)), kha.Color.Red);
+		// lineRenderer.renderLine(playerGizmoPos.add(new Vector3(0,0,0)), playerGizmoPos.add(new Vector3(0,1,0)), kha.Color.Green);
+		// lineRenderer.renderLine(playerGizmoPos.add(new Vector3(0,0,0)), playerGizmoPos.add(new Vector3(0,0,1)), kha.Color.Blue);
+		// lineRenderer.end(g4);
+		// g4.end();
 
 		var g2 = framebuffer.g2;
 		g2.begin(false);
 		g2.color = kha.Color.White;
-		g2.drawImage(Assets.images.cursor,kha.Window.get(0).width/2-Assets.images.cursor.width/2,kha.Window.get(0).height/2-Assets.images.cursor.height/2);
+		g2.drawScaledImage(Assets.images.cursor,kha.Window.get(0).width/2-16,kha.Window.get(0).height/2-16, 32, 32);
 		g2.end();
 	}
 
