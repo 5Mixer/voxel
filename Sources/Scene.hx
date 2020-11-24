@@ -240,16 +240,40 @@ class Scene {
 					// colour (rgb)
 					var light = 1.0;
 					var side1 = false, side2 = false, corner = false;
+
+					// Map the internal cube coordinates to -1 and 1 for ease of AO when comparing with nearby cubes
+					var xVertexOffset = blockStructure[v*3+0] == 1 ? 1 : -1;
+					var yVertexOffset = blockStructure[v*3+1] == 1 ? 1 : -1;
+					var zVertexOffset = blockStructure[v*3+2] == 1 ? 1 : -1;
 					
-					side1 = !isExposed(x + (blockStructure[v*3+0]==1?1:-1), y+(blockStructure[v*3+1]==1?1:-1), z);
-					side2 = !isExposed(x, y+(blockStructure[v*3+1]==1?1:-1), z+(blockStructure[v*3+2]==1?1:-1));
-					corner = !isExposed(x + (blockStructure[v*3+0]==1?1:-1), y+(blockStructure[v*3+1]==1?1:-1), z+(blockStructure[v*3+2]==1?1:-1));
+					// Up and down adjacency tests for AO
+					if (face == 3 || face == 4){
+						side1 =  !isExposed(x + xVertexOffset, y + yVertexOffset, z                );
+						side2 =  !isExposed(x,                 y + yVertexOffset, z + zVertexOffset);
+					}
+					// Front and back adjacency tests for AO
+					if (face == 2 || face == 5){
+						side1 =  !isExposed(x + xVertexOffset, y + yVertexOffset, z                );
+						side2 =  !isExposed(x + xVertexOffset, y                , z + zVertexOffset);
+					}
+					// Left and right adjacency tests for AO
+					if (face == 0 || face == 1){
+						side1 =  !isExposed(x + xVertexOffset, y                , z + zVertexOffset);
+						side2 =  !isExposed(x,                 y + yVertexOffset, z + zVertexOffset);
+					}
 					
-					light = (3 - ((side1?1:0)+(side2?1:0)+(corner?1:0)))/3;
-					// light = .5 + .5 * light;
+					// Find corner for AO
+					corner = !isExposed(x + xVertexOffset, y + yVertexOffset, z + zVertexOffset);
 					
+					// Absence of corner is irrelevant if both sides obscure corner
+					if (side1 && side2)
+						light = 0;
+					else
+						light = (3 - ((side1?1:0)+(side2?1:0)+(corner?1:0)))/3; // Subtract light linearly by number of adjacent blocks
+
+					light = .5 + .5 * light;
+
 					ao.push(light);
-					
 					vertexData.push(light);
 					vertexData.push(light);
 					vertexData.push(light);
@@ -350,12 +374,16 @@ class Scene {
 		var delta = look.mult(stepSize);
 		var rayBlock = 0;
 		var iterations = 0;
-		var rayLength = 10;
+		var rayLength = 6;
 		var rayPos = camera.position.mult(1);
 		while (rayBlock == 0 && iterations++ < rayLength/stepSize) {
 			rayPos = rayPos.add(delta);
 			rayBlock = getBlock(Math.floor(rayPos.x), Math.floor(rayPos.y), Math.floor(rayPos.z));
 		}
+
+		if (iterations >= rayLength/stepSize)
+			return; // Don't do anything if ray extends outside reach
+
 		if (!place) {
 			setBlock(Math.floor(rayPos.x), Math.floor(rayPos.y),Math.floor(rayPos.z), 0);
 		}else{
