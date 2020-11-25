@@ -6,7 +6,7 @@ import kha.math.FastMatrix4;
 
 class Camera {
     public var position:Vector3;
-    public var horizontalAngle:Float=0;
+    public var horizontalAngle:Float=Math.PI; // Start facing toward front, by pointing back
     public var verticalAngle:Float=0;
     public var mvp:FastMatrix4;
 

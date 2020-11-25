@@ -17,66 +17,66 @@ import kha.graphics4.Graphics;
 
 class Scene {
 	static var blockStructure = [
-		0, 1, 0,
-		1, 1, 0,
-		1, 0, 0,
-		0, 0, 0,
-		
-		0, 0, 1,
-		1, 0, 1,
-		1, 1, 1,
-		0, 1, 1,
-		
-		1, 0, 0,
+		1, 0, 0, // right
 		1, 1, 0,
 		1, 1, 1,
 		1, 0, 1,
 		
-		1, 1, 0, //top
+		0, 0, 1, // left
+		0, 1, 1,
+		0, 1, 0,
+		0, 0, 0,
+		
+		1, 1, 0, // top
 		0, 1, 0,
 		0, 1, 1,
 		1, 1, 1,
 		
-		1, 0, 1,
+		1, 0, 1, // bottom
 		0, 0, 1,
 		0, 0, 0,
 		1, 0, 0,
-		
-		0, 0, 1,
+
+		0, 0, 1, // front
+		1, 0, 1,
+		1, 1, 1,
 		0, 1, 1,
-		0, 1, 0,
+
+		0, 1, 0, // back
+		1, 1, 0,
+		1, 0, 0,
 		0, 0, 0
 	];
 	static var uv = [
+		1, 1, //right
 		1, 0,
 		0, 0,
 		0, 1,
-		1, 1,
 		
-		1, 1,
-		2, 1,
+		2, 1, //left
 		2, 0,
 		1, 0,
+		1, 1,
 		
-		3, 1,
 		3, 0,
 		2, 0,
 		2, 1,
+		3, 1, //Up/top
 		
-		4, 1,
 		4, 0,
 		3, 0,
 		3, 1,
+		4, 1, //Bottom/down
 		
-		5, 1,
+		4, 1,
+		5, 1, //front
 		5, 0,
 		4, 0,
-		4, 1,
 		
-		6, 1,
 		6, 0,
 		5, 0,
-		5, 1
+		5, 1, //back
+		6, 1
 	];
 	
 	var structure:VertexStructure;
@@ -179,12 +179,14 @@ class Scene {
 		if (chunk.hasGeometry() && !chunk.dirtyGeometry)
 			return;
 
-		trace('Generating for ${chunk.wx} ${chunk.wy} ${chunk.wz}');
-
 		chunk.dirtyGeometry = false;
 
+		// Arrays that the GPU buffers are constructed from
 		var vertexData:Array<Float> = [];
 		var indexData:Array<Int> = [];
+				
+		// Stores the current quads four AO values, so the quad may be index flipped if required
+		var ao = new haxe.ds.Vector<Float>(4);
 
 		var vertexIndex = 0;
 
@@ -194,10 +196,10 @@ class Scene {
 
 		for (blockIndex in 0...Chunk.chunkSizeCubed) {
 			var block = chunk.blocks.get(blockIndex);
+
 			// Skip air
-			if (block == 0) {
+			if (block == 0)
 				continue;
-			}
 			
 			var x = chunkOriginWorldscaleX + Math.floor(blockIndex/Chunk.chunkSizeSquared);
 			var y = chunkOriginWorldscaleY + Math.floor(blockIndex/Chunk.chunkSize)%Chunk.chunkSize;
@@ -205,25 +207,24 @@ class Scene {
 			
 			for (face in 0...6) {
 				// For faces that face anything other than air, skip
-				if (face == 0 && !isExposed(x,y,z-1)) // Right
+				if (face == Side.Right && !isExposed(x+1,y,z))
 					continue;
 				
-				if (face == 1 && !isExposed(x,y,z+1)) // Left
+				if (face == Side.Left && !isExposed(x-1,y,z))
 					continue;
 				
-				if (face == 2 && !isExposed(x+1,y,z)) // Front (facing camera)
+				if (face == Side.Up && !isExposed(x,y+1,z))
 					continue;
 				
-				if (face == 3 && !isExposed(x,y+1,z)) // Top
+				if (face == Side.Down && !isExposed(x,y-1,z))
 					continue;
 				
-				if (face == 4 && !isExposed(x,y-1,z)) // Under/bottom
+				if (face == Side.Front && !isExposed(x,y,z+1))
 					continue;
 				
-				if (face == 5 && !isExposed(x-1,y,z)) // Back
+				if (face == Side.Back && !isExposed(x,y,z-1))
 					continue;
 				
-				var ao:Array<Float> = [];
 				
 				for (triangleVertex in 0...4) {
 					var v = face*4 + triangleVertex; // v is the [0-24) vertices of the quad
@@ -246,18 +247,18 @@ class Scene {
 					var yVertexOffset = blockStructure[v*3+1] == 1 ? 1 : -1;
 					var zVertexOffset = blockStructure[v*3+2] == 1 ? 1 : -1;
 					
+					// Left and right adjacency tests for AO
+					if (face == Side.Left || face == Side.Right){
+						side1 =  !isExposed(x + xVertexOffset, y + yVertexOffset, z                );
+						side2 =  !isExposed(x + xVertexOffset, y                , z + zVertexOffset);
+					}
 					// Up and down adjacency tests for AO
-					if (face == 3 || face == 4){
+					if (face == Side.Up || face == Side.Down){
 						side1 =  !isExposed(x + xVertexOffset, y + yVertexOffset, z                );
 						side2 =  !isExposed(x,                 y + yVertexOffset, z + zVertexOffset);
 					}
 					// Front and back adjacency tests for AO
-					if (face == 2 || face == 5){
-						side1 =  !isExposed(x + xVertexOffset, y + yVertexOffset, z                );
-						side2 =  !isExposed(x + xVertexOffset, y                , z + zVertexOffset);
-					}
-					// Left and right adjacency tests for AO
-					if (face == 0 || face == 1){
+					if (face == Side.Front || face == Side.Back){
 						side1 =  !isExposed(x + xVertexOffset, y                , z + zVertexOffset);
 						side2 =  !isExposed(x,                 y + yVertexOffset, z + zVertexOffset);
 					}
@@ -271,9 +272,10 @@ class Scene {
 					else
 						light = (3 - ((side1?1:0)+(side2?1:0)+(corner?1:0)))/3; // Subtract light linearly by number of adjacent blocks
 
-					light = .5 + .5 * light;
+					light = .8 + .2 * light;
 
-					ao.push(light);
+					// Store this quad vertex in quad AO working array, so the quad may be flipped if it makes AO look nicer.
+					ao[triangleVertex] = light;
 					vertexData.push(light);
 					vertexData.push(light);
 					vertexData.push(light);
@@ -326,14 +328,11 @@ class Scene {
 		var cameraChunkY = Math.floor(camera.position.y/Chunk.chunkSize);
 		var cameraChunkZ = Math.floor(camera.position.z/Chunk.chunkSize);
 		
-		var isNewChunks = false;
-
 		var radius = 4;
 		for (x in -radius...radius+1)
 			for (y in -radius...radius+1)
 				for (z in -radius...radius+1)
 					if (getChunk(cameraChunkX+x,cameraChunkY+y,cameraChunkZ+z) == null) {
-						isNewChunks = true;
 						registerChunk(new Chunk(cameraChunkX+x,cameraChunkY+y,cameraChunkZ+z, generator));
 					}
 		
@@ -345,11 +344,9 @@ class Scene {
 			}
 		}
 		
-		// if (isNewChunks) {
-			for (chunk in chunks.iterator()) {
-				constructChunkGeometry(chunk);
-			}
-		// }
+		for (chunk in chunks.iterator()) {
+			constructChunkGeometry(chunk);
+		}
 	}
 
 	public function render(g:Graphics) {
