@@ -15,6 +15,6 @@ class Player {
         return new AABB(position.sub(new Vector3(size.x/2,0,size.z/2)), position.add(new Vector3(size.x/2,size.y,size.z/2)));
     }
     public function update() {
-        position = position.add(velocity);
+        // position = position.add(velocity);
     }
 }

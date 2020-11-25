@@ -371,7 +371,7 @@ class Scene {
 		var delta = look.mult(stepSize);
 		var rayBlock = 0;
 		var iterations = 0;
-		var rayLength = 6;
+		var rayLength = 10;
 		var rayPos = camera.position.mult(1);
 		while (rayBlock == 0 && iterations++ < rayLength/stepSize) {
 			rayPos = rayPos.add(delta);
