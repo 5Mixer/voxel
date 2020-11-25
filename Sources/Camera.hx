@@ -9,6 +9,7 @@ class Camera {
     public var horizontalAngle:Float=Math.PI; // Start facing toward front, by pointing back
     public var verticalAngle:Float=0;
     public var mvp:FastMatrix4;
+    public var projection:FastMatrix4;
 
     public function new() {
         position = new Vector3();

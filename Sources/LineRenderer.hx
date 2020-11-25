@@ -63,8 +63,7 @@ class LineRenderer {
         indices.push(Std.int(vertices.length/6)+3);
 
         var viewVector = start.sub(camera.position);
-        // var viewVector = new Vector3(0,1,0);
-        var tangent = end.sub(start).normalized().cross(viewVector.normalized()).mult(.05);
+        var tangent = end.sub(start).normalized().cross(viewVector.normalized()).mult(.01);
         vertices.push(start.x+tangent.x);
         vertices.push(start.y+tangent.y);
         vertices.push(start.z+tangent.z);

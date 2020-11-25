@@ -3,8 +3,8 @@ package ;
 import kha.math.Vector3;
 
 class AABB {
-    var min:Vector3;
-    var max:Vector3;
+    public var min:Vector3;
+    public var max:Vector3;
     public function new(min:Vector3,max:Vector3) {
         this.min = min;
         this.max = max;

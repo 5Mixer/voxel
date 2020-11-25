@@ -14,6 +14,7 @@ class Main {
 	var player:Player;
 	var input:Input;
 	var lineRenderer:LineRenderer;
+	var connection:ServerConnection;
 
 	function new () {
 		camera = new Camera();
@@ -22,31 +23,33 @@ class Main {
 		player = new Player();
 		lineRenderer = new LineRenderer(camera);
 
+		connection = new ServerConnection();
+
 		input.clickListeners.push(function(button) {
 			scene.ray(button == 0);
 		});
 	}
 
 	function update(): Void {
-		camera.position = player.position.add(new Vector3(0,1,0));
+		camera.position = player.position.add(new Vector3(0,player.size.y,0));
+		camera.position = camera.position.add(camera.getLookVector().mult(-4));
 		scene.update();
 		player.update();
 
-		var footPosition = player.position.add(new Vector3(0,-player.size.y,0));
-		var onGround = !scene.isAir(Math.floor(footPosition.x), Math.floor(footPosition.y),Math.floor(footPosition.z));
+		var onGround = !scene.isAir(Math.floor(player.position.x), Math.floor(player.position.y),Math.floor(player.position.z));
 		if (onGround) {
-			// player.velocity.y = Math.max(0, player.velocity.y);
+			// player.position.y = Math.floor(player.position.y-player.velocity.y);
+			player.velocity.y = Math.max(0, player.velocity.y);
 		}else{
-			// player.velocity.y -= .01;
+			player.velocity.y -= .02;
 		}
-		if (input.space) {
-			// player.velocity.y = .2;
-			player.position.y += .2;
+		if (input.space && onGround) {
+			player.velocity.y = .2;
+			// player.position.y += .2;
 		}
-		// if (input.shift && !onGround) {
-		if (input.shift) {
-			player.position.y -= .2;
-		}
+		// if (input.shift) {
+		// 	player.position.y -= .2;
+		// }
 
 		var localMovementVector = new Vector2(0,0);
 		if (input.forwards) {
@@ -64,17 +67,14 @@ class Main {
 		var movement = FastMatrix3.rotation(Math.PI/2-camera.horizontalAngle).multvec(localMovementVector.fast()).normalized().mult(1/60*5);
 
 		var newPlayerPosition = player.position.add(new Vector3(movement.x, 0, movement.y));
-		if (scene.isAir(Math.floor(newPlayerPosition.x),Math.floor(player.position.y),Math.floor(player.position.z)) && 
-		    scene.isAir(Math.floor(newPlayerPosition.x),Math.ceil(player.position.y-player.size.y),Math.floor(player.position.z))) {
+		if (scene.isAir(Math.floor(newPlayerPosition.x),Math.floor(player.position.y+player.size.y),Math.floor(player.position.z)) && 
+		    scene.isAir(Math.floor(newPlayerPosition.x),Math.ceil(player.position.y),Math.floor(player.position.z))) {
 			player.position.x += movement.x;
 		}
-		if (scene.isAir(Math.floor(player.position.x),Math.floor(player.position.y),Math.floor(newPlayerPosition.z)) &&
-		    scene.isAir(Math.floor(player.position.x),Math.ceil(player.position.y-player.size.y),Math.floor(newPlayerPosition.z))) {
+		if (scene.isAir(Math.floor(player.position.x),Math.floor(player.position.y+player.size.y),Math.floor(newPlayerPosition.z)) &&
+		    scene.isAir(Math.floor(player.position.x),Math.ceil(player.position.y),Math.floor(newPlayerPosition.z))) {
 			player.position.z += movement.y;
 		}
-
-		player.position.x += movement.x;
-		player.position.z += movement.y;
 	}
 
 	function render(framebuffer: Framebuffer): Void {
@@ -90,6 +90,16 @@ class Main {
 		lineRenderer.renderLine(playerGizmoPos.add(new Vector3(0,0,0)), playerGizmoPos.add(new Vector3(1,0,0)), kha.Color.Red);
 		lineRenderer.renderLine(playerGizmoPos.add(new Vector3(0,0,0)), playerGizmoPos.add(new Vector3(0,1,0)), kha.Color.Green);
 		lineRenderer.renderLine(playerGizmoPos.add(new Vector3(0,0,0)), playerGizmoPos.add(new Vector3(0,0,1)), kha.Color.Blue);
+		
+		var aabb = player.getAABB();
+		var min = aabb.min;
+		var max = aabb.max;
+		lineRenderer.renderLine(new Vector3(min.x,min.y,min.z), new Vector3(max.x,min.y,min.z), kha.Color.Blue);
+		lineRenderer.renderLine(new Vector3(min.x,min.y,min.z), new Vector3(min.x,max.y,min.z), kha.Color.Blue);
+		lineRenderer.renderLine(new Vector3(min.x,min.y,min.z), new Vector3(min.x,min.y,max.z), kha.Color.Blue);
+		lineRenderer.renderLine(new Vector3(max.x,max.y,max.z), new Vector3(min.x,max.y,max.z), kha.Color.Blue);
+		lineRenderer.renderLine(new Vector3(max.x,max.y,max.z), new Vector3(max.x,min.y,max.z), kha.Color.Blue);
+		lineRenderer.renderLine(new Vector3(max.x,max.y,max.z), new Vector3(max.x,max.y,min.z), kha.Color.Blue);
 		lineRenderer.end(g4);
 		g4.end();
 

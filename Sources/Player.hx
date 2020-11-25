@@ -7,9 +7,9 @@ class Player {
     public var velocity:Vector3;
     public var size:Vector3;
     public function new() {
-        position = new Vector3(0,4,0);
+        position = new Vector3(0,4,0); // Bottom middle of AABB (ie. on the ground)
         velocity = new Vector3(0,0,0);
-        size = new Vector3(.8,1.6,.8); // Camera positioned at top middle of bounds
+        size = new Vector3(.8,1.5,.8); // Camera positioned at top middle of bounds
     }
     public function getAABB() {
         return new AABB(position.sub(new Vector3(size.x/2,0,size.z/2)), position.add(new Vector3(size.x/2,size.y,size.z/2)));
