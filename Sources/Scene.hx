@@ -1,83 +1,10 @@
 package ;
 
-import haxe.display.JsonModuleTypes.JsonClassKindKind;
-import kha.graphics4.CompareMode;
 import kha.math.Vector3;
-import kha.graphics4.TextureUnit;
-import kha.graphics4.ConstantLocation;
 import kha.Shaders;
-import kha.graphics4.VertexStructure;
-import kha.graphics4.VertexData;
-import kha.graphics4.TextureFilter;
-import kha.graphics4.MipMapFilter;
-import kha.graphics4.PipelineState;
-import kha.graphics4.IndexBuffer;
-import kha.graphics4.VertexBuffer;
-import kha.graphics4.Graphics;
+import kha.graphics4.*;
 
 class Scene {
-	static var blockStructure = [
-		1, 0, 0, // right
-		1, 1, 0,
-		1, 1, 1,
-		1, 0, 1,
-		
-		0, 0, 1, // left
-		0, 1, 1,
-		0, 1, 0,
-		0, 0, 0,
-		
-		1, 1, 0, // top
-		0, 1, 0,
-		0, 1, 1,
-		1, 1, 1,
-		
-		1, 0, 1, // bottom
-		0, 0, 1,
-		0, 0, 0,
-		1, 0, 0,
-
-		0, 0, 1, // front
-		1, 0, 1,
-		1, 1, 1,
-		0, 1, 1,
-
-		0, 1, 0, // back
-		1, 1, 0,
-		1, 0, 0,
-		0, 0, 0
-	];
-	static var uv = [
-		1, 1, //right
-		1, 0,
-		0, 0,
-		0, 1,
-		
-		2, 1, //left
-		2, 0,
-		1, 0,
-		1, 1,
-		
-		3, 0,
-		2, 0,
-		2, 1,
-		3, 1, //Up/top
-		
-		4, 0,
-		3, 0,
-		3, 1,
-		4, 1, //Bottom/down
-		
-		4, 1,
-		5, 1, //front
-		5, 0,
-		4, 0,
-		
-		6, 0,
-		5, 0,
-		5, 1, //back
-		6, 1
-	];
 	
 	var structure:VertexStructure;
 	var vertexBuffer:VertexBuffer;
@@ -95,7 +22,7 @@ class Scene {
 		this.camera = camera;
 		generator = new FlatWorldGenerator();
 		
-		kha.Assets.images.sprites.generateMipmaps(3);
+		// kha.Assets.images.sprites.generateMipmaps(0);
 		
 		setupPipeline();
 	}
@@ -142,7 +69,7 @@ class Scene {
 		// Vertex structure
 		structure = new VertexStructure();
 		structure.add("pos", VertexData.Float3);
-		structure.add("uv", VertexData.Float2);
+		structure.add("CubeGeometry.uv", VertexData.Float2);
 		structure.add("colour", VertexData.Float3);
 		
 		// Pipeline
@@ -230,22 +157,22 @@ class Scene {
 					var v = face*4 + triangleVertex; // v is the [0-24) vertices of the quad
 					
 					// position (xyz)
-					vertexData.push(blockStructure[v*3+0]+x); // pos x
-					vertexData.push(blockStructure[v*3+1]+y); // pos y
-					vertexData.push(blockStructure[v*3+2]+z); // pos z
+					vertexData.push(CubeGeometry.vertices[v*3+0]+x); // pos x
+					vertexData.push(CubeGeometry.vertices[v*3+1]+y); // pos y
+					vertexData.push(CubeGeometry.vertices[v*3+2]+z); // pos z
 					
-					// texture (uv)
-					vertexData.push(uv[v*2]  *16/256);
-					vertexData.push((uv[v*2+1]+block-1)*16/256);
+					// texture (CubeGeometry.uv)
+					vertexData.push(CubeGeometry.uv[v*2]  *16/256);
+					vertexData.push((CubeGeometry.uv[v*2+1]+block-1)*16/256);
 					
 					// colour (rgb)
 					var light = 1.0;
 					var side1 = false, side2 = false, corner = false;
 
 					// Map the internal cube coordinates to -1 and 1 for ease of AO when comparing with nearby cubes
-					var xVertexOffset = blockStructure[v*3+0] == 1 ? 1 : -1;
-					var yVertexOffset = blockStructure[v*3+1] == 1 ? 1 : -1;
-					var zVertexOffset = blockStructure[v*3+2] == 1 ? 1 : -1;
+					var xVertexOffset = CubeGeometry.vertices[v*3+0] == 1 ? 1 : -1;
+					var yVertexOffset = CubeGeometry.vertices[v*3+1] == 1 ? 1 : -1;
+					var zVertexOffset = CubeGeometry.vertices[v*3+2] == 1 ? 1 : -1;
 					
 					// Left and right adjacency tests for AO
 					if (face == Side.Left || face == Side.Right){
@@ -354,7 +281,8 @@ class Scene {
 		
 		g.setMatrix(mvpID, camera.mvp);
 		g.setTexture(textureID, kha.Assets.images.sprites);
-		g.setTextureParameters(textureID, Clamp, Clamp, TextureFilter.PointFilter, TextureFilter.PointFilter, MipMapFilter.LinearMipFilter);
+		// g.setTextureParameters(textureID, Clamp, Clamp, TextureFilter.PointFilter, TextureFilter.PointFilter, MipMapFilter.LinearMipFilter);
+		g.setTextureParameters(textureID, Clamp, Clamp, TextureFilter.PointFilter, TextureFilter.PointFilter, MipMapFilter.NoMipFilter);
 		
 		for (chunk in chunks) {
 			if (!chunk.hasGeometry())

@@ -1,7 +1,7 @@
 package ;
 
-import hx.ws.WebSocket;
 import hx.ws.Types;
+import hx.ws.WebSocket;
 
 class ServerConnection {
     var ws:WebSocket;
@@ -16,6 +16,8 @@ class ServerConnection {
         }
 
         ws.onmessage = onMessage; 
+    }
+    public function sendChunk(chunk:Chunk) {
     }
     function onMessage(message:MessageType) {
         switch (message){

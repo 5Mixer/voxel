@@ -25,12 +25,17 @@ class Main {
 
 		connection = new ServerConnection();
 
-		input.clickListeners.push(function(button) {
-			scene.ray(button == 0);
-		});
+		// input.clickListeners.push(function(button) {
+		// 	scene.ray(button == 0);
+		// });
 	}
 
 	function update(): Void {
+		if (input.leftMouseButtonDown)
+			scene.ray(true);
+		if (input.rightMouseButtonDown)
+			scene.ray(false);
+
 		camera.position = player.position.add(new Vector3(0,player.size.y,0));
 		// camera.position = camera.position.add(camera.getLookVector().mult(-4));
 		scene.update();
@@ -143,7 +148,7 @@ class Main {
 		var g4 = framebuffer.g4;
 		camera.recalculateMVP();
 		g4.begin();
-		g4.clear(kha.Color.fromBytes(49, 61, 82),1.0);
+		g4.clear(kha.Color.fromBytes(242, 250, 252),1.0);
 		scene.render(g4);
 
 		lineRenderer.start(g4);
@@ -153,8 +158,6 @@ class Main {
 		lineRenderer.renderLine(playerGizmoPos.add(new Vector3(0,0,0)), playerGizmoPos.add(new Vector3(0,1,0)), kha.Color.Green);
 		lineRenderer.renderLine(playerGizmoPos.add(new Vector3(0,0,0)), playerGizmoPos.add(new Vector3(0,0,1)), kha.Color.Blue);
 		
-		// renderAABB(player.getAABB());
-
 		lineRenderer.end(g4);
 		g4.end();
 

@@ -20,6 +20,7 @@ class LineRenderer {
 	var pipeline:PipelineState;
 	
     var mvpID:ConstantLocation;
+    var viewMatrixID:ConstantLocation;
 
     var camera:Camera;
 
@@ -33,7 +34,8 @@ class LineRenderer {
 	function setupPipeline() {
 		// Vertex structure
 		structure = new VertexStructure();
-		structure.add("pos", VertexData.Float3);
+        structure.add("pos", VertexData.Float3);
+        structure.add("tangent",VertexData.Float3);
 		structure.add("colour", VertexData.Float3);
 		
 		// Pipeline
@@ -53,41 +55,54 @@ class LineRenderer {
 		
 		// Graphics variables
         mvpID = pipeline.getConstantLocation("MVP");
+        viewMatrixID = pipeline.getConstantLocation("View");
     }
     public function renderLine(start:kha.math.Vector3, end:kha.math.Vector3, colour:kha.Color) {
-        indices.push(Std.int(vertices.length/6)+0);
-        indices.push(Std.int(vertices.length/6)+1);
-        indices.push(Std.int(vertices.length/6)+2);
-        indices.push(Std.int(vertices.length/6)+1);
-        indices.push(Std.int(vertices.length/6)+2);
-        indices.push(Std.int(vertices.length/6)+3);
+        indices.push(Std.int(vertices.length/9)+0);
+        indices.push(Std.int(vertices.length/9)+1);
+        indices.push(Std.int(vertices.length/9)+2);
+        indices.push(Std.int(vertices.length/9)+1);
+        indices.push(Std.int(vertices.length/9)+2);
+        indices.push(Std.int(vertices.length/9)+3);
 
         var viewVector = start.sub(camera.position);
-        var tangent = end.sub(start).normalized().cross(viewVector.normalized()).mult(.01);
-        vertices.push(start.x+tangent.x);
-        vertices.push(start.y+tangent.y);
-        vertices.push(start.z+tangent.z);
+        var tangent = end.sub(start).normalized().cross(viewVector.normalized()).normalized();
+        vertices.push(start.x);
+        vertices.push(start.y);
+        vertices.push(start.z);
+        vertices.push(tangent.x);
+        vertices.push(tangent.y);
+        vertices.push(tangent.z);
         vertices.push(colour.R);
         vertices.push(colour.G);
         vertices.push(colour.B);
 
-        vertices.push(start.x-tangent.x);
-        vertices.push(start.y-tangent.y);
-        vertices.push(start.z-tangent.z);
+        vertices.push(start.x);
+        vertices.push(start.y);
+        vertices.push(start.z);
+        vertices.push(-tangent.x);
+        vertices.push(-tangent.y);
+        vertices.push(-tangent.z);
         vertices.push(colour.R);
         vertices.push(colour.G);
         vertices.push(colour.B);
 
-        vertices.push(end.x+tangent.x);
-        vertices.push(end.y+tangent.y);
-        vertices.push(end.z+tangent.z);
+        vertices.push(end.x);
+        vertices.push(end.y);
+        vertices.push(end.z);
+        vertices.push(tangent.x);
+        vertices.push(tangent.y);
+        vertices.push(tangent.z);
         vertices.push(colour.R);
         vertices.push(colour.G);
         vertices.push(colour.B);
 
-        vertices.push(end.x-tangent.x);
-        vertices.push(end.y-tangent.y);
-        vertices.push(end.z-tangent.z);
+        vertices.push(end.x);
+        vertices.push(end.y);
+        vertices.push(end.z);
+        vertices.push(-tangent.x);
+        vertices.push(-tangent.y);
+        vertices.push(-tangent.z);
         vertices.push(colour.R);
         vertices.push(colour.G);
         vertices.push(colour.B);
@@ -97,7 +112,7 @@ class LineRenderer {
         indices = [];
     }
     public function end(g:Graphics) {
-        vertexBuffer = new VertexBuffer(Std.int(vertices.length/6), structure, StaticUsage);
+        vertexBuffer = new VertexBuffer(Std.int(vertices.length/9), structure, StaticUsage);
         indexBuffer = new IndexBuffer(indices.length, StaticUsage);
 
         var vertexBufferData = vertexBuffer.lock();
@@ -112,6 +127,7 @@ class LineRenderer {
 
         g.setPipeline(pipeline);
         g.setMatrix(mvpID, camera.mvp);
+        g.setMatrix(viewMatrixID, camera.view);
         g.setVertexBuffer(vertexBuffer);
         g.setIndexBuffer(indexBuffer);
         g.drawIndexedVertices();

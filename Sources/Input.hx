@@ -11,6 +11,8 @@ class Input {
     public var focused = false;
     public var jumpAttemptCallback:Void->Void = function(){};
     public var clickListeners:Array<(button:Int)->Void> = [];
+    public var leftMouseButtonDown = false;
+    public var rightMouseButtonDown = false;
 
     public var space = false;
     public var shift = false;
@@ -21,11 +23,20 @@ class Input {
             function mouseDown(b,x,y){
                 focused=true;
                 Mouse.get().lock();
+
+                if (b == 0)
+                    leftMouseButtonDown = true;
+                if (b == 1)
+                    rightMouseButtonDown = true;
+
                 for (listener in clickListeners)
                     listener(b);
             },
             function(b,x,y){
-                // Mouse.get().unlock();
+                if (b == 0)
+                    leftMouseButtonDown = false;
+                if (b == 1)
+                    rightMouseButtonDown = false;
             },
             function(x,y,dx,dy){
                 if (!focused)

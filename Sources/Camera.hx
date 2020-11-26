@@ -10,6 +10,7 @@ class Camera {
     public var verticalAngle:Float=0;
     public var mvp:FastMatrix4;
     public var projection:FastMatrix4;
+    public var view:FastMatrix4;
 
     public function new() {
         position = new Vector3();
@@ -24,8 +25,8 @@ class Camera {
     }
 	
 	public function recalculateMVP() {
-		var projection = FastMatrix4.perspectiveProjection(80*Math.PI/180, kha.Window.get(0).width / kha.Window.get(0).height, .1, 100);
-		var view = FastMatrix4.lookAt(position.fast(), position.add(getLookVector()).fast(), new FastVector3(0,1,0));
+		projection = FastMatrix4.perspectiveProjection(80*Math.PI/180, kha.Window.get(0).width / kha.Window.get(0).height, .15, 100);
+		view = FastMatrix4.lookAt(position.fast(), position.add(getLookVector()).fast(), new FastVector3(0,1,0));
 		// var model = FastMatrix4.identity();
 		
 		mvp = FastMatrix4.identity();
