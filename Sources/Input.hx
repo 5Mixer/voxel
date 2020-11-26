@@ -11,6 +11,7 @@ class Input {
     public var focused = false;
     public var jumpAttemptCallback:Void->Void = function(){};
     public var clickListeners:Array<(button:Int)->Void> = [];
+    public var forwardsListeners:Array<()->Void> = [];
     public var leftMouseButtonDown = false;
     public var rightMouseButtonDown = false;
 
@@ -49,7 +50,11 @@ class Input {
         );
 
 		Keyboard.get().notify(function down(key){
-			if (key == W) {	forwards = true; }
+			if (key == W) {
+                forwards = true;
+                for (listener in forwardsListeners)
+                    listener();
+            }
 			if (key == A) {	left = true; }
 			if (key == S) {	backwards = true; }
             if (key == D) {	right = true; }

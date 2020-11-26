@@ -15,6 +15,9 @@ class Main {
 	var input:Input;
 	var lineRenderer:LineRenderer;
 	var connection:ServerConnection;
+	
+	var awaitingSprintStart = false;
+	var sprinting = false;
 
 	function new () {
 		camera = new Camera();
@@ -25,29 +28,36 @@ class Main {
 
 		connection = new ServerConnection();
 
-		// input.clickListeners.push(function(button) {
-		// 	scene.ray(button == 0);
-		// });
+		input.clickListeners.push(function(button) {
+			scene.ray(button == 0);
+		});
+		input.forwardsListeners.push(function() {
+			if (!awaitingSprintStart) {
+				awaitingSprintStart = true;
+				Scheduler.addTimeTask(function() {
+					if (!sprinting)
+						awaitingSprintStart = false;
+				}, .5);
+			}else{
+				sprinting = true;
+				awaitingSprintStart = false;
+			}
+		});
 	}
 
 	function update(): Void {
-		if (input.leftMouseButtonDown)
-			scene.ray(true);
-		if (input.rightMouseButtonDown)
-			scene.ray(false);
 
 		camera.position = player.position.add(new Vector3(0,player.size.y,0));
+		camera.fov = (sprinting ? 100 : 80) * Math.PI / 180;
 		// camera.position = camera.position.add(camera.getLookVector().mult(-4));
 		scene.update();
 		player.update();
 
-		// if (input.shift) {
-		// 	player.position.y -= .2;
-		// }
-
 		var localMovementVector = new Vector2(0,0);
 		if (input.forwards) {
 			localMovementVector.x += 1;
+		}else{
+			sprinting = false;
 		}
 		if (input.left) {
 			localMovementVector.y -= 1;
@@ -58,7 +68,7 @@ class Main {
 		if (input.backwards) {
 			localMovementVector.x -= 1;
 		}
-		var movement = FastMatrix3.rotation(Math.PI/2-camera.horizontalAngle).multvec(localMovementVector.fast()).normalized().mult(1/60*5);
+		var movement = FastMatrix3.rotation(Math.PI/2-camera.horizontalAngle).multvec(localMovementVector.fast()).normalized().mult(sprinting?10/60:5/60);
 		
 		// y movement and collision resolution
 		player.position.y += player.velocity.y;
@@ -102,8 +112,10 @@ class Main {
 						shouldMoveX = false;
 						break;
 					}
-		if (!shouldMoveX)
+		if (!shouldMoveX) {
 			player.position.x -= movement.x;
+			sprinting = false;
+		}
 		
 		// z movement and collision resolution
 		player.position.z += movement.y;
@@ -117,8 +129,10 @@ class Main {
 						shouldMoveZ = false;
 						break;
 					}
-		if (!shouldMoveZ)
+		if (!shouldMoveZ) {
 			player.position.z -= movement.y;
+			sprinting = false;
+		}
 	}
 
 	function renderAABB(aabb:AABB,col=kha.Color.Blue) {
