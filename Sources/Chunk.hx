@@ -44,7 +44,7 @@ class Chunk {
 	}
 
 	public function hasGeometry() {
-		return vertexBuffer != null && indexBuffer != null;
+		return vertexBuffer != null;
 	}
 	public function destroyGeometry() {
 		if (!hasGeometry())

@@ -160,7 +160,6 @@ class Main {
 
 	function render(framebuffer: Framebuffer): Void {
 		var g4 = framebuffer.g4;
-		camera.recalculateMVP();
 		g4.begin();
 		g4.clear(kha.Color.fromBytes(242, 250, 252),1.0);
 		scene.render(g4);
@@ -168,9 +167,10 @@ class Main {
 		lineRenderer.start(g4);
 		g4.clear(null, 1.0); // Clear depth
 		var playerGizmoPos = camera.position.add(camera.getLookVector().mult(5));
-		lineRenderer.renderLine(playerGizmoPos.add(new Vector3(0,0,0)), playerGizmoPos.add(new Vector3(1,0,0)), kha.Color.Red);
-		lineRenderer.renderLine(playerGizmoPos.add(new Vector3(0,0,0)), playerGizmoPos.add(new Vector3(0,1,0)), kha.Color.Green);
-		lineRenderer.renderLine(playerGizmoPos.add(new Vector3(0,0,0)), playerGizmoPos.add(new Vector3(0,0,1)), kha.Color.Blue);
+		// lineRenderer.renderLine(playerGizmoPos.add(new Vector3(0,0,0)), playerGizmoPos.add(new Vector3(1,0,0)), kha.Color.Red);
+		// lineRenderer.renderLine(playerGizmoPos.add(new Vector3(0,0,0)), playerGizmoPos.add(new Vector3(0,1,0)), kha.Color.Green);
+		// lineRenderer.renderLine(playerGizmoPos.add(new Vector3(0,0,0)), playerGizmoPos.add(new Vector3(0,0,1)), kha.Color.Blue);
+		lineRenderer.renderLine(new Vector3(0,1,0), new Vector3(0,1,5), kha.Color.Black);
 		
 		lineRenderer.end(g4);
 		g4.end();

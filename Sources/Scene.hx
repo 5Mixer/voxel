@@ -16,7 +16,15 @@ class Scene {
 	
 	var camera:Camera;
 	var chunks:Map<String,Chunk> = new Map<String,Chunk>();
+	var createdChunks = [];
 	var generator:WorldGenerator;
+
+	var chunkGeomChanged = false; // Dirty flag for chunk loads and block changes.
+
+	var prevCameraChunk = '';
+	var chunksProcessedThisFrame = 0;
+
+	var chunkCache:Chunk = null;
 	
 	public function new(camera:Camera) {
 		this.camera = camera;
@@ -28,9 +36,12 @@ class Scene {
 	}
 	
 	public function getChunk(cx:Int, cy:Int, cz:Int) {
+		if (chunkCache != null && chunkCache.wx == cx && chunkCache.wy == cy && chunkCache.wz == cz)
+			return chunkCache;
 		return chunks.get('$cx,$cy,$cz');
 	}
 	public function registerChunk(chunk:Chunk) {
+		createdChunks.push(chunk.wx+','+chunk.wy+','+chunk.wz);
 		chunks.set(chunk.wx+','+chunk.wy+','+chunk.wz, chunk);
 	}
 
@@ -49,6 +60,8 @@ class Scene {
 		var chunk = getChunk(Math.floor(x / Chunk.chunkSize), Math.floor(y / Chunk.chunkSize), Math.floor(z / Chunk.chunkSize));
 		if (chunk == null)
 			return;
+
+		chunkGeomChanged = true;
 
 		// Set neighboring chunks to dirty geom so that lighting, ao, etc is recalculated
 		for (xOffset in -1...2)
@@ -90,7 +103,6 @@ class Scene {
 		
 		// Graphics variables
 		mvpID = pipeline.getConstantLocation("MVP");
-		camera.recalculateMVP();
 		textureID = pipeline.getTextureUnit("textureSampler");
 	}
 	
@@ -100,11 +112,17 @@ class Scene {
 	}
 	
 	function constructChunkGeometry(chunk:Chunk) {
+		if (chunk.hasGeometry() && !chunk.dirtyGeometry)
+			return;
+		
+		chunkCache = chunk;
+
 		if (!shouldGenerateChunkGeometry(chunk.wx, chunk.wy, chunk.wz)) {
 			return;
 		}
-		if (chunk.hasGeometry() && !chunk.dirtyGeometry)
-			return;
+
+
+		chunksProcessedThisFrame++;
 
 		chunk.dirtyGeometry = false;
 
@@ -254,32 +272,41 @@ class Scene {
 		var cameraChunkX = Math.floor(camera.position.x/Chunk.chunkSize);
 		var cameraChunkY = Math.floor(camera.position.y/Chunk.chunkSize);
 		var cameraChunkZ = Math.floor(camera.position.z/Chunk.chunkSize);
+		var cameraChunk = '$cameraChunkX,$cameraChunkY,$cameraChunkZ';
 		
 		var radius = 4;
-		for (x in -radius...radius+1)
-			for (y in -radius...radius+1)
-				for (z in -radius...radius+1)
-					if (getChunk(cameraChunkX+x,cameraChunkY+y,cameraChunkZ+z) == null) {
-						registerChunk(new Chunk(cameraChunkX+x,cameraChunkY+y,cameraChunkZ+z, generator));
-					}
-		
-		for (chunk in chunks.iterator()) {
-			if (Math.min(chunk.wx - cameraChunkX, Math.min(chunk.wy-cameraChunkY, chunk.wz - cameraChunkZ)) > radius) {
-				chunk.destroyGeometry();
-				chunks.remove('${chunk.wx},${chunk.wy},${chunk.wz}');
-				chunk = null;
+		if (cameraChunk != prevCameraChunk) {
+			for (x in -radius...radius+1)
+				for (y in -radius...radius+1)
+					for (z in -radius...radius+1)
+						if (getChunk(cameraChunkX+x,cameraChunkY+y,cameraChunkZ+z) == null) {
+							registerChunk(new Chunk(cameraChunkX+x,cameraChunkY+y,cameraChunkZ+z, generator));
+							chunkGeomChanged = true;
+						}
+
+			for (chunk in chunks.iterator()) {
+				if (Math.min(chunk.wx - cameraChunkX, Math.min(chunk.wy-cameraChunkY, chunk.wz - cameraChunkZ)) > radius) {
+					chunk.destroyGeometry();
+					chunks.remove('${chunk.wx},${chunk.wy},${chunk.wz}');
+					chunk = null;
+				}
 			}
 		}
 		
-		for (chunk in chunks.iterator()) {
-			constructChunkGeometry(chunk);
+		
+		if (chunkGeomChanged) {
+			for (chunk in chunks.iterator()) {
+				constructChunkGeometry(chunk);
+			}
 		}
+		prevCameraChunk = cameraChunk + "";
+		chunksProcessedThisFrame = 0;
 	}
 
 	public function render(g:Graphics) {
 		g.setPipeline(pipeline);
 		
-		g.setMatrix(mvpID, camera.mvp);
+		g.setMatrix(mvpID, camera.getMVP());
 		g.setTexture(textureID, kha.Assets.images.sprites);
 		// g.setTextureParameters(textureID, Clamp, Clamp, TextureFilter.PointFilter, TextureFilter.PointFilter, MipMapFilter.LinearMipFilter);
 		g.setTextureParameters(textureID, Clamp, Clamp, TextureFilter.PointFilter, TextureFilter.PointFilter, MipMapFilter.NoMipFilter);

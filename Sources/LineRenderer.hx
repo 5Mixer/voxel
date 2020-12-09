@@ -35,7 +35,7 @@ class LineRenderer {
 		// Vertex structure
 		structure = new VertexStructure();
         structure.add("pos", VertexData.Float3);
-        structure.add("tangent",VertexData.Float3);
+        structure.add("normal",VertexData.Float3);
 		structure.add("colour", VertexData.Float3);
 		
 		// Pipeline
@@ -55,7 +55,6 @@ class LineRenderer {
 		
 		// Graphics variables
         mvpID = pipeline.getConstantLocation("MVP");
-        viewMatrixID = pipeline.getConstantLocation("View");
     }
     public function renderLine(start:kha.math.Vector3, end:kha.math.Vector3, colour:kha.Color) {
         indices.push(Std.int(vertices.length/9)+0);
@@ -66,13 +65,13 @@ class LineRenderer {
         indices.push(Std.int(vertices.length/9)+3);
 
         var viewVector = start.sub(camera.position);
-        var tangent = end.sub(start).normalized().cross(viewVector.normalized()).normalized();
+        var normal = end.sub(start).normalized().cross(viewVector.normalized()).normalized();
         vertices.push(start.x);
         vertices.push(start.y);
         vertices.push(start.z);
-        vertices.push(tangent.x);
-        vertices.push(tangent.y);
-        vertices.push(tangent.z);
+        vertices.push(normal.x);
+        vertices.push(normal.y);
+        vertices.push(normal.z);
         vertices.push(colour.R);
         vertices.push(colour.G);
         vertices.push(colour.B);
@@ -80,9 +79,9 @@ class LineRenderer {
         vertices.push(start.x);
         vertices.push(start.y);
         vertices.push(start.z);
-        vertices.push(-tangent.x);
-        vertices.push(-tangent.y);
-        vertices.push(-tangent.z);
+        vertices.push(-normal.x);
+        vertices.push(-normal.y);
+        vertices.push(-normal.z);
         vertices.push(colour.R);
         vertices.push(colour.G);
         vertices.push(colour.B);
@@ -90,9 +89,9 @@ class LineRenderer {
         vertices.push(end.x);
         vertices.push(end.y);
         vertices.push(end.z);
-        vertices.push(tangent.x);
-        vertices.push(tangent.y);
-        vertices.push(tangent.z);
+        vertices.push(normal.x);
+        vertices.push(normal.y);
+        vertices.push(normal.z);
         vertices.push(colour.R);
         vertices.push(colour.G);
         vertices.push(colour.B);
@@ -100,9 +99,9 @@ class LineRenderer {
         vertices.push(end.x);
         vertices.push(end.y);
         vertices.push(end.z);
-        vertices.push(-tangent.x);
-        vertices.push(-tangent.y);
-        vertices.push(-tangent.z);
+        vertices.push(-normal.x);
+        vertices.push(-normal.y);
+        vertices.push(-normal.z);
         vertices.push(colour.R);
         vertices.push(colour.G);
         vertices.push(colour.B);
@@ -126,8 +125,7 @@ class LineRenderer {
         indexBuffer.unlock();
 
         g.setPipeline(pipeline);
-        g.setMatrix(mvpID, camera.mvp);
-        g.setMatrix(viewMatrixID, camera.view);
+        g.setMatrix(mvpID, camera.getMVP());
         g.setVertexBuffer(vertexBuffer);
         g.setIndexBuffer(indexBuffer);
         g.drawIndexedVertices();

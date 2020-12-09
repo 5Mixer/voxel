@@ -4,5 +4,11 @@ project.addShaders('Shaders/**');
 project.addAssets('Assets/**');
 project.addLibrary("hxWebSockets");
 project.addSources('Sources');
+project.addParameter('-dce full');
+
+if (platform == Platform.HTML5) {
+    // project.addLibrary('closure');
+    // project.addDefine('closure_overwrite');
+}
 
 resolve(project);
