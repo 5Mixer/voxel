@@ -30,7 +30,7 @@ class Chunk {
 		
 		loadForLocation(wx, wy, wz, worldGenerator);
 	}
-	public function loadForLocation(wx,wy,wz,worldGenerator) {
+	public function loadForLocation(wx,wy,wz,worldGenerator:WorldGenerator) {
         this.wx = wx;
         this.wy = wy;
 		this.wz = wz;
@@ -44,7 +44,7 @@ class Chunk {
 					// }else{
 					// 	exposedRLE.push(1);
 					// }
-					setBlock(x,y,z,block);
+					setBlock(x,y,z,cast(block,Int));
 				}
 	}
     

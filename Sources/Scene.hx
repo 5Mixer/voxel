@@ -1,5 +1,6 @@
 package ;
 
+import TerrainGenerator.TerrainWorldGenerator;
 import haxe.ds.Vector;
 import kha.Shaders;
 import kha.graphics4.*;
@@ -37,9 +38,9 @@ class Scene {
 	
 	public function new(camera:Camera) {
 		this.camera = camera;
-		generator = new FlatWorldGenerator();
+		generator = new TerrainWorldGenerator();
 		
-		// kha.Assets.images.sprites.generateMipmaps(0);
+		kha.Assets.images.sprites.generateMipmaps(2);
 		
 		setupPipeline();
 	}
@@ -104,7 +105,7 @@ class Scene {
 		// Vertex structure
 		structure = new VertexStructure();
 		structure.add("pos", VertexData.Float3);
-		structure.add("CubeGeometry.uv", VertexData.Float2);
+		structure.add("uv", VertexData.Float2);
 		structure.add("colour", VertexData.Float3);
 		
 		// Pipeline
@@ -238,9 +239,9 @@ class Scene {
 							vertexData.push(CubeGeometry.vertices[v*3+1]+y); // pos y
 							vertexData.push(CubeGeometry.vertices[v*3+2]+z); // pos z
 							
-							// texture (CubeGeometry.uv)
-							vertexData.push(CubeGeometry.uv[v*2]  *16/256);
-							vertexData.push((CubeGeometry.uv[v*2+1]+block-1)*16/256);
+							// texture (uv)
+							vertexData.push((CubeGeometry.uv[v*2] + block%16) / 16);
+							vertexData.push((CubeGeometry.uv[v*2+1]+Math.floor(block/16)) / 16);
 							
 							// colour (rgb)
 							var light = 1.0;
@@ -388,9 +389,9 @@ class Scene {
 		g.setPipeline(pipeline);
 		
 		g.setMatrix(mvpID, camera.getMVP());
+		g.setTextureParameters(textureID, Clamp, Clamp, TextureFilter.PointFilter, TextureFilter.PointFilter, MipMapFilter.LinearMipFilter);
 		g.setTexture(textureID, kha.Assets.images.sprites);
 		// g.setTextureParameters(textureID, Clamp, Clamp, TextureFilter.PointFilter, TextureFilter.PointFilter, MipMapFilter.LinearMipFilter);
-		g.setTextureParameters(textureID, Clamp, Clamp, TextureFilter.PointFilter, TextureFilter.PointFilter, MipMapFilter.NoMipFilter);
 		
 		for (chunk in chunks) {
 			if (chunk == null || !chunk.hasGeometry()) {

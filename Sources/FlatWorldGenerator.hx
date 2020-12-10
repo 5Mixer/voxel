@@ -5,6 +5,6 @@ class FlatWorldGenerator implements WorldGenerator {
 
     }
     public function getBlock(x:Int,y:Int,z:Int) {
-        return (y < 0) ? 1 : 0;
+        return (y < 0) ? BlockIdentifier.Stone : BlockIdentifier.Air;
     }
 }

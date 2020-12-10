@@ -26,6 +26,11 @@ class Main {
 		player = new Player();
 		lineRenderer = new LineRenderer(camera);
 
+		// Right left top bottom front back
+		BlockRegistry.register(BlockIdentifier.Dirt,     new Block("Dirt",   0, 0, 0, 0, 0, 0));
+		BlockRegistry.register(BlockIdentifier.Grass,    new Block("Grass",  1, 1, 2, 0, 1, 1));
+		BlockRegistry.register(BlockIdentifier.Stone,    new Block("Stone",  3, 3, 3, 3, 3, 3));
+
 		connection = new ServerConnection();
 
 		input.clickListeners.push(function(button) {
