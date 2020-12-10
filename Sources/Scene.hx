@@ -1,6 +1,5 @@
 package ;
 
-import kha.math.Vector3;
 import kha.Shaders;
 import kha.graphics4.*;
 
@@ -15,7 +14,7 @@ class Scene {
 	var textureID:TextureUnit;
 	
 	var camera:Camera;
-	var chunks:Map<String,Chunk> = new Map<String,Chunk>();
+	var chunks:Array<Chunk> = [];
 	var createdChunks = [];
 	var generator:WorldGenerator;
 
@@ -25,36 +24,55 @@ class Scene {
 	var chunksProcessedThisFrame = 0;
 
 	var chunkCache:Chunk = null;
+
+	static var radius = 2;
+	static var loadedChunksPerDimension = radius * 2 + 1; // -radius, 0, +radius
+
+	var cameraChunkX=0;
+	var cameraChunkY=0;
+	var cameraChunkZ=0;
+
+	var chunkArrayOffsetX=0;
+	var chunkArrayOffsetY=0;
+	var chunkArrayOffsetZ=0;
 	
 	public function new(camera:Camera) {
 		this.camera = camera;
 		generator = new FlatWorldGenerator();
+
+		// for (cx in 0...loadedChunksPerDimension)
+		// 	for (cy in 0...loadedChunksPerDimension)
+		// 		for (cz in 0...loadedChunksPerDimension)
+		// 			chunks.push(null);
 		
 		// kha.Assets.images.sprites.generateMipmaps(0);
 		
 		setupPipeline();
 	}
-	
+
 	public function getChunk(cx:Int, cy:Int, cz:Int) {
-		if (chunkCache != null && chunkCache.wx == cx && chunkCache.wy == cy && chunkCache.wz == cz)
-			return chunkCache;
-		return chunks.get('$cx,$cy,$cz');
+		if (cx-chunkArrayOffsetX+radius < 0 || cx-chunkArrayOffsetX+radius >= loadedChunksPerDimension)
+			return null;
+		if (cy-chunkArrayOffsetY+radius < 0 || cy-chunkArrayOffsetY+radius >= loadedChunksPerDimension)
+			return null;
+		if (cz-chunkArrayOffsetZ+radius < 0 || cz-chunkArrayOffsetZ+radius >= loadedChunksPerDimension)
+			return null;
+		return chunks[(cx-chunkArrayOffsetX+radius)*loadedChunksPerDimension*loadedChunksPerDimension+(cy-chunkArrayOffsetY+radius)*loadedChunksPerDimension+(cz-chunkArrayOffsetZ+radius)];
 	}
-	public function registerChunk(chunk:Chunk) {
-		createdChunks.push(chunk.wx+','+chunk.wy+','+chunk.wz);
-		chunks.set(chunk.wx+','+chunk.wy+','+chunk.wz, chunk);
+	public function registerChunk(x:Int,y:Int,z:Int,chunk:Chunk) {
+		chunks[(x-chunkArrayOffsetX+radius)*loadedChunksPerDimension*loadedChunksPerDimension+(y-chunkArrayOffsetY+radius)*loadedChunksPerDimension+(z-chunkArrayOffsetZ+radius)] = chunk;
 	}
 
-	inline function chunkMod(n:Int,chunkSize:Int):Int {
+	inline function chunkMod(n:Int):Int {
 		// Mod (%) normally wraps negative numbers so that -5 % 4 = -1. It should = 4
-		return (n%chunkSize + chunkSize) % chunkSize;
+		return (n%Chunk.chunkSize + Chunk.chunkSize) % Chunk.chunkSize;
 	}
 	
 	inline public function getBlock(x, y, z):Null<Int> {
 		var chunk = getChunk(Math.floor(x / Chunk.chunkSize), Math.floor(y / Chunk.chunkSize), Math.floor(z / Chunk.chunkSize));
 		if (chunk == null)
 			return null;
-		return chunk.getBlock(chunkMod(x, Chunk.chunkSize), chunkMod(y, Chunk.chunkSize), chunkMod(z, Chunk.chunkSize));
+		return chunk.getBlock(chunkMod(x), chunkMod(y), chunkMod(z));
 	}
 	function setBlock(x,y,z,b){
 		var chunk = getChunk(Math.floor(x / Chunk.chunkSize), Math.floor(y / Chunk.chunkSize), Math.floor(z / Chunk.chunkSize));
@@ -69,7 +87,7 @@ class Scene {
 				for (zOffset in -1...2)
 					getChunk(Math.floor((x+xOffset) / Chunk.chunkSize), Math.floor((y+yOffset) / Chunk.chunkSize), Math.floor((z+zOffset) / Chunk.chunkSize)).dirtyGeometry = true;
 
-		chunk.setBlock(chunkMod(x, Chunk.chunkSize), chunkMod(y, Chunk.chunkSize), chunkMod(z, Chunk.chunkSize), b);
+		chunk.setBlock(chunkMod(x), chunkMod(y), chunkMod(z), b);
 	}
 	inline public function isAir(x:Int, y:Int, z:Int) {
 		return getBlock(x,y,z) == null || getBlock(x,y,z) == 0;
@@ -110,14 +128,27 @@ class Scene {
 		return (getChunk(cx+1,cy,cz) != null) && (getChunk(cx-1,cy,cz) != null) && (getChunk(cx,cy,cz+1) != null) && (getChunk(cx,cy,cz-1) != null)
 			&& (getChunk(cx+1,cy,cz+1) != null) && (getChunk(cx+1,cy,cz-1) != null) && (getChunk(cx-1,cy,cz+1) != null) && (getChunk(cx-1,cy,cz-1) != null);
 	}
+
+	function refreshChunkArray() {
+		chunks.sort(function(a,b){
+			if (a.wx == b.wx)
+				if (a.wy == b.wy)
+					return a.wz - b.wz;
+				else
+					return a.wy - b.wy;
+			return a.wx-b.wx;
+		});
+	}
 	
 	function constructChunkGeometry(chunk:Chunk) {
-		if (chunk.hasGeometry() && !chunk.dirtyGeometry)
+		if (chunk == null || (chunk.hasGeometry() && !chunk.dirtyGeometry))
 			return;
 		
 		chunkCache = chunk;
 
-		if (!shouldGenerateChunkGeometry(chunk.wx, chunk.wy, chunk.wz)) {
+		// if (!shouldGenerateChunkGeometry(chunk.wx, chunk.wy, chunk.wz)) {
+		if (Math.abs(chunk.wx-cameraChunkX)>radius-1 || Math.abs(chunk.wz-cameraChunkZ)>radius-1){
+			// chunk.destroyGeometry();
 			return;
 		}
 
@@ -269,33 +300,52 @@ class Scene {
 	}
 	
 	public function update() {
-		var cameraChunkX = Math.floor(camera.position.x/Chunk.chunkSize);
-		var cameraChunkY = Math.floor(camera.position.y/Chunk.chunkSize);
-		var cameraChunkZ = Math.floor(camera.position.z/Chunk.chunkSize);
+		cameraChunkX = Math.floor(camera.position.x/Chunk.chunkSize);
+		cameraChunkY = Math.floor(camera.position.y/Chunk.chunkSize);
+		cameraChunkZ = Math.floor(camera.position.z/Chunk.chunkSize);
 		var cameraChunk = '$cameraChunkX,$cameraChunkY,$cameraChunkZ';
 		
-		var radius = 4;
 		if (cameraChunk != prevCameraChunk) {
-			for (x in -radius...radius+1)
-				for (y in -radius...radius+1)
-					for (z in -radius...radius+1)
-						if (getChunk(cameraChunkX+x,cameraChunkY+y,cameraChunkZ+z) == null) {
-							registerChunk(new Chunk(cameraChunkX+x,cameraChunkY+y,cameraChunkZ+z, generator));
-							chunkGeomChanged = true;
-						}
+			var index = 0;
+			var newChunks = [];
+			for (cx in -radius...radius+1)
+				for (cy in -radius...radius+1)
+					for (cz in -radius...radius+1)
+						{
+							var existingChunk = getChunk(cx+cameraChunkX,cy+cameraChunkY,cz+cameraChunkZ);
+							if (existingChunk != null)
+								newChunks[index] = (existingChunk);
+							else
+								newChunks[index] = (new Chunk(cameraChunkX+cx,cameraChunkY+cy,cameraChunkZ+cz, generator));
 
-			for (chunk in chunks.iterator()) {
-				if (Math.min(chunk.wx - cameraChunkX, Math.min(chunk.wy-cameraChunkY, chunk.wz - cameraChunkZ)) > radius) {
-					chunk.destroyGeometry();
-					chunks.remove('${chunk.wx},${chunk.wy},${chunk.wz}');
-					chunk = null;
-				}
-			}
+							index++;
+						}
+			chunks = newChunks;
+			chunkArrayOffsetX = cameraChunkX;
+			chunkArrayOffsetY = cameraChunkY;
+			chunkArrayOffsetZ = cameraChunkZ;
+
+			chunkGeomChanged = true;
+			// for (x in -radius...radius+1)
+			// 	for (y in -radius...radius+1)
+			// 		for (z in -radius...radius+1)
+			// 			if (getChunk(cameraChunkX+x,cameraChunkY+y,cameraChunkZ+z) == null) {
+			// 				registerChunk(cameraChunkX+x,cameraChunkY+y,cameraChunkZ+z,new Chunk(cameraChunkX+x,cameraChunkY+y,cameraChunkZ+z, generator));
+			// 				chunkGeomChanged = true;
+			// 			}
+
+			// for (chunk in chunks) {
+			// 	if (Math.min(chunk.wx - cameraChunkX, Math.min(chunk.wy-cameraChunkY, chunk.wz - cameraChunkZ)) > radius) {
+					// chunk.destroyGeometry();
+					// chunks.remove('${chunk.wx},${chunk.wy},${chunk.wz}');
+					// chunk = null;
+			// 	}
+			// }
 		}
 		
 		
 		if (chunkGeomChanged) {
-			for (chunk in chunks.iterator()) {
+			for (chunk in chunks) {
 				constructChunkGeometry(chunk);
 			}
 		}
@@ -312,8 +362,9 @@ class Scene {
 		g.setTextureParameters(textureID, Clamp, Clamp, TextureFilter.PointFilter, TextureFilter.PointFilter, MipMapFilter.NoMipFilter);
 		
 		for (chunk in chunks) {
-			if (!chunk.hasGeometry())
+			if (chunk == null || !chunk.hasGeometry()) {
 				continue;
+			}
 			g.setVertexBuffer(chunk.vertexBuffer);
 			g.setIndexBuffer(chunk.indexBuffer);
 			g.drawIndexedVertices();

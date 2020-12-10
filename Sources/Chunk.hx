@@ -7,7 +7,7 @@ import kha.graphics4.VertexBuffer;
 class Chunk {
 	public var blocks:Bytes;
 
-	public static inline var chunkSize = 20;
+	public static inline var chunkSize = 40;
 	public static inline var chunkSizeSquared = chunkSize * chunkSize;
 	public static inline var chunkSizeCubed = chunkSize * chunkSize * chunkSize;
 	var min = 0;
