@@ -4,5 +4,5 @@ package ;
    This should be infinite, with as light state as possible.
    */
 interface WorldGenerator {
-    public function getBlock(x:Int,y:Int,z:Int):BlockIdentifier;
+    public function getBlock(x:Int,y:Int,z:Int):Int;
 }

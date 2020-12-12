@@ -12,11 +12,18 @@ class Camera {
 	public var view:FastMatrix4;
 	public var fov = 80*Math.PI/180;
 
-	var mvpDirty = true;
-    var mvp:FastMatrix4;
+	public var mvpDirty = true;
+	var mvp:FastMatrix4;
+	
+	var aspectRatio:Float = 1;
 
     public function new() {
-        position = new Vector3();
+		position = new Vector3();
+		kha.Window.get(0).notifyOnResize(function(width, height) {
+			aspectRatio = width/height;
+			mvpDirty = true;
+		});
+		aspectRatio = kha.Window.get(0).width / kha.Window.get(0).height;
     }
     public function getLookVector() {
 		// Conversion from spherical to cartesian coordinates uses projection
@@ -31,12 +38,10 @@ class Camera {
 		if (!mvpDirty)
 			return mvp;
 
-		projection = FastMatrix4.perspectiveProjection(fov, kha.Window.get(0).width / kha.Window.get(0).height, .15, 100);
+		projection = FastMatrix4.perspectiveProjection(fov, aspectRatio, .15, 100);
 		view = FastMatrix4.lookAt(position.fast(), position.add(getLookVector()).fast(), new FastVector3(0,1,0));
-		// var model = FastMatrix4.identity();
-		
-
 		mvp = projection.multmat(view);
+
 		return mvp;
 	}
 

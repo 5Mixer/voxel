@@ -3,10 +3,10 @@
 // Input vertex data, different for all executions of this shader
 in vec3 pos;
 in vec2 uv;
-in vec3 colour;
+in float colour;
 
 out vec2 vUV;
-out vec3 vColour;
+out float vColour;
 
 uniform mat4 MVP;
 

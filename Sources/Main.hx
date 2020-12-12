@@ -42,7 +42,7 @@ class Main {
 				Scheduler.addTimeTask(function() {
 					if (!sprinting)
 						awaitingSprintStart = false;
-				}, .5);
+				}, .3);
 			}else{
 				sprinting = true;
 				awaitingSprintStart = false;
@@ -51,10 +51,8 @@ class Main {
 	}
 
 	function update(): Void {
-
 		camera.position = player.position.add(new Vector3(0,player.size.y,0));
 		camera.fov = (sprinting ? 100 : 80) * Math.PI / 180;
-		// camera.position = camera.position.add(camera.getLookVector().mult(-4));
 		scene.update();
 		player.update();
 

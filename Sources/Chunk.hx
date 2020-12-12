@@ -44,8 +44,10 @@ class Chunk {
 					// }else{
 					// 	exposedRLE.push(1);
 					// }
-					setBlock(x,y,z,cast(block,Int));
+					blocks.set(x*chunkSizeSquared + y*chunkSize + z, block);
 				}
+
+		dirtyGeometry = true;
 	}
     
     inline public function getBlock(x, y, z) {

@@ -1,12 +1,12 @@
 package ;
 
+import haxe.Timer;
 import TerrainGenerator.TerrainWorldGenerator;
 import haxe.ds.Vector;
 import kha.Shaders;
 import kha.graphics4.*;
 
 class Scene {
-	
 	var structure:VertexStructure;
 	var vertexBuffer:VertexBuffer;
 	var indexBuffer:IndexBuffer;
@@ -16,7 +16,7 @@ class Scene {
 	var textureID:TextureUnit;
 	
 	var camera:Camera;
-	var chunks:haxe.ds.Vector<Chunk> = new haxe.ds.Vector<Chunk>(loadedChunksPerDimension*loadedChunksPerDimension*loadedChunksPerDimension);
+	var chunks:haxe.ds.Vector<Chunk> = new Vector<Chunk>(loadedChunksPerDimension*loadedChunksPerDimension*loadedChunksPerDimension);
 	var newChunks = new Vector<Chunk>(loadedChunksPerDimension * loadedChunksPerDimension * loadedChunksPerDimension);
 	
 	var generator:WorldGenerator;
@@ -25,8 +25,10 @@ class Scene {
 	
 	var prevCameraChunk = '';
 	
-	static var radius = 2;
+	static var radius = 8;
 	static var loadedChunksPerDimension = radius * 2 + 1; // -radius, 0, +radius
+	static var loadedChunksPerDimensionSquared = loadedChunksPerDimension * loadedChunksPerDimension;
+	static var loadedChunksPerDimensionCubed = loadedChunksPerDimension * loadedChunksPerDimension * loadedChunksPerDimension;
 	
 	var cameraChunkX=0;
 	var cameraChunkY=0;
@@ -38,7 +40,7 @@ class Scene {
 	
 	public function new(camera:Camera) {
 		this.camera = camera;
-		generator = new TerrainWorldGenerator();
+		generator = new FlatWorldGenerator();
 		
 		kha.Assets.images.sprites.generateMipmaps(2);
 		
@@ -52,10 +54,8 @@ class Scene {
 			return null;
 		if (cz-chunkArrayOffsetZ+radius < 0 || cz-chunkArrayOffsetZ+radius >= loadedChunksPerDimension)
 			return null;
-		return chunks[(cx-chunkArrayOffsetX+radius)*loadedChunksPerDimension*loadedChunksPerDimension+(cy-chunkArrayOffsetY+radius)*loadedChunksPerDimension+(cz-chunkArrayOffsetZ+radius)];
-	}
-	public function registerChunk(x:Int,y:Int,z:Int,chunk:Chunk) {
-		chunks[(x-chunkArrayOffsetX+radius)*loadedChunksPerDimension*loadedChunksPerDimension+(y-chunkArrayOffsetY+radius)*loadedChunksPerDimension+(z-chunkArrayOffsetZ+radius)] = chunk;
+		
+		return chunks[(cx-chunkArrayOffsetX+radius)*loadedChunksPerDimensionSquared+(cy-chunkArrayOffsetY+radius)*loadedChunksPerDimension+(cz-chunkArrayOffsetZ+radius)];
 	}
 	
 	inline function chunkMod(n:Int):Int {
@@ -90,7 +90,7 @@ class Scene {
 					getChunk(Math.floor((x+xOffset) / Chunk.chunkSize), Math.floor((y+yOffset) / Chunk.chunkSize), Math.floor((z+zOffset) / Chunk.chunkSize)).dirtyGeometry = true;
 		
 		chunk.setBlock(chunkMod(x), chunkMod(y), chunkMod(z), b);
-	}
+	}	
 	inline public function isAir(x:Int, y:Int, z:Int) {
 		return getBlock(x,y,z) == null || getBlock(x,y,z) == 0;
 	}
@@ -106,7 +106,8 @@ class Scene {
 		structure = new VertexStructure();
 		structure.add("pos", VertexData.Float3);
 		structure.add("uv", VertexData.Float2);
-		structure.add("colour", VertexData.Float3);
+		// structure.add("colour", VertexData.Float3);
+		structure.add("colour", VertexData.Float1);
 		
 		// Pipeline
 		pipeline = new PipelineState();
@@ -130,20 +131,9 @@ class Scene {
 	}
 	
 	function shouldGenerateChunkGeometry(cx,cy,cz) {
-		return (getChunk(cx+1,cy,cz) != null) && (getChunk(cx-1,cy,cz) != null) && (getChunk(cx,cy,cz+1) != null) && (getChunk(cx,cy,cz-1) != null)
-		&& (getChunk(cx+1,cy,cz+1) != null) && (getChunk(cx+1,cy,cz-1) != null) && (getChunk(cx-1,cy,cz+1) != null) && (getChunk(cx-1,cy,cz-1) != null) &&
-		(getChunk(cx,cy-1,cz) != null) && (getChunk(cx,cy+1,cz) != null);
-	}
-	
-	function refreshChunkArray() {
-		chunks.sort(function(a,b){
-			if (a.wx == b.wx)
-				if (a.wy == b.wy)
-					return a.wz - b.wz;
-			else
-				return a.wy - b.wy;
-			return a.wx-b.wx;
-		});
+		return (getChunk(cx+1,cy  ,cz  ) != null) && (getChunk(cx-1,cy  ,cz  ) != null) && (getChunk(cx  ,cy,cz+1) != null) && (getChunk(cx  ,cy,cz-1) != null)
+		&& (getChunk(cx+1,cy  ,cz+1) != null) && (getChunk(cx+1,cy  ,cz-1) != null) && (getChunk(cx-1,cy,cz+1) != null) && (getChunk(cx-1,cy,cz-1) != null)
+		&& (getChunk(cx  ,cy-1,cz  ) != null) && (getChunk(cx  ,cy+1,cz  ) != null);
 	}
 	
 	function constructChunkGeometry(chunk:Chunk) {
@@ -157,22 +147,29 @@ class Scene {
 		var indexData:Array<Int> = [];
 		
 		// Stores the current quads four AO values, so the quad may be index flipped if required
-		var ao = new haxe.ds.Vector<Float>(4);
+		var ao = new Vector<Float>(4);
 		
 		var vertexIndex = 0;
 		
 		var chunkOriginWorldscaleX = chunk.wx * Chunk.chunkSize;
 		var chunkOriginWorldscaleY = chunk.wy * Chunk.chunkSize;
 		var chunkOriginWorldscaleZ = chunk.wz * Chunk.chunkSize;
+
+		var rightChunk  = getChunk(chunk.wx+1,chunk.wy,chunk.wz);
+		var leftChunk   = getChunk(chunk.wx-1,chunk.wy,chunk.wz);
+		var topChunk    = getChunk(chunk.wx,chunk.wy+1,chunk.wz);
+		var bottomChunk = getChunk(chunk.wx,chunk.wy-1,chunk.wz);
+		var frontChunk  = getChunk(chunk.wx,chunk.wy,chunk.wz+1);
+		var backChunk   = getChunk(chunk.wx,chunk.wy,chunk.wz-1);
 		
 		// for (blockIndex in 0...Chunk.chunkSizeCubed) {
 		var blockIndex = 0;
 		for (lx in 0...Chunk.chunkSize){
-			var onBoundsX = lx == 0 || lx == Chunk.chunkSize-1;
+			// var onBoundsX = lx == 0 || lx == Chunk.chunkSize-1;
 			var x = chunkOriginWorldscaleX + lx;
 			
 			for (ly in 0...Chunk.chunkSize){
-				var onBoundsY = ly == 0 || ly == Chunk.chunkSize-1;
+				// var onBoundsY = ly == 0 || ly == Chunk.chunkSize-1;
 				var y = chunkOriginWorldscaleY + ly;
 				
 				for (lz in 0...Chunk.chunkSize){
@@ -185,48 +182,54 @@ class Scene {
 					
 					var z = chunkOriginWorldscaleZ + lz;
 					
-					var onBoundsZ = lz == 0 || lz == Chunk.chunkSize-1;
+					// var onBoundsZ = lz == 0 || lz == Chunk.chunkSize-1;
 					
 					for (face in 0...6) {
 						// For faces that face anything other than air, skip
-						if (onBoundsX){
-							if (face == Side.Right && !isExposedUnsafe(x+1,y,z))
+						if (face == Side.Right) {
+							if (lz == Chunk.chunkSize-1 && rightChunk.getBlock(0,ly,lz) != 0)
 								continue;
-							
-							if (face == Side.Left && !isExposedUnsafe(x-1,y,z))
-								continue;
-						}else{
-							if (face == Side.Right && chunk.getBlock(chunkMod(x+1),ly, lz) != 0)
-								continue;
-							if (face == Side.Left && chunk.getBlock(chunkMod(x-1), ly, lz) != 0)
+							if (lz != Chunk.chunkSize-1 && chunk.getBlock(lx+1,ly, lz) != 0)
 								continue;
 						}
 						
-						if (onBoundsY) {
-							if (face == Side.Up && !isExposedUnsafe(x,y+1,z))
+						if (face == Side.Left) {
+							if (lz == 0 && leftChunk.getBlock(Chunk.chunkSize-1,ly,lz) != 0)
 								continue;
-							
-							if (face == Side.Down && !isExposedUnsafe(x,y-1,z))
-								continue;
-						}else{
-							if (face == Side.Up && chunk.getBlock(lx,chunkMod(y+1),lz) != 0)
-								continue;
-							
-							if (face == Side.Down && chunk.getBlock(lx,chunkMod(y-1),lz) != 0)
+
+							if (lz != 0 && chunk.getBlock(lx-1, ly, lz) != 0)
 								continue;
 						}
 						
-						if (onBoundsZ) {
-							if (face == Side.Front && !isExposedUnsafe(x,y,z+1))
+
+						if (face == Side.Up) {
+							if (ly == Chunk.chunkSize-1 && topChunk.getBlock(lx,0,lz) != 0)
 								continue;
-							
-							if (face == Side.Back && !isExposedUnsafe(x,y,z-1))
+							if (ly != Chunk.chunkSize-1 && chunk.getBlock(lx,ly+1,lz) != 0)
 								continue;
-						}else{
-							if (face == Side.Front && chunk.getBlock(lx, ly,chunkMod(z+1)) != 0)
+						}
+						
+						if (face == Side.Down) {
+							if (ly == 0 && bottomChunk.getBlock(lx,Chunk.chunkSize-1,lz) != 0)
 								continue;
-							
-							if (face == Side.Back && chunk.getBlock(lx, ly,chunkMod(z-1)) != 0)
+
+							if (ly != 0 && chunk.getBlock(lx,ly-1,lz) != 0)
+								continue;
+						}
+						
+						if (face == Side.Front) {
+							if (lz == Chunk.chunkSize-1 && frontChunk.getBlock(lx,ly,0) != 0)
+								continue;
+
+							if (lz != Chunk.chunkSize-1 && chunk.getBlock(lx, ly, lz+1) != 0)
+								continue;
+						}
+						
+						if (face == Side.Back) {
+							if (lz == 0 && backChunk.getBlock(lx,ly,Chunk.chunkSize) != 0)
+								continue;
+
+							if (lz != 0 && chunk.getBlock(lx, ly, lz-1) != 0)
 								continue;
 						}
 						
@@ -277,12 +280,10 @@ class Scene {
 							else
 								light = (3 - ((side1?1:0)+(side2?1:0)+(corner?1:0)))/3; // Subtract light linearly by number of adjacent blocks
 							
-							light = .8 + .2 * light;
+							light = .5 + .5 * light;
 							
 							// Store this quad vertex in quad AO working array, so the quad may be flipped if it makes AO look nicer.
 							ao[triangleVertex] = light;
-							vertexData.push(light);
-							vertexData.push(light);
 							vertexData.push(light);
 						}
 						
@@ -311,7 +312,7 @@ class Scene {
 			}
 		}
 		
-		var vertexByteSize = 8;
+		var vertexByteSize = 6;
 		// Load the generated vertex data into a buffer
 		chunk.vertexBuffer = new VertexBuffer(Std.int(vertexData.length/vertexByteSize), structure, StaticUsage);
 		var vertexBufferData = chunk.vertexBuffer.lock();
@@ -331,12 +332,15 @@ class Scene {
 	}
 	
 	var reusableChunkPool = [];
+	var firstUpdate = true;
 	public function update() {
 		cameraChunkX = Math.floor(camera.position.x/Chunk.chunkSize);
 		cameraChunkY = Math.floor(camera.position.y/Chunk.chunkSize);
 		cameraChunkZ = Math.floor(camera.position.z/Chunk.chunkSize);
 		var cameraChunk = '$cameraChunkX,$cameraChunkY,$cameraChunkZ';
 		
+		var start = Timer.stamp();
+
 		if (cameraChunk != prevCameraChunk) {
 			var index = 0;
 			var reusedChunks = [];
@@ -344,28 +348,33 @@ class Scene {
 				for (cy in -radius...radius+1)
 					for (cz in -radius...radius+1)
 						{
-							var existingChunk = getChunk(cx+cameraChunkX,cy+cameraChunkY,cz+cameraChunkZ);
-							reusedChunks.push(existingChunk);
-							if (existingChunk != null)
-								newChunks[index] = existingChunk;
-							else{
-								if (reusableChunkPool.length > 0) {
-									newChunks[index] = reusableChunkPool.pop();
-									newChunks[index].loadForLocation(cameraChunkX+cx,cameraChunkY+cy,cameraChunkZ+cz, generator);
-								}else{
-									newChunks[index] = new Chunk(cameraChunkX+cx,cameraChunkY+cy,cameraChunkZ+cz, generator);
-								}
+						var existingChunk = getChunk(cx+cameraChunkX,cy+cameraChunkY,cz+cameraChunkZ);
+						reusedChunks.push(existingChunk);
+						if (existingChunk != null)
+							newChunks[index] = existingChunk;
+						else{
+							if (reusableChunkPool.length > 0) {
+								newChunks[index] = reusableChunkPool.pop();
+								newChunks[index].loadForLocation(cameraChunkX+cx,cameraChunkY+cy,cameraChunkZ+cz, generator);
+							}else{
+								newChunks[index] = new Chunk(cameraChunkX+cx,cameraChunkY+cy,cameraChunkZ+cz, generator);
 							}
-							
-							index++;
 						}
+				
+				index++;
+			}
+			
+			if (firstUpdate) {
+				trace("Time: " + (Timer.stamp() - start));
+				firstUpdate = false;
+			}
 			
 			for (chunk in chunks)
 				if (!reusedChunks.contains(chunk)) {
-					chunk.destroyGeometry();
-					reusableChunkPool.push(chunk);
-				}
-
+				chunk.destroyGeometry();
+				reusableChunkPool.push(chunk);
+			}
+			
 			chunks = newChunks.copy();
 			chunkArrayOffsetX = cameraChunkX;
 			chunkArrayOffsetY = cameraChunkY;
@@ -373,7 +382,6 @@ class Scene {
 			
 			chunkGeomChanged = true;
 		}
-		
 		
 		// Generate geom for one unit smaller than radius square (allows proper AO etc)
 		if (chunkGeomChanged) {
@@ -388,10 +396,10 @@ class Scene {
 	public function render(g:Graphics) {
 		g.setPipeline(pipeline);
 		
-		g.setMatrix(mvpID, camera.getMVP());
-		g.setTextureParameters(textureID, Clamp, Clamp, TextureFilter.PointFilter, TextureFilter.PointFilter, MipMapFilter.LinearMipFilter);
+		if (camera.mvpDirty)
+			g.setMatrix(mvpID, camera.getMVP());
 		g.setTexture(textureID, kha.Assets.images.sprites);
-		// g.setTextureParameters(textureID, Clamp, Clamp, TextureFilter.PointFilter, TextureFilter.PointFilter, MipMapFilter.LinearMipFilter);
+		g.setTextureParameters(textureID, Clamp, Clamp, TextureFilter.PointFilter, TextureFilter.PointFilter, MipMapFilter.LinearMipFilter);
 		
 		for (chunk in chunks) {
 			if (chunk == null || !chunk.hasGeometry()) {
