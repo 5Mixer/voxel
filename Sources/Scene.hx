@@ -1,5 +1,6 @@
 package ;
 
+import haxe.io.Bytes;
 import haxe.Timer;
 import TerrainGenerator.TerrainWorldGenerator;
 import haxe.ds.Vector;
@@ -25,7 +26,7 @@ class Scene {
 	
 	var prevCameraChunk = '';
 	
-	static var radius = 8;
+	static var radius = 3;
 	static var loadedChunksPerDimension = radius * 2 + 1; // -radius, 0, +radius
 	static var loadedChunksPerDimensionSquared = loadedChunksPerDimension * loadedChunksPerDimension;
 	static var loadedChunksPerDimensionCubed = loadedChunksPerDimension * loadedChunksPerDimension * loadedChunksPerDimension;
@@ -40,7 +41,7 @@ class Scene {
 	
 	public function new(camera:Camera) {
 		this.camera = camera;
-		generator = new FlatWorldGenerator();
+		generator = new TerrainWorldGenerator();
 		
 		kha.Assets.images.sprites.generateMipmaps(2);
 		
@@ -132,10 +133,11 @@ class Scene {
 	
 	function shouldGenerateChunkGeometry(cx,cy,cz) {
 		return (getChunk(cx+1,cy  ,cz  ) != null) && (getChunk(cx-1,cy  ,cz  ) != null) && (getChunk(cx  ,cy,cz+1) != null) && (getChunk(cx  ,cy,cz-1) != null)
-		&& (getChunk(cx+1,cy  ,cz+1) != null) && (getChunk(cx+1,cy  ,cz-1) != null) && (getChunk(cx-1,cy,cz+1) != null) && (getChunk(cx-1,cy,cz-1) != null)
-		&& (getChunk(cx  ,cy-1,cz  ) != null) && (getChunk(cx  ,cy+1,cz  ) != null);
+			&& (getChunk(cx+1,cy  ,cz+1) != null) && (getChunk(cx+1,cy  ,cz-1) != null) && (getChunk(cx-1,cy,cz+1) != null) && (getChunk(cx-1,cy,cz-1) != null)
+			&& (getChunk(cx  ,cy-1,cz  ) != null) && (getChunk(cx  ,cy+1,cz  ) != null);
 	}
 	
+	var faceCullBuffer = Bytes.alloc(Chunk.chunkSizeCubed);
 	function constructChunkGeometry(chunk:Chunk) {
 		if (chunk == null || (chunk.hasGeometry() && !chunk.dirtyGeometry))
 			return;
@@ -161,11 +163,54 @@ class Scene {
 		var bottomChunk = getChunk(chunk.wx,chunk.wy-1,chunk.wz);
 		var frontChunk  = getChunk(chunk.wx,chunk.wy,chunk.wz+1);
 		var backChunk   = getChunk(chunk.wx,chunk.wy,chunk.wz-1);
+
+		var blockIndex = 0;
+		faceCullBuffer.fill(0,Chunk.chunkSizeCubed, (1<<6)-1);
+		for (blockIndex in 0...Chunk.chunkSizeCubed) {
+			if (chunk.blocks.get(blockIndex) == 0)
+				continue;
+
+			var lx = Math.floor(blockIndex/Chunk.chunkSizeSquared);
+			var ly = Math.floor(blockIndex/Chunk.chunkSize)%Chunk.chunkSize;
+			var lz = blockIndex%Chunk.chunkSize;
+
+			// faceCullBuffer.set(blockIndex, faceCullBuffer.get(blockIndex) & ~ (1<<Side.Right)); // Do not render a side if it is obscured.
+			// faceCullBuffer.set(blockIndex, faceCullBuffer.get(blockIndex) & ~ (1<<Side.Left)); // Do not render a side if it is obscured.
+			// faceCullBuffer.set(blockIndex, faceCullBuffer.get(blockIndex) & ~ (1<<Side.Up)); // Do not render a side if it is obscured.
+			// faceCullBuffer.set(blockIndex, faceCullBuffer.get(blockIndex) & ~ (1<<Side.Down)); // Do not render a side if it is obscured.
+			// faceCullBuffer.set(blockIndex, faceCullBuffer.get(blockIndex) & ~ (1<<Side.Back)); // Do not render a side if it is obscured.
+			
+			if (lx != Chunk.chunkSize-1 && chunk.getBlock(lx+1,ly, lz) == 0 ||
+				lx == Chunk.chunkSize-1 && rightChunk.getBlock(0,ly,lz) == 0) // Right
+				faceCullBuffer.set(blockIndex, faceCullBuffer.get(blockIndex) & ~ (1<<Side.Right)); // Do not render a side if it is obscured.
+
+			if (lx != 0 && chunk.getBlock(lx-1,ly, lz) == 0 ||
+				lx == 0 && leftChunk.getBlock(Chunk.chunkSize-1,ly,lz) == 0) //Left
+				faceCullBuffer.set(blockIndex, faceCullBuffer.get(blockIndex) & ~ (1<<Side.Left));
+
+
+			if (ly != Chunk.chunkSize-1 && chunk.getBlock(lx,ly+1, lz) == 0 || 
+				ly == Chunk.chunkSize-1 && topChunk.getBlock(lx,0,lz) == 0) // top
+				faceCullBuffer.set(blockIndex, faceCullBuffer.get(blockIndex) & ~ (1<<Side.Up));
+
+			if (ly != 0 && chunk.getBlock(lx,ly-1, lz) == 0 ||
+				ly == 0 && bottomChunk.getBlock(lx,Chunk.chunkSize-1,lz) == 0) //bottom
+				faceCullBuffer.set(blockIndex, faceCullBuffer.get(blockIndex) & ~ (1<<Side.Down));
+
+
+			if (lz != Chunk.chunkSize-1 && chunk.getBlock(lx,ly, lz+1) == 0 ||
+				lz == Chunk.chunkSize-1 && frontChunk.getBlock(lx,ly,0) == 0) // front
+				faceCullBuffer.set(blockIndex, faceCullBuffer.get(blockIndex) & ~ (1<<Side.Front));
+
+			if (lz != 0 && chunk.getBlock(lx,ly, lz-1) == 0 ||
+				lz == 0 && backChunk.getBlock(lx,ly,Chunk.chunkSize-1) == 0) //back
+				faceCullBuffer.set(blockIndex, faceCullBuffer.get(blockIndex) & ~ (1<<Side.Back));
+				
+		}
 		
 		// for (blockIndex in 0...Chunk.chunkSizeCubed) {
 		var blockIndex = 0;
 		for (lx in 0...Chunk.chunkSize){
-			// var onBoundsX = lx == 0 || lx == Chunk.chunkSize-1;
 			var x = chunkOriginWorldscaleX + lx;
 			
 			for (ly in 0...Chunk.chunkSize){
@@ -173,8 +218,9 @@ class Scene {
 				var y = chunkOriginWorldscaleY + ly;
 				
 				for (lz in 0...Chunk.chunkSize){
-					var block = chunk.blocks.get(blockIndex++);
+					var block = chunk.blocks.get(blockIndex);
 					
+					blockIndex++; // Anything that uses block index should be before here. This is convenient given continue's.
 					// Skip air
 					if (block == 0) {
 						continue;
@@ -185,23 +231,25 @@ class Scene {
 					// var onBoundsZ = lz == 0 || lz == Chunk.chunkSize-1;
 					
 					for (face in 0...6) {
+						if ((faceCullBuffer.get(blockIndex-1) & (1<<face)) != 0)
+							continue;
 						// For faces that face anything other than air, skip
-						if (face == Side.Right) {
-							if (lz == Chunk.chunkSize-1 && rightChunk.getBlock(0,ly,lz) != 0)
+						/*if (face == Side.Right) {
+							if (lx == Chunk.chunkSize-1 && rightChunk.getBlock(0,ly,lz) != 0)
 								continue;
-							if (lz != Chunk.chunkSize-1 && chunk.getBlock(lx+1,ly, lz) != 0)
+							if (lx != Chunk.chunkSize-1 && chunk.getBlock(lx+1,ly, lz) != 0)
+							// if (lx != Chunk.chunkSize-1 && chunk.blocks.get(blockIndex+Chunk.chunkSizeSquared) != 0)
 								continue;
 						}
 						
 						if (face == Side.Left) {
-							if (lz == 0 && leftChunk.getBlock(Chunk.chunkSize-1,ly,lz) != 0)
+							if (lx == 0 && leftChunk.getBlock(Chunk.chunkSize-1,ly,lz) != 0)
 								continue;
 
-							if (lz != 0 && chunk.getBlock(lx-1, ly, lz) != 0)
+							if (lx != 0 && chunk.getBlock(lx-1, ly, lz) != 0)
 								continue;
 						}
 						
-
 						if (face == Side.Up) {
 							if (ly == Chunk.chunkSize-1 && topChunk.getBlock(lx,0,lz) != 0)
 								continue;
@@ -232,6 +280,7 @@ class Scene {
 							if (lz != 0 && chunk.getBlock(lx, ly, lz-1) != 0)
 								continue;
 						}
+						*/
 						
 						
 						for (triangleVertex in 0...4) {
@@ -374,7 +423,7 @@ class Scene {
 				chunk.destroyGeometry();
 				reusableChunkPool.push(chunk);
 			}
-			
+
 			chunks = newChunks.copy();
 			chunkArrayOffsetX = cameraChunkX;
 			chunkArrayOffsetY = cameraChunkY;

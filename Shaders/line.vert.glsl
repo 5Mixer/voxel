@@ -13,7 +13,7 @@ void main() {
 	vec4 clipSpace = MVP * vec4(pos, 1.0);
 	vec2 ndcSpace = clipSpace.xy / clipSpace.w;
 	ndcSpace *= 4/3; //Aspect ratio
-	gl_Position = clipSpace+vec4(normal,0)/800;
+	gl_Position = clipSpace+vec4(normal,0)/80;
 
 	vColour = colour;
 }
