@@ -178,15 +178,6 @@ class Scene {
 		if (!chunk.visible)
 			return;
 		
-		// Arrays that the GPU buffers are constructed from
-		var vertexData:Array<Float> = [];
-		var indexData:Array<Int> = [];
-		
-		// Stores the current quads four AO values, so the quad may be index flipped if required
-		var ao = new Vector<Float>(4);
-		
-		var vertexIndex = 0;
-		
 		var chunkOriginWorldscaleX = chunk.wx * Chunk.chunkSize;
 		var chunkOriginWorldscaleY = chunk.wy * Chunk.chunkSize;
 		var chunkOriginWorldscaleZ = chunk.wz * Chunk.chunkSize;
@@ -199,6 +190,7 @@ class Scene {
 		var backChunk   = getChunkUnsafe(chunk.wx,chunk.wy,chunk.wz-1);
 
 		faceCullBuffer.fill(0,Chunk.chunkSizeCubed, (1<<6)-1); // Must always reset as buffer is reused.
+		var faces = 0;
 		for (blockIndex in 0...Chunk.chunkSizeCubed) {
 			if (chunk.blocks.get(blockIndex) == 0)
 				continue;
@@ -209,35 +201,63 @@ class Scene {
 
 			// Right face culling
 			if (lx != Chunk.chunkSize-1 && chunk.getBlock(lx+1,ly, lz) == 0 ||
-				lx == Chunk.chunkSize-1 && rightChunk.getBlock(0,ly,lz) == 0)
+				lx == Chunk.chunkSize-1 && rightChunk.getBlock(0,ly,lz) == 0) {
 				faceCullBuffer.set(blockIndex, faceCullBuffer.get(blockIndex) & ~ (1<<Side.Right)); // Do not render a side if it is obscured.
+				faces++;
+			}
 
 			// Left face culling
 			if (lx != 0 && chunk.getBlock(lx-1,ly, lz) == 0 ||
-				lx == 0 && leftChunk.getBlock(Chunk.chunkSize-1,ly,lz) == 0)
+				lx == 0 && leftChunk.getBlock(Chunk.chunkSize-1,ly,lz) == 0) {
 				faceCullBuffer.set(blockIndex, faceCullBuffer.get(blockIndex) & ~ (1<<Side.Left));
+				faces++;
+			}
 
 			// Top face culling
 			if (ly != Chunk.chunkSize-1 && chunk.getBlock(lx,ly+1, lz) == 0 || 
-				ly == Chunk.chunkSize-1 && topChunk.getBlock(lx,0,lz) == 0)
+				ly == Chunk.chunkSize-1 && topChunk.getBlock(lx,0,lz) == 0) {
 				faceCullBuffer.set(blockIndex, faceCullBuffer.get(blockIndex) & ~ (1<<Side.Up));
+				faces++;
+			}
 
 			// Down face culling
 			if (ly != 0 && chunk.getBlock(lx,ly-1, lz) == 0 ||
-				ly == 0 && bottomChunk.getBlock(lx,Chunk.chunkSize-1,lz) == 0)
+				ly == 0 && bottomChunk.getBlock(lx,Chunk.chunkSize-1,lz) == 0) {
 				faceCullBuffer.set(blockIndex, faceCullBuffer.get(blockIndex) & ~ (1<<Side.Down));
+				faces++;
+			}
 
 
 			// Front face culling
 			if (lz != Chunk.chunkSize-1 && chunk.getBlock(lx,ly, lz+1) == 0 ||
-				lz == Chunk.chunkSize-1 && frontChunk.getBlock(lx,ly,0) == 0)
+				lz == Chunk.chunkSize-1 && frontChunk.getBlock(lx,ly,0) == 0) {
 				faceCullBuffer.set(blockIndex, faceCullBuffer.get(blockIndex) & ~ (1<<Side.Front));
+				faces++;
+			}
 
 			// Back face culling
 			if (lz != 0 && chunk.getBlock(lx,ly, lz-1) == 0 ||
-				lz == 0 && backChunk.getBlock(lx,ly,Chunk.chunkSize-1) == 0)
+				lz == 0 && backChunk.getBlock(lx,ly,Chunk.chunkSize-1) == 0) {
 				faceCullBuffer.set(blockIndex, faceCullBuffer.get(blockIndex) & ~ (1<<Side.Back));
+				faces++;
+			}
 		}
+		
+		// Stores the current quads four AO values, so the quad may be index flipped if required
+		var ao = new Vector<Float>(4);
+		
+		var vertexIndex = 0;
+		
+		var vertexByteSize = 6;
+		chunk.vertexBuffer = new VertexBuffer(faces*4, structure, StaticUsage);
+		var vertexBufferData = chunk.vertexBuffer.lock();
+		
+		// Load the generated index data into a buffer
+		chunk.indexBuffer = new IndexBuffer(faces*6, StaticUsage);
+		var indexBufferData = chunk.indexBuffer.lock();
+
+		var vertexDataIndex = 0;
+		var indexDataIndex = 0;
 		
 		// for (blockIndex in 0...Chunk.chunkSizeCubed) {
 		var blockIndex = 0;
@@ -266,13 +286,13 @@ class Scene {
 							var v = face*4 + triangleVertex; // v is the [0-24) vertices of the quad
 							
 							// position (xyz)
-							vertexData.push(CubeGeometry.vertices[v*3+0]+x); // pos x
-							vertexData.push(CubeGeometry.vertices[v*3+1]+y); // pos y
-							vertexData.push(CubeGeometry.vertices[v*3+2]+z); // pos z
+							vertexBufferData.set(vertexDataIndex++, (CubeGeometry.vertices[v*3+0]+x)); // pos x
+							vertexBufferData.set(vertexDataIndex++, (CubeGeometry.vertices[v*3+1]+y)); // pos y
+							vertexBufferData.set(vertexDataIndex++, (CubeGeometry.vertices[v*3+2]+z)); // pos z
 							
 							// texture (uv)
-							vertexData.push((CubeGeometry.uv[v*2] + block%16) / 16);
-							vertexData.push((CubeGeometry.uv[v*2+1]+Math.floor(block/16)) / 16);
+							vertexBufferData.set(vertexDataIndex++, ((CubeGeometry.uv[v*2] + block%16) / 16));
+							vertexBufferData.set(vertexDataIndex++, ((CubeGeometry.uv[v*2+1]+Math.floor(block/16)) / 16));
 							
 							// colour (rgb)
 							var light = 1.0;
@@ -312,52 +332,35 @@ class Scene {
 							
 							// Store this quad vertex in quad AO working array, so the quad may be flipped if it makes AO look nicer.
 							ao[triangleVertex] = light;
-							vertexData.push(light);
+							vertexBufferData.set(vertexDataIndex++, (light));
 						}
 						
 						// Register quad as two triangles through index buffer
 						// Flip if AO is backwards
 						if (ao[0] + ao[2] > ao[1] + ao[3]) {
-							// TODO: Can compress this as only a single bit needs to be stored for indexData to be reconstructed as a GPU IndexBuffer
-							indexData.push(vertexIndex+0);
-							indexData.push(vertexIndex+1);
-							indexData.push(vertexIndex+2);
+							indexBufferData.set(indexDataIndex++, (vertexIndex+0));
+							indexBufferData.set(indexDataIndex++, (vertexIndex+1));
+							indexBufferData.set(indexDataIndex++, (vertexIndex+2));
 							
-							indexData.push(vertexIndex+0);
-							indexData.push(vertexIndex+2);
-							indexData.push(vertexIndex+3);
+							indexBufferData.set(indexDataIndex++, (vertexIndex+0));
+							indexBufferData.set(indexDataIndex++, (vertexIndex+2));
+							indexBufferData.set(indexDataIndex++, (vertexIndex+3));
 						}else{
-							indexData.push(vertexIndex+1);
-							indexData.push(vertexIndex+2);
-							indexData.push(vertexIndex+3);
+							indexBufferData.set(indexDataIndex++, (vertexIndex+1));
+							indexBufferData.set(indexDataIndex++, (vertexIndex+2));
+							indexBufferData.set(indexDataIndex++, (vertexIndex+3));
 							
-							indexData.push(vertexIndex+1);
-							indexData.push(vertexIndex+3);
-							indexData.push(vertexIndex+0);
+							indexBufferData.set(indexDataIndex++, (vertexIndex+1));
+							indexBufferData.set(indexDataIndex++, (vertexIndex+3));
+							indexBufferData.set(indexDataIndex++, (vertexIndex+0));
 						}
 						vertexIndex += 4;
 					}
 				}
 			}
 		}
-		
-		var vertexByteSize = 6;
-		// Load the generated vertex data into a buffer
-		chunk.vertexBuffer = new VertexBuffer(Std.int(vertexData.length/vertexByteSize), structure, StaticUsage);
-		var vertexBufferData = chunk.vertexBuffer.lock();
-		for (i in 0...vertexData.length)
-			vertexBufferData[i] = vertexData[i];
 		chunk.vertexBuffer.unlock();
-		
-		// Load the generated index data into a buffer
-		chunk.indexBuffer = new IndexBuffer(indexData.length, StaticUsage);
-		var indexBufferData = chunk.indexBuffer.lock();
-		for (i in 0...Std.int(indexData.length))
-			indexBufferData[i] = indexData[i];
 		chunk.indexBuffer.unlock();
-		
-		vertexData = null;
-		indexData = null;
 	}
 	
 	var reusableChunkPool = [];
