@@ -58,7 +58,7 @@ class Input {
 			if (key == A) {	left = true; }
 			if (key == S) {	backwards = true; }
             if (key == D) {	right = true; }
-            if (key == Space) {	space = true; }
+            if (key == Space) {	space = true; jumpAttemptCallback(); }
             if (key == Shift) {	shift = true; }
 
             if (key == Escape) {

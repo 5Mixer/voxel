@@ -20,6 +20,9 @@ class Main {
 	var sprinting = false;
 	var worldLoaded = false;
 
+	var jumps = 0;
+	var maxJumps = 2;
+
 	function new () {
 		camera = new Camera();
 		input = new Input(camera);
@@ -37,7 +40,6 @@ class Main {
 			var cx = data.getInt32(0);
 			var cy = data.getInt32(4);
 			var cz = data.getInt32(8);
-			trace('Received $cx,$cy,$cz');
 			scene.loadChunkData(cx, cy, cz, data);
 			if (!worldLoaded && cx == 0 && cy == 0 && cz == 0)
 				worldLoaded = true;
@@ -51,6 +53,13 @@ class Main {
 		input.clickListeners.push(function(button) {
 			scene.ray(button == 0);
 		});
+		input.jumpAttemptCallback = function() {
+			if (jumps < maxJumps) {
+				player.velocity.y = .17;
+				jumps++;
+			}
+		}
+
 		input.forwardsListeners.push(function() {
 			if (!awaitingSprintStart) {
 				awaitingSprintStart = true;
@@ -70,6 +79,10 @@ class Main {
 		camera.fov = (sprinting ? 100 : 80) * Math.PI / 180;
 		scene.update();
 		player.update();
+
+		for (i in 0...50)
+			if (input.rightMouseButtonDown)
+				scene.ray(false);
 
 		var localMovementVector = new Vector2(0,0);
 		if (input.forwards) {
@@ -108,15 +121,14 @@ class Main {
 				player.velocity.y = 0;
 			}else{
 				player.position.y = Math.ceil(aabb.min.y+player.velocity.y);
-				
-				// Only jump if landed, not head hitting ceiling
+				jumps = 0;
+				player.velocity.y = 0;
+
 				if (input.space) {
 					player.velocity.y = .17;
-				}else{
-					player.velocity.y = 0;
+					jumps++;
 				}
 			}
-
 		}else{
 			player.velocity.y -= .01;
 		}

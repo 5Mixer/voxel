@@ -38,7 +38,7 @@ class Camera {
 		if (!mvpDirty)
 			return mvp;
 
-		projection = FastMatrix4.perspectiveProjection(fov, aspectRatio, .15, 100);
+		projection = FastMatrix4.perspectiveProjection(fov, aspectRatio, .15, 160);
 		view = FastMatrix4.lookAt(position.fast(), position.add(getLookVector()).fast(), new FastVector3(0,1,0));
 		mvp = projection.multmat(view);
 

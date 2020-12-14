@@ -30,7 +30,7 @@ class Scene {
 	public var requestChunk:(cx:Int,cy:Int,cz:Int)->Void;
 	public var sendBlock:(x:Int,y:Int,z:Int,b:Int)->Void;
 	
-	static var radius = 3;
+	static var radius = 4;
 	static var loadedChunksPerDimension = radius * 2 + 1; // -radius, 0, +radius
 	static var loadedChunksPerDimensionSquared = loadedChunksPerDimension * loadedChunksPerDimension;
 	static var loadedChunksPerDimensionCubed = loadedChunksPerDimension * loadedChunksPerDimension * loadedChunksPerDimension;
@@ -167,13 +167,16 @@ class Scene {
 	
 	var faceCullBuffer = Bytes.alloc(Chunk.chunkSizeCubed);
 	function constructChunkGeometry(chunk:Chunk) {
-		if (chunk == null || (chunk.hasGeometry() && !chunk.dirtyGeometry))
+		if (chunk == null || !chunk.dirtyGeometry)
 			return;
 
 		if (!shouldGenerateChunkGeometry(chunk.wx, chunk.wy, chunk.wz))
 			return;
 
 		chunk.dirtyGeometry = false;
+
+		if (!chunk.visible)
+			return;
 		
 		// Arrays that the GPU buffers are constructed from
 		var vertexData:Array<Float> = [];
@@ -385,7 +388,6 @@ class Scene {
 								newChunks[index] = new Chunk(cameraChunkX+cx,cameraChunkY+cy,cameraChunkZ+cz);
 							}
 
-							// newChunks[index].loadForLocation(cameraChunkX+cx, cameraChunkY+cy, cameraChunkZ+cz, generator);
 							if (chunkData.exists('${cameraChunkX+cx},${cameraChunkY+cy},${cameraChunkZ+cz}')) {
 								newChunks[index].loadData(chunkData.get('${cameraChunkX+cx},${cameraChunkY+cy},${cameraChunkZ+cz}'));
 							}else{
@@ -402,12 +404,11 @@ class Scene {
 				firstUpdate = false;
 			}
 			
-			/*for (chunk in chunks)
-				if (!reusedChunks.contains(chunk)) {
+			for (chunk in chunks)
+				if (chunk != null && !reusedChunks.contains(chunk)) {
 					chunk.destroyGeometry();
 					reusableChunkPool.push(chunk);
 				}
-				*/
 
 			chunks = newChunks.copy();
 			chunkArrayOffsetX = cameraChunkX;
@@ -451,7 +452,8 @@ class Scene {
 		var delta = look.mult(stepSize);
 		var rayBlock = 0;
 		var iterations = 0;
-		var rayLength = 10;
+		// var rayLength = 10;
+		var rayLength = 50;
 		var rayPos = camera.position.mult(1);
 		while (rayBlock == 0 && iterations++ < rayLength/stepSize) {
 			rayPos = rayPos.add(delta);
@@ -462,10 +464,13 @@ class Scene {
 			return; // Don't do anything if ray extends outside reach
 		
 		if (!place) {
-			setBlock(Math.floor(rayPos.x), Math.floor(rayPos.y),Math.floor(rayPos.z), 0, true);
+			for (xo in -1...2)
+			for (yo in -1...2)
+			for (zo in -1...2)
+			setBlock(Math.floor(rayPos.x)+xo, Math.floor(rayPos.y)+yo,Math.floor(rayPos.z)+zo, 0, true);
 		}else{
 			var rayEnd = rayPos.sub(delta);
-			setBlock(Math.floor(rayEnd.x), Math.floor(rayEnd.y),Math.floor(rayEnd.z), 3, true);
+				setBlock(Math.floor(rayEnd.x), Math.floor(rayEnd.y),Math.floor(rayEnd.z), 3, true);
 		}
 	}
 }

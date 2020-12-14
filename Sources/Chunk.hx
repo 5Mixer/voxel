@@ -7,7 +7,7 @@ import kha.graphics4.VertexBuffer;
 class Chunk {
 	public var blocks:Bytes;
 
-	public static inline var chunkSize = 32;
+	public static inline var chunkSize = 24;
 	public static inline var chunkSizeSquared = chunkSize * chunkSize;
 	public static inline var chunkSizeCubed = chunkSize * chunkSize * chunkSize;
     
@@ -19,6 +19,7 @@ class Chunk {
     public var indexBuffer:IndexBuffer;
 
 	public var dirtyGeometry = false;
+	public var visible = true;
 
     public function new(wx, wy, wz) {
 		blocks = Bytes.alloc(chunkSizeCubed);
@@ -42,10 +43,15 @@ class Chunk {
 		dirtyGeometry = true;
 	}
 	public function loadData(data:Bytes) {
+		visible = true;
 		wx = data.getInt32(0);
 		wy = data.getInt32(4);
 		wz = data.getInt32(8);
-		blocks.blit(0, data, 12, chunkSizeCubed);
+		if (data.get(12) == 1) {
+			visible = false;
+		}else{
+			blocks.blit(0, data, 13, chunkSizeCubed);
+		}
 		dirtyGeometry = true;
 	}
     
