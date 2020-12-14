@@ -6,13 +6,10 @@ import kha.graphics4.VertexBuffer;
 
 class Chunk {
 	public var blocks:Bytes;
-	public var exposedRLE = []; //Starts with number exposed, then not, then exposed...
 
 	public static inline var chunkSize = 32;
 	public static inline var chunkSizeSquared = chunkSize * chunkSize;
 	public static inline var chunkSizeCubed = chunkSize * chunkSize * chunkSize;
-	var min = 0;
-    var max = chunkSize-1;
     
     public var wx:Int;
     public var wy:Int;
@@ -23,30 +20,32 @@ class Chunk {
 
 	public var dirtyGeometry = false;
 
-    public function new(wx, wy, wz, worldGenerator) {
+    public function new(wx, wy, wz) {
 		blocks = Bytes.alloc(chunkSizeCubed);
-
-		var runLengthExposed = true;
-		
-		loadForLocation(wx, wy, wz, worldGenerator);
 	}
 	public function loadForLocation(wx,wy,wz,worldGenerator:WorldGenerator) {
         this.wx = wx;
         this.wy = wy;
 		this.wz = wz;
+
+		var worldSpaceX = wx * chunkSize;
+		var worldSpaceY = wy * chunkSize;
+		var worldSpaceZ = wz * chunkSize;
 		
 		for(x in 0...chunkSize)
 			for(y in 0...chunkSize)
 				for(z in 0...chunkSize) {
-					var block = worldGenerator.getBlock(wx*chunkSize+x,wy*chunkSize+y,wz*chunkSize+z);
-					// if (runLengthExposed == (block == 0)) {
-					// 	exposedRLE[exposedRLE.length-1]++;
-					// }else{
-					// 	exposedRLE.push(1);
-					// }
+					var block = worldGenerator.getBlock(worldSpaceX+x, worldSpaceY+y, worldSpaceZ+z);
 					blocks.set(x*chunkSizeSquared + y*chunkSize + z, block);
 				}
 
+		dirtyGeometry = true;
+	}
+	public function loadData(data:Bytes) {
+		wx = data.getInt32(0);
+		wy = data.getInt32(4);
+		wz = data.getInt32(8);
+		blocks.blit(0, data, 12, chunkSizeCubed);
 		dirtyGeometry = true;
 	}
     
@@ -69,10 +68,4 @@ class Chunk {
 		vertexBuffer = null;
 		indexBuffer = null;
 	}
-
-	/* Index to location
-	var x = chunkOriginWorldscaleX + Math.floor(blockIndex/Chunk.chunkSizeSquared);
-	var y = chunkOriginWorldscaleY + Math.floor(blockIndex/Chunk.chunkSize)%Chunk.chunkSize;
-	var z = chunkOriginWorldscaleZ + blockIndex%Chunk.chunkSize;
-	*/
 }

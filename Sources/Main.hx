@@ -18,6 +18,7 @@ class Main {
 	
 	var awaitingSprintStart = false;
 	var sprinting = false;
+	var worldLoaded = false;
 
 	function new () {
 		camera = new Camera();
@@ -32,6 +33,20 @@ class Main {
 		BlockRegistry.register(BlockIdentifier.Stone,    new Block("Stone",  3, 3, 3, 3, 3, 3));
 
 		connection = new ServerConnection();
+		connection.receiveChunk = function(data) {
+			var cx = data.getInt32(0);
+			var cy = data.getInt32(4);
+			var cz = data.getInt32(8);
+			trace('Received $cx,$cy,$cz');
+			scene.loadChunkData(cx, cy, cz, data);
+			if (!worldLoaded && cx == 0 && cy == 0 && cz == 0)
+				worldLoaded = true;
+		}
+		connection.receiveBlock = function(x,y,z,b) {
+			scene.setBlock(x,y,z,b);
+		}
+		scene.requestChunk = connection.requestChunk;
+		scene.sendBlock = connection.sendBlock;
 
 		input.clickListeners.push(function(button) {
 			scene.ray(button == 0);
@@ -73,6 +88,9 @@ class Main {
 		}
 		var movement = FastMatrix3.rotation(Math.PI/2-camera.horizontalAngle).multvec(localMovementVector.fast()).normalized().mult(sprinting?10/60:5/60);
 		
+		if (!worldLoaded)
+			return;
+
 		// y movement and collision resolution
 		player.position.y += player.velocity.y;
 		var shouldMoveY = true;
