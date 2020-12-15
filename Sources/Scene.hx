@@ -47,7 +47,7 @@ class Scene {
 		this.camera = camera;
 		generator = new TerrainWorldGenerator();
 		
-		kha.Assets.images.sprites.generateMipmaps(2);
+		// kha.Assets.images.sprites.generateMipmaps(1);
 		
 		setupPipeline();
 	}
@@ -241,6 +241,12 @@ class Scene {
 				faceCullBuffer.set(blockIndex, faceCullBuffer.get(blockIndex) & ~ (1<<Side.Back));
 				faces++;
 			}
+		}
+
+		// All filled.
+		if (faces == 0) {
+			chunk.visible = false;
+			return;
 		}
 		
 		// Stores the current quads four AO values, so the quad may be index flipped if required
@@ -437,7 +443,8 @@ class Scene {
 		if (camera.mvpDirty)
 			g.setMatrix(mvpID, camera.getMVP());
 		g.setTexture(textureID, kha.Assets.images.sprites);
-		g.setTextureParameters(textureID, Clamp, Clamp, TextureFilter.PointFilter, TextureFilter.PointFilter, MipMapFilter.LinearMipFilter);
+		g.setTextureParameters(textureID, Clamp, Clamp, TextureFilter.PointFilter, TextureFilter.PointFilter, MipMapFilter.NoMipFilter);
+		
 		
 		for (chunk in chunks) {
 			if (chunk == null || !chunk.hasGeometry()) {
