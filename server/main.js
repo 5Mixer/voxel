@@ -55,7 +55,7 @@ function setBlock(x,y,z,b){
     // var lz = z - cz*chunkSize;
     var chunk = chunks[cx+','+cy+','+cz];
     if (chunk != null) {
-        chunk[12] = 0;
+        chunk[12] = 0;// TODO: Create the rest of the chunk
         chunk[chunkMod(x)*chunkSize*chunkSize+chunkMod(y)*chunkSize+chunkMod(z)] = b;
     }
 }

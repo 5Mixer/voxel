@@ -216,7 +216,7 @@ class Main {
 	}
 
 	public static function main() {
-		System.start({title: "Blocks", width: 800, height: 600}, function (_) {
+		System.start({title: "Blocks", width: 800, height: 600, framebuffer:{samplesPerPixel: 0}}, function (_) {
 			Assets.loadEverything(function () {
 				var main = new Main();
 				Scheduler.addTimeTask(function () { main.update(); }, 0, 1 / 60);

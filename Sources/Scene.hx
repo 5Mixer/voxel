@@ -119,10 +119,9 @@ class Scene {
 	function setupPipeline() {
 		// Vertex structure
 		structure = new VertexStructure();
-		structure.add("pos", VertexData.Float3);
-		structure.add("uv", VertexData.Float2);
-		// structure.add("colour", VertexData.Float3);
-		structure.add("colour", VertexData.Float1);
+		structure.add("pos", VertexData.Short4Norm);
+		structure.add("uv", VertexData.Short2Norm);
+		structure.add("colour", VertexData.Short4Norm);
 		
 		// Pipeline
 		pipeline = new PipelineState();
@@ -254,9 +253,9 @@ class Scene {
 		
 		var vertexIndex = 0;
 		
-		var vertexByteSize = 6;
+		var vertexByteSize = 5;
 		chunk.vertexBuffer = new VertexBuffer(faces*4, structure, StaticUsage);
-		var vertexBufferData = chunk.vertexBuffer.lock();
+		var vertexBufferData = chunk.vertexBuffer.lockInt16();
 		
 		// Load the generated index data into a buffer
 		chunk.indexBuffer = new IndexBuffer(faces*6, StaticUsage);
@@ -295,10 +294,17 @@ class Scene {
 							vertexBufferData.set(vertexDataIndex++, (CubeGeometry.vertices[v*3+0]+x)); // pos x
 							vertexBufferData.set(vertexDataIndex++, (CubeGeometry.vertices[v*3+1]+y)); // pos y
 							vertexBufferData.set(vertexDataIndex++, (CubeGeometry.vertices[v*3+2]+z)); // pos z
+							vertexBufferData.set(vertexDataIndex++, 0); // padding
 							
 							// texture (uv)
-							vertexBufferData.set(vertexDataIndex++, ((CubeGeometry.uv[v*2] + block%16) / 16));
-							vertexBufferData.set(vertexDataIndex++, ((CubeGeometry.uv[v*2+1]+Math.floor(block/16)) / 16));
+							// var textureU = block;//(CubeGeometry.uv[v*2] + block%16) ;// / 16;
+							// var textureV = -1;//(CubeGeometry.uv[v*2+1]+Math.floor(block/16)) ; // / 16;
+							var textureU = Math.round((CubeGeometry.uv[v*2] + block%16)/16*32767);// / 16;
+							var textureV = Math.round((CubeGeometry.uv[v*2+1]+Math.floor(block/16))/16*32767); // / 16;
+							// vertexBufferData.set(vertexDataIndex++, (textureU - .5) * 32767);
+							// vertexBufferData.set(vertexDataIndex++, (textureU - .5) * 32767);
+							vertexBufferData.set(vertexDataIndex++, textureU);
+							vertexBufferData.set(vertexDataIndex++, textureV);
 							
 							// colour (rgb)
 							var light = 1.0;
@@ -338,7 +344,10 @@ class Scene {
 							
 							// Store this quad vertex in quad AO working array, so the quad may be flipped if it makes AO look nicer.
 							ao[triangleVertex] = light;
-							vertexBufferData.set(vertexDataIndex++, (light));
+							vertexBufferData.set(vertexDataIndex++, Math.floor(light*32767));
+							vertexBufferData.set(vertexDataIndex++, Math.floor(light*32767));
+							vertexBufferData.set(vertexDataIndex++, Math.floor(light*32767));
+							vertexBufferData.set(vertexDataIndex++, Math.floor(light*32767));
 						}
 						
 						// Register quad as two triangles through index buffer
@@ -480,7 +489,7 @@ class Scene {
 			setBlock(Math.floor(rayPos.x)+xo, Math.floor(rayPos.y)+yo,Math.floor(rayPos.z)+zo, 0, true);
 		}else{
 			var rayEnd = rayPos.sub(delta);
-				setBlock(Math.floor(rayEnd.x), Math.floor(rayEnd.y),Math.floor(rayEnd.z), 3, true);
+				setBlock(Math.floor(rayEnd.x), Math.floor(rayEnd.y),Math.floor(rayEnd.z), Math.ceil(Math.random()*4), true);
 		}
 	}
 }
