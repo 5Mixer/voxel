@@ -137,7 +137,7 @@ class Scene {
 	function setupPipeline() {
 		// Vertex structure
 		structure = new VertexStructure();
-		structure.add("pos", VertexData.Float32_4X);
+		structure.add("pos", VertexData.Float32_3X);
 		structure.add("uv", VertexData.Float32_2X);
 		structure.add("colour", VertexData.Float32_1X);
 
@@ -312,7 +312,6 @@ class Scene {
 							vertexBufferData.set(vertexDataIndex++, (CubeGeometry.vertices[v * 3 + 0] + x)); // pos x
 							vertexBufferData.set(vertexDataIndex++, (CubeGeometry.vertices[v * 3 + 1] + y)); // pos y
 							vertexBufferData.set(vertexDataIndex++, (CubeGeometry.vertices[v * 3 + 2] + z)); // pos z
-							vertexBufferData.set(vertexDataIndex++, 0); // padding
 
 							// texture (uv)
 							var textureU = (CubeGeometry.uv[v * 2] + block % 16) / 16;

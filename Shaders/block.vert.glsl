@@ -1,7 +1,6 @@
 #version 450
 
-// Input vertex data, different for all executions of this shader
-in vec4 pos;
+in vec3 pos;
 in vec2 uv;
 in float colour;
 
