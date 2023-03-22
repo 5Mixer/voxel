@@ -1,5 +1,7 @@
 package;
 
+import kha.math.Vector3;
+import kha.graphics5_.VertexStructure;
 import haxe.io.Bytes;
 import haxe.Timer;
 import TerrainGenerator.TerrainWorldGenerator;
@@ -23,8 +25,6 @@ class Scene {
 
 	var generator:WorldGenerator;
 
-	var chunkGeomChanged = false; // Dirty flag for chunk loads and block changes.
-
 	var prevCameraChunk = '';
 
 	public var requestChunk:(cx:Int, cy:Int, cz:Int) -> Void;
@@ -43,6 +43,13 @@ class Scene {
 	var chunkArrayOffsetY = 0;
 	var chunkArrayOffsetZ = 0;
 
+	var chunksInView = [
+		for (cx in -radius + 1...radius)
+			for (cy in -radius + 1...radius)
+				for (cz in -radius + 1...radius)
+					new Vector3(cx, cy, cz)
+	];
+
 	public function new(camera:Camera) {
 		this.camera = camera;
 		generator = new TerrainWorldGenerator();
@@ -50,6 +57,7 @@ class Scene {
 		// kha.Assets.images.sprites.generateMipmaps(1);
 
 		setupPipeline();
+		chunksInView.sort(function(a, b) return a.length > b.length ? 1 : -1);
 	}
 
 	public function getChunk(cx:Int, cy:Int, cz:Int) {
@@ -109,8 +117,6 @@ class Scene {
 		if (send) {
 			sendBlock(x, y, z, b);
 		}
-
-		chunkGeomChanged = true;
 
 		// Set neighboring chunks to dirty geom so that lighting, ao, etc is recalculated
 		for (xOffset in -1...2)
@@ -181,23 +187,19 @@ class Scene {
 		if (chunk != null) {
 			chunk.loadData(data);
 		}
+
 		for (xOffset in -1...2)
 			for (yOffset in -1...2)
 				for (zOffset in -1...2)
 					if (getChunk(cx + xOffset, cy + yOffset, cz + zOffset) != null)
 						getChunk(cx + xOffset, cy + yOffset, cz + zOffset).dirtyGeometry = true;
-		chunkGeomChanged = true;
 	}
 
 	var faceCullBuffer = Bytes.alloc(Chunk.chunkSizeCubed);
+	var total = 0.;
+	var total2 = 0.;
 
 	function constructChunkGeometry(chunk:Chunk) {
-		if (chunk == null || !chunk.dirtyGeometry)
-			return;
-
-		if (!shouldGenerateChunkGeometry(chunk.wx, chunk.wy, chunk.wz))
-			return;
-
 		chunk.dirtyGeometry = false;
 
 		if (!chunk.visible)
@@ -216,6 +218,7 @@ class Scene {
 
 		faceCullBuffer.fill(0, Chunk.chunkSizeCubed, (1 << 6) - 1); // Must always reset as buffer is reused.
 		var faces = 0;
+		var start = Timer.stamp();
 		for (blockIndex in 0...Chunk.chunkSizeCubed) {
 			if (chunk.blocks.get(blockIndex) == 0)
 				continue;
@@ -224,48 +227,56 @@ class Scene {
 			var ly = Math.floor(blockIndex / Chunk.chunkSize) % Chunk.chunkSize;
 			var lz = blockIndex % Chunk.chunkSize;
 
+			var faceBitmap = (1 << 6) - 1;
+
 			// Right face culling
 			if (lx != Chunk.chunkSize - 1 && chunk.getBlock(lx + 1, ly, lz) == 0 || lx == Chunk.chunkSize - 1 && rightChunk.getBlock(0, ly, lz) == 0) {
-				faceCullBuffer.set(blockIndex, faceCullBuffer.get(blockIndex) & ~(1 << Side.Right)); // Do not render a side if it is obscured.
+				faceBitmap &= ~(1 << Side.Right);
 				faces++;
 			}
 
 			// Left face culling
 			if (lx != 0 && chunk.getBlock(lx - 1, ly, lz) == 0 || lx == 0 && leftChunk.getBlock(Chunk.chunkSize - 1, ly, lz) == 0) {
-				faceCullBuffer.set(blockIndex, faceCullBuffer.get(blockIndex) & ~(1 << Side.Left));
+				faceBitmap &= ~(1 << Side.Left);
 				faces++;
 			}
 
 			// Top face culling
 			if (ly != Chunk.chunkSize - 1 && chunk.getBlock(lx, ly + 1, lz) == 0 || ly == Chunk.chunkSize - 1 && topChunk.getBlock(lx, 0, lz) == 0) {
-				faceCullBuffer.set(blockIndex, faceCullBuffer.get(blockIndex) & ~(1 << Side.Up));
+				faceBitmap &= ~(1 << Side.Up);
 				faces++;
 			}
 
 			// Down face culling
 			if (ly != 0 && chunk.getBlock(lx, ly - 1, lz) == 0 || ly == 0 && bottomChunk.getBlock(lx, Chunk.chunkSize - 1, lz) == 0) {
-				faceCullBuffer.set(blockIndex, faceCullBuffer.get(blockIndex) & ~(1 << Side.Down));
+				faceBitmap &= ~(1 << Side.Down);
 				faces++;
 			}
 
 			// Front face culling
 			if (lz != Chunk.chunkSize - 1 && chunk.getBlock(lx, ly, lz + 1) == 0 || lz == Chunk.chunkSize - 1 && frontChunk.getBlock(lx, ly, 0) == 0) {
-				faceCullBuffer.set(blockIndex, faceCullBuffer.get(blockIndex) & ~(1 << Side.Front));
+				faceBitmap &= ~(1 << Side.Front);
 				faces++;
 			}
 
 			// Back face culling
 			if (lz != 0 && chunk.getBlock(lx, ly, lz - 1) == 0 || lz == 0 && backChunk.getBlock(lx, ly, Chunk.chunkSize - 1) == 0) {
-				faceCullBuffer.set(blockIndex, faceCullBuffer.get(blockIndex) & ~(1 << Side.Back));
+				faceBitmap &= ~(1 << Side.Back);
 				faces++;
 			}
+			faceCullBuffer.set(blockIndex, faceBitmap);
 		}
 
 		// All filled.
 		if (faces == 0) {
 			chunk.visible = false;
 			return;
+		} else {
+			total += Timer.stamp() - start;
+
+			trace('Built chunk ${chunk.wx} ${chunk.wy} ${chunk.wz} in ${Timer.stamp() - start}, total: $total');
 		}
+		var start = Timer.stamp();
 
 		// Stores the current quads four AO values, so the quad may be index flipped if required
 		var ao = new Vector<Float>(4);
@@ -282,7 +293,6 @@ class Scene {
 		var vertexDataIndex = 0;
 		var indexDataIndex = 0;
 
-		// for (blockIndex in 0...Chunk.chunkSizeCubed) {
 		var blockIndex = 0;
 		for (lx in 0...Chunk.chunkSize) {
 			var x = chunkOriginWorldscaleX + lx;
@@ -291,22 +301,23 @@ class Scene {
 				var y = chunkOriginWorldscaleY + ly;
 
 				for (lz in 0...Chunk.chunkSize) {
-					var block = chunk.blocks.get(blockIndex);
+					var block = chunk.blocks.get(blockIndex++);
 
-					blockIndex++; // Anything that uses block index should be before here. This is convenient given continue's.
-					// Skip air
 					if (block == 0) {
 						continue;
 					}
 
 					var z = chunkOriginWorldscaleZ + lz;
 
+					var blockTextureX = block % 16;
+					var blockTextureY = Math.floor(block / 16);
+
 					for (face in 0...6) {
 						if ((faceCullBuffer.get(blockIndex - 1) & (1 << face)) != 0) // Skip obscured faced
 							continue;
 
 						for (triangleVertex in 0...4) {
-							var v = face * 4 + triangleVertex; // v is the [0-24) vertices of the quad
+							var v = face * 4 + triangleVertex; // v is the [0-24) vertices of the cube
 
 							// position (xyz)
 							vertexBufferData.set(vertexDataIndex++, (CubeGeometry.vertices[v * 3 + 0] + x)); // pos x
@@ -314,13 +325,12 @@ class Scene {
 							vertexBufferData.set(vertexDataIndex++, (CubeGeometry.vertices[v * 3 + 2] + z)); // pos z
 
 							// texture (uv)
-							var textureU = (CubeGeometry.uv[v * 2] + block % 16) / 16;
-							var textureV = (CubeGeometry.uv[v * 2 + 1] + Math.floor(block / 16)) / 16;
+							var textureU = (CubeGeometry.uv[v * 2] + blockTextureX) / 16;
+							var textureV = (CubeGeometry.uv[v * 2 + 1] + blockTextureY) / 16;
 							vertexBufferData.set(vertexDataIndex++, textureU);
 							vertexBufferData.set(vertexDataIndex++, textureV);
 
 							// colour (rgb)
-							var light = 1.0;
 							var side1 = false, side2 = false, corner = false;
 
 							// Map the internal cube coordinates to -1 and 1 for ease of AO when comparing with nearby cubes
@@ -348,15 +358,16 @@ class Scene {
 							corner = !isExposedUnsafe(x + xVertexOffset, y + yVertexOffset, z + zVertexOffset);
 
 							// Absence of corner is irrelevant if both sides obscure corner
-							if (side1 && side2)
-								light = 0;
-							else
-								light = (3 - ((side1 ? 1 : 0) + (side2 ? 1 : 0) +
-									(corner ? 1 : 0))) / 3; // Subtract light linearly by number of adjacent blocks
+							var light = if (side1 && side2) {
+								0;
+							} else {
+								// Subtract light linearly by number of adjacent blocks
+								(3 - ((side1 ? 1 : 0) + (side2 ? 1 : 0) + (corner ? 1 : 0))) / 3;
+							};
 
 							light = .5 + .5 * light;
 
-							// Store this quad vertex in quad AO working array, so the quad may be flipped if it makes AO look nicer.
+							// Store this quad vertex in quad AO working array, so the quad indexes can be flipped if it makes AO look nicer.
 							ao[triangleVertex] = light;
 							vertexBufferData.set(vertexDataIndex++, light);
 						}
@@ -387,6 +398,10 @@ class Scene {
 		}
 		chunk.vertexBuffer.unlock();
 		chunk.indexBuffer.unlock();
+
+		total2 += Timer.stamp() - start;
+
+		trace('Finished data for ${chunk.wx} ${chunk.wy} ${chunk.wz}, faces: $faces, ${chunk.vertexBuffer.count() * structure.byteSize()} bytes, in ${Timer.stamp() - start}, total: $total2');
 	}
 
 	var reusableChunkPool = [];
@@ -400,7 +415,7 @@ class Scene {
 
 		var start = Timer.stamp();
 
-		if (cameraChunk != prevCameraChunk) {
+		if (cameraChunk != prevCameraChunk || true) {
 			var index = 0;
 			var reusedChunks = []; // Stores retained chunks so that they are not destroyed.
 			for (cx in -radius...radius + 1) {
@@ -445,17 +460,20 @@ class Scene {
 			chunkArrayOffsetX = cameraChunkX;
 			chunkArrayOffsetY = cameraChunkY;
 			chunkArrayOffsetZ = cameraChunkZ;
-
-			chunkGeomChanged = true;
 		}
 
 		// Generate geom for one unit smaller than radius square (allows proper AO etc)
-		if (chunkGeomChanged) {
-			for (cx in -radius + 1...radius)
-				for (cy in -radius + 1...radius)
-					for (cz in -radius + 1...radius)
-						constructChunkGeometry(getChunk(cx + cameraChunkX, cy + cameraChunkY, cz + cameraChunkZ));
+		for (chunkOffset in chunksInView) {
+			var chunk = getChunk(cameraChunkX
+				+ Math.floor(chunkOffset.x), cameraChunkY
+				+ Math.floor(chunkOffset.y), cameraChunkZ
+				+ Math.floor(chunkOffset.z));
+			if (chunk != null && chunk.dirtyGeometry && shouldGenerateChunkGeometry(chunk.wx, chunk.wy, chunk.wz)) {
+				constructChunkGeometry(chunk);
+				continue; // Only generate one chunk per frame
+			}
 		}
+
 		prevCameraChunk = cameraChunk + "";
 	}
 
@@ -474,6 +492,7 @@ class Scene {
 			g.setVertexBuffer(chunk.vertexBuffer);
 			g.setIndexBuffer(chunk.indexBuffer);
 			g.drawIndexedVertices();
+			continue;
 		}
 	}
 

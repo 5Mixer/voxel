@@ -5,7 +5,7 @@ const wss = new WebSocket.Server({ port: 4646 });
 
 var chunks = {}
 
-var chunkSize = 24;
+var chunkSize = 32;
 
 const fastnoise = require('fastnoisejs')
 const noise = fastnoise.Create(123)

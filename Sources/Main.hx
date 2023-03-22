@@ -15,7 +15,7 @@ class Main {
 	var input:Input;
 	var lineRenderer:LineRenderer;
 	var connection:ServerConnection;
-	
+
 	var awaitingSprintStart = false;
 	var sprinting = false;
 	var worldLoaded = false;
@@ -23,7 +23,7 @@ class Main {
 	var jumps = 0;
 	var maxJumps = 2;
 
-	function new () {
+	function new() {
 		camera = new Camera();
 		input = new Input(camera);
 		scene = new Scene(camera);
@@ -31,9 +31,9 @@ class Main {
 		lineRenderer = new LineRenderer(camera);
 
 		// Right left top bottom front back
-		BlockRegistry.register(BlockIdentifier.Dirt,     new Block("Dirt",   0, 0, 0, 0, 0, 0));
-		BlockRegistry.register(BlockIdentifier.Grass,    new Block("Grass",  1, 1, 2, 0, 1, 1));
-		BlockRegistry.register(BlockIdentifier.Stone,    new Block("Stone",  3, 3, 3, 3, 3, 3));
+		BlockRegistry.register(BlockIdentifier.Dirt, new Block("Dirt", 0, 0, 0, 0, 0, 0));
+		BlockRegistry.register(BlockIdentifier.Grass, new Block("Grass", 1, 1, 2, 0, 1, 1));
+		BlockRegistry.register(BlockIdentifier.Stone, new Block("Stone", 3, 3, 3, 3, 3, 3));
 
 		connection = new ServerConnection();
 		connection.receiveChunk = function(data) {
@@ -44,8 +44,8 @@ class Main {
 			if (!worldLoaded && cx == 0 && cy == 0 && cz == 0)
 				worldLoaded = true;
 		}
-		connection.receiveBlock = function(x,y,z,b) {
-			scene.setBlock(x,y,z,b);
+		connection.receiveBlock = function(x, y, z, b) {
+			scene.setBlock(x, y, z, b);
 		}
 		scene.requestChunk = connection.requestChunk;
 		scene.sendBlock = connection.sendBlock;
@@ -67,15 +67,15 @@ class Main {
 					if (!sprinting)
 						awaitingSprintStart = false;
 				}, .3);
-			}else{
+			} else {
 				sprinting = true;
 				awaitingSprintStart = false;
 			}
 		});
 	}
 
-	function update(): Void {
-		camera.position = player.position.add(new Vector3(0,player.size.y,0));
+	function update():Void {
+		camera.position = player.position.add(new Vector3(0, player.size.y, 0));
 		camera.fov = (sprinting ? 100 : 80) * Math.PI / 180;
 		scene.update();
 		player.update();
@@ -84,10 +84,10 @@ class Main {
 			if (input.rightMouseButtonDown)
 				scene.ray(false);
 
-		var localMovementVector = new Vector2(0,0);
+		var localMovementVector = new Vector2(0, 0);
 		if (input.forwards) {
 			localMovementVector.x += 1;
-		}else{
+		} else {
 			sprinting = false;
 		}
 		if (input.left) {
@@ -99,8 +99,11 @@ class Main {
 		if (input.backwards) {
 			localMovementVector.x -= 1;
 		}
-		var movement = FastMatrix3.rotation(Math.PI/2-camera.horizontalAngle).multvec(localMovementVector.fast()).normalized().mult(sprinting?10/60:5/60);
-		
+		var movement = FastMatrix3.rotation(Math.PI / 2 - camera.horizontalAngle)
+			.multvec(localMovementVector.fast())
+			.normalized()
+			.mult(sprinting ? 10 / 60 : 5 / 60);
+
 		if (!worldLoaded)
 			return;
 
@@ -111,16 +114,16 @@ class Main {
 		for (x in Math.floor(aabb.min.x)...Math.ceil(aabb.max.x))
 			for (y in Math.floor(aabb.min.y)...Math.ceil(aabb.max.y))
 				for (z in Math.floor(aabb.min.z)...Math.ceil(aabb.max.z))
-					if (!scene.isAir(x,y,z)) {
+					if (!scene.isAir(x, y, z)) {
 						shouldMoveY = false;
 						break;
 					}
 		if (!shouldMoveY) {
 			if (player.velocity.y > 0) {
-				player.position.y = Math.floor(aabb.max.y+player.velocity.y)-player.size.y;
+				player.position.y = Math.floor(aabb.max.y + player.velocity.y) - player.size.y;
 				player.velocity.y = 0;
-			}else{
-				player.position.y = Math.ceil(aabb.min.y+player.velocity.y);
+			} else {
+				player.position.y = Math.ceil(aabb.min.y + player.velocity.y);
 				jumps = 0;
 				player.velocity.y = 0;
 
@@ -129,7 +132,7 @@ class Main {
 					jumps++;
 				}
 			}
-		}else{
+		} else {
 			player.velocity.y -= .01;
 		}
 
@@ -141,7 +144,7 @@ class Main {
 		for (x in Math.floor(aabb.min.x)...Math.ceil(aabb.max.x))
 			for (y in Math.floor(aabb.min.y)...Math.ceil(aabb.max.y))
 				for (z in Math.floor(aabb.min.z)...Math.ceil(aabb.max.z))
-					if (!scene.isAir(x,y,z)) {
+					if (!scene.isAir(x, y, z)) {
 						shouldMoveX = false;
 						break;
 					}
@@ -149,7 +152,7 @@ class Main {
 			player.position.x -= movement.x;
 			sprinting = false;
 		}
-		
+
 		// z movement and collision resolution
 		player.position.z += movement.y;
 
@@ -158,7 +161,7 @@ class Main {
 		for (x in Math.floor(aabb.min.x)...Math.ceil(aabb.max.x))
 			for (y in Math.floor(aabb.min.y)...Math.ceil(aabb.max.y))
 				for (z in Math.floor(aabb.min.z)...Math.ceil(aabb.max.z))
-					if (!scene.isAir(x,y,z)) {
+					if (!scene.isAir(x, y, z)) {
 						shouldMoveZ = false;
 						break;
 					}
@@ -168,59 +171,70 @@ class Main {
 		}
 	}
 
-	function renderAABB(aabb:AABB,col=kha.Color.Blue) {
+	function renderAABB(aabb:AABB, col = kha.Color.Blue) {
 		var min = aabb.min;
 		var max = aabb.max;
 		// Bottom of AABB
-		lineRenderer.renderLine(new Vector3(min.x,min.y,min.z), new Vector3(max.x,min.y,min.z), col);
-		lineRenderer.renderLine(new Vector3(min.x,min.y,min.z), new Vector3(min.x,min.y,max.z), col);
-		lineRenderer.renderLine(new Vector3(max.x,min.y,max.z), new Vector3(min.x,min.y,max.z), col);
-		lineRenderer.renderLine(new Vector3(max.x,min.y,max.z), new Vector3(max.x,min.y,min.z), col);
+		lineRenderer.renderLine(new Vector3(min.x, min.y, min.z), new Vector3(max.x, min.y, min.z), col);
+		lineRenderer.renderLine(new Vector3(min.x, min.y, min.z), new Vector3(min.x, min.y, max.z), col);
+		lineRenderer.renderLine(new Vector3(max.x, min.y, max.z), new Vector3(min.x, min.y, max.z), col);
+		lineRenderer.renderLine(new Vector3(max.x, min.y, max.z), new Vector3(max.x, min.y, min.z), col);
 		// Sides of AABB
-		lineRenderer.renderLine(new Vector3(min.x,min.y,min.z), new Vector3(min.x,max.y,min.z), col);
-		lineRenderer.renderLine(new Vector3(max.x,min.y,min.z), new Vector3(max.x,max.y,min.z), col);
-		lineRenderer.renderLine(new Vector3(min.x,min.y,max.z), new Vector3(min.x,max.y,max.z), col);
-		lineRenderer.renderLine(new Vector3(max.x,min.y,max.z), new Vector3(max.x,max.y,max.z), col);
+		lineRenderer.renderLine(new Vector3(min.x, min.y, min.z), new Vector3(min.x, max.y, min.z), col);
+		lineRenderer.renderLine(new Vector3(max.x, min.y, min.z), new Vector3(max.x, max.y, min.z), col);
+		lineRenderer.renderLine(new Vector3(min.x, min.y, max.z), new Vector3(min.x, max.y, max.z), col);
+		lineRenderer.renderLine(new Vector3(max.x, min.y, max.z), new Vector3(max.x, max.y, max.z), col);
 		// Top of AABB
-		lineRenderer.renderLine(new Vector3(min.x,max.y,min.z), new Vector3(max.x,max.y,min.z), col);
-		lineRenderer.renderLine(new Vector3(min.x,max.y,min.z), new Vector3(min.x,max.y,max.z), col);
-		lineRenderer.renderLine(new Vector3(max.x,max.y,max.z), new Vector3(min.x,max.y,max.z), col);
-		lineRenderer.renderLine(new Vector3(max.x,max.y,max.z), new Vector3(max.x,max.y,min.z), col);
-	}
-	function renderCubeOutline(x,y,z,col) {
-		renderAABB(new AABB(new Vector3(x,y,z),new Vector3(x+1,y+1,z+1)),col);
+		lineRenderer.renderLine(new Vector3(min.x, max.y, min.z), new Vector3(max.x, max.y, min.z), col);
+		lineRenderer.renderLine(new Vector3(min.x, max.y, min.z), new Vector3(min.x, max.y, max.z), col);
+		lineRenderer.renderLine(new Vector3(max.x, max.y, max.z), new Vector3(min.x, max.y, max.z), col);
+		lineRenderer.renderLine(new Vector3(max.x, max.y, max.z), new Vector3(max.x, max.y, min.z), col);
 	}
 
-	function render(framebuffer: Framebuffer): Void {
+	function renderCubeOutline(x, y, z, col) {
+		renderAABB(new AABB(new Vector3(x, y, z), new Vector3(x + 1, y + 1, z + 1)), col);
+	}
+
+	function render(framebuffer:Framebuffer):Void {
 		var g4 = framebuffer.g4;
 		g4.begin();
-		g4.clear(kha.Color.fromBytes(242, 250, 252),1.0);
+		g4.clear(kha.Color.fromBytes(0, 42, 57), 1.0);
 		scene.render(g4);
 
 		/*lineRenderer.start(g4);
-		g4.clear(null, 1.0); // Clear depth
-		var playerGizmoPos = camera.position.add(camera.getLookVector().mult(5));
-		// lineRenderer.renderLine(playerGizmoPos.add(new Vector3(0,0,0)), playerGizmoPos.add(new Vector3(1,0,0)), kha.Color.Red);
-		// lineRenderer.renderLine(playerGizmoPos.add(new Vector3(0,0,0)), playerGizmoPos.add(new Vector3(0,1,0)), kha.Color.Green);
-		// lineRenderer.renderLine(playerGizmoPos.add(new Vector3(0,0,0)), playerGizmoPos.add(new Vector3(0,0,1)), kha.Color.Blue);
-		lineRenderer.renderLine(new Vector3(0,1,0), new Vector3(0,1,5), kha.Color.Black);
-		
-		lineRenderer.end(g4); */
+			g4.clear(null, 1.0); // Clear depth
+			var playerGizmoPos = camera.position.add(camera.getLookVector().mult(5));
+			// lineRenderer.renderLine(playerGizmoPos.add(new Vector3(0,0,0)), playerGizmoPos.add(new Vector3(1,0,0)), kha.Color.Red);
+			// lineRenderer.renderLine(playerGizmoPos.add(new Vector3(0,0,0)), playerGizmoPos.add(new Vector3(0,1,0)), kha.Color.Green);
+			// lineRenderer.renderLine(playerGizmoPos.add(new Vector3(0,0,0)), playerGizmoPos.add(new Vector3(0,0,1)), kha.Color.Blue);
+			lineRenderer.renderLine(new Vector3(0,1,0), new Vector3(0,1,5), kha.Color.Black);
+
+			lineRenderer.end(g4); */
+
 		g4.end();
 
 		var g2 = framebuffer.g2;
-		g2.begin(false);
-		g2.color = kha.Color.White;
-		g2.drawScaledImage(Assets.images.cursor,kha.Window.get(0).width/2-16,kha.Window.get(0).height/2-16, 32, 32);
-		g2.end();
+		// g2.begin(false);
+		// g2.color = kha.Color.White;
+		// g2.drawScaledImage(Assets.images.cursor, kha.Window.get(0).width / 2 - 16, kha.Window.get(0).height / 2 - 16, 32, 32);
+		// g2.end();
 	}
 
 	public static function main() {
-		System.start({title: "Blocks", width: 800, height: 600, framebuffer:{samplesPerPixel: 0}}, function (_) {
-			Assets.loadEverything(function () {
+		System.start({
+			title: "Blocks",
+			width: 800,
+			height: 600,
+			framebuffer: {samplesPerPixel: 0}
+		}, function(_) {
+			Assets.loadEverything(function() {
 				var main = new Main();
-				Scheduler.addTimeTask(function () { main.update(); }, 0, 1 / 60);
-				System.notifyOnFrames(function (framebuffers) { main.render(framebuffers[0]); });
+				Scheduler.addTimeTask(function() {
+					main.update();
+				}, 0, 1 / 60);
+				System.notifyOnFrames(function(framebuffers) {
+					main.render(framebuffers[0]);
+				});
 			});
 		});
 	}
