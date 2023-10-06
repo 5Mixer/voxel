@@ -10,14 +10,24 @@
             "sourceMaps": true
         },
         {
-            "type": "electron",
-            "request": "launch",
             "name": "Kha: HTML5",
-            "appDir": "${workspaceFolder}/build/debug-html5",
+            "request": "launch",
+            "type": "chrome",
             "cwd": "${workspaceFolder}/build/debug-html5",
-            "sourceMaps": true,
+            "runtimeExecutable": "${command:kha.findKhaElectron}",
+            "runtimeArgs": [
+                "--no-sandbox",
+                "--force-device-scale-factor=1",
+                "."
+            ],
+            "outFiles": [
+                "${workspaceFolder}/build/debug-html5/*.js"
+            ],
             "preLaunchTask": "Kha: Build for Debug HTML5",
-            "internalConsoleOptions": "openOnSessionStart"
+            "internalConsoleOptions": "openOnSessionStart",
+            "skipFiles": [
+                "<node_internals>/**"
+            ]
         },
         {
             "type": "krom",

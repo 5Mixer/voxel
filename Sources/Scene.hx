@@ -30,7 +30,7 @@ class Scene {
 	public var requestChunk:(cx:Int, cy:Int, cz:Int) -> Void;
 	public var sendBlock:(x:Int, y:Int, z:Int, b:Int) -> Void;
 
-	static var radius = 4;
+	static var radius = 2;
 	static var loadedChunksPerDimension = radius * 2 + 1; // -radius, 0, +radius
 	static var loadedChunksPerDimensionSquared = loadedChunksPerDimension * loadedChunksPerDimension;
 	static var loadedChunksPerDimensionCubed = loadedChunksPerDimension * loadedChunksPerDimension * loadedChunksPerDimension;
