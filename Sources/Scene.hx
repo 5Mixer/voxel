@@ -3,7 +3,6 @@ package;
 import kha.math.Vector3;
 import kha.graphics5_.VertexStructure;
 import haxe.io.Bytes;
-import haxe.Timer;
 import TerrainGenerator.TerrainWorldGenerator;
 import haxe.ds.Vector;
 import kha.Shaders;
@@ -196,8 +195,6 @@ class Scene {
 	}
 
 	var faceCullBuffer = Bytes.alloc(Chunk.chunkSizeCubed);
-	var total = 0.;
-	var total2 = 0.;
 
 	function constructChunkGeometry(chunk:Chunk) {
 		chunk.dirtyGeometry = false;
@@ -218,7 +215,6 @@ class Scene {
 
 		faceCullBuffer.fill(0, Chunk.chunkSizeCubed, (1 << 6) - 1); // Must always reset as buffer is reused.
 		var faces = 0;
-		var start = Timer.stamp();
 		for (blockIndex in 0...Chunk.chunkSizeCubed) {
 			if (chunk.blocks.get(blockIndex) == 0)
 				continue;
@@ -271,13 +267,7 @@ class Scene {
 		if (faces == 0) {
 			chunk.visible = false;
 			return;
-		} else {
-			total += Timer.stamp() - start;
-
-			trace('Built chunk ${chunk.wx} ${chunk.wy} ${chunk.wz} in ${Timer.stamp() - start}, total: $total');
 		}
-		var start = Timer.stamp();
-
 		// Stores the current quads four AO values, so the quad may be index flipped if required
 		var ao = new Vector<Float>(4);
 
@@ -398,14 +388,7 @@ class Scene {
 		}
 		chunk.vertexBuffer.unlock();
 		chunk.indexBuffer.unlock();
-
-		total2 += Timer.stamp() - start;
-
-		trace('Finished data for ${chunk.wx} ${chunk.wy} ${chunk.wz}, faces: $faces, ${chunk.vertexBuffer.count() * structure.byteSize()} bytes, in ${Timer.stamp() - start}, total: $total2');
 	}
-
-	var reusableChunkPool = [];
-	var firstUpdate = true;
 
 	public function update() {
 		cameraChunkX = Math.floor(camera.position.x / Chunk.chunkSize);
@@ -413,11 +396,8 @@ class Scene {
 		cameraChunkZ = Math.floor(camera.position.z / Chunk.chunkSize);
 		var cameraChunk = '$cameraChunkX,$cameraChunkY,$cameraChunkZ';
 
-		var start = Timer.stamp();
-
 		if (cameraChunk != prevCameraChunk || true) {
 			var index = 0;
-			var reusedChunks = []; // Stores retained chunks so that they are not destroyed.
 			for (cx in -radius...radius + 1) {
 				for (cy in -radius...radius + 1) {
 					for (cz in -radius...radius + 1) {
@@ -426,13 +406,8 @@ class Scene {
 
 						if (existingChunk != null) {
 							newChunks[index] = existingChunk;
-							reusedChunks.push(existingChunk);
 						} else {
-							if (reusableChunkPool.length > 0) {
-								newChunks[index] = reusableChunkPool.pop();
-							} else {
-								newChunks[index] = new Chunk(cameraChunkX + cx, cameraChunkY + cy, cameraChunkZ + cz);
-							}
+							newChunks[index] = new Chunk(cameraChunkX + cx, cameraChunkY + cy, cameraChunkZ + cz);
 
 							if (chunkData.exists('${cameraChunkX + cx},${cameraChunkY + cy},${cameraChunkZ + cz}')) {
 								newChunks[index].loadData(chunkData.get('${cameraChunkX + cx},${cameraChunkY + cy},${cameraChunkZ + cz}'));
@@ -445,16 +420,10 @@ class Scene {
 				}
 			}
 
-			if (firstUpdate) {
-				trace("Time: " + (Timer.stamp() - start));
-				firstUpdate = false;
-			}
-
-			for (chunk in chunks)
-				if (chunk != null && !reusedChunks.contains(chunk)) {
-					chunk.destroyGeometry();
-					reusableChunkPool.push(chunk);
-				}
+			// for (chunk in chunks)
+			// 	if (chunk != null) {
+			// 		chunk.destroyGeometry();
+			// 	}
 
 			chunks = newChunks.copy();
 			chunkArrayOffsetX = cameraChunkX;
@@ -517,10 +486,10 @@ class Scene {
 			for (xo in -1...2)
 				for (yo in -1...2)
 					for (zo in -1...2)
-						setBlock(Math.floor(rayPos.x) + xo, Math.floor(rayPos.y) + yo, Math.floor(rayPos.z) + zo, 0, true);
+						setBlock(Math.floor(rayPos.x) + xo, Math.floor(rayPos.y) + yo, Math.floor(rayPos.z) + zo, BlockIdentifier.Air, true);
 		} else {
 			var rayEnd = rayPos.sub(delta);
-			setBlock(Math.floor(rayEnd.x), Math.floor(rayEnd.y), Math.floor(rayEnd.z), Math.ceil(Math.random() * 4), true);
+			setBlock(Math.floor(rayEnd.x), Math.floor(rayEnd.y), Math.floor(rayEnd.z), BlockIdentifier.Stone, true);
 		}
 	}
 }
