@@ -29,7 +29,7 @@ class Scene {
 	public var requestChunk:(cx:Int, cy:Int, cz:Int) -> Void;
 	public var sendBlock:(x:Int, y:Int, z:Int, b:Int) -> Void;
 
-	static var radius = 2;
+	static var radius = 6;
 	static var loadedChunksPerDimension = radius * 2 + 1; // -radius, 0, +radius
 	static var loadedChunksPerDimensionSquared = loadedChunksPerDimension * loadedChunksPerDimension;
 	static var loadedChunksPerDimensionCubed = loadedChunksPerDimension * loadedChunksPerDimension * loadedChunksPerDimension;
@@ -67,10 +67,7 @@ class Scene {
 		if (cz - chunkArrayOffsetZ + radius < 0 || cz - chunkArrayOffsetZ + radius >= loadedChunksPerDimension)
 			return null;
 
-		return chunks[
-			(cx - chunkArrayOffsetX + radius) * loadedChunksPerDimensionSquared + (cy - chunkArrayOffsetY + radius) * loadedChunksPerDimension + (cz
-				- chunkArrayOffsetZ + radius)
-		];
+		return getChunkUnsafe(cx, cy, cz);
 	}
 
 	public function getChunkUnsafe(cx:Int, cy:Int, cz:Int) {
@@ -170,14 +167,10 @@ class Scene {
 	function shouldGenerateChunkGeometry(cx, cy, cz) {
 		return (getChunk(cx + 1, cy, cz) != null)
 			&& (getChunk(cx - 1, cy, cz) != null)
-			&& (getChunk(cx, cy, cz + 1) != null)
-			&& (getChunk(cx, cy, cz - 1) != null)
-			&& (getChunk(cx + 1, cy, cz + 1) != null)
-			&& (getChunk(cx + 1, cy, cz - 1) != null)
-			&& (getChunk(cx - 1, cy, cz + 1) != null)
-			&& (getChunk(cx - 1, cy, cz - 1) != null)
 			&& (getChunk(cx, cy - 1, cz) != null)
-			&& (getChunk(cx, cy + 1, cz) != null);
+			&& (getChunk(cx, cy + 1, cz) != null)
+			&& (getChunk(cx, cy, cz + 1) != null)
+			&& (getChunk(cx, cy, cz - 1) != null);
 	}
 
 	public function loadChunkData(cx:Int, cy:Int, cz:Int, data) {
@@ -198,9 +191,6 @@ class Scene {
 
 	function constructChunkGeometry(chunk:Chunk) {
 		chunk.dirtyGeometry = false;
-
-		if (!chunk.visible)
-			return;
 
 		var chunkOriginWorldscaleX = chunk.wx * Chunk.chunkSize;
 		var chunkOriginWorldscaleY = chunk.wy * Chunk.chunkSize;
@@ -263,6 +253,9 @@ class Scene {
 			faceCullBuffer.set(blockIndex, faceBitmap);
 		}
 
+		chunk.vertexBuffer = new VertexBuffer(faces * 4, structure, StaticUsage);
+		chunk.indexBuffer = new IndexBuffer(faces * 6, StaticUsage);
+
 		// All filled.
 		if (faces == 0) {
 			chunk.visible = false;
@@ -272,12 +265,7 @@ class Scene {
 		var ao = new Vector<Float>(4);
 
 		var vertexIndex = 0;
-
-		chunk.vertexBuffer = new VertexBuffer(faces * 4, structure, StaticUsage);
 		var vertexBufferData = chunk.vertexBuffer.lock();
-
-		// Load the generated index data into a buffer
-		chunk.indexBuffer = new IndexBuffer(faces * 6, StaticUsage);
 		var indexBufferData = chunk.indexBuffer.lock();
 
 		var vertexDataIndex = 0;
@@ -396,7 +384,7 @@ class Scene {
 		cameraChunkZ = Math.floor(camera.position.z / Chunk.chunkSize);
 		var cameraChunk = '$cameraChunkX,$cameraChunkY,$cameraChunkZ';
 
-		if (cameraChunk != prevCameraChunk || true) {
+		if (cameraChunk != prevCameraChunk) {
 			var index = 0;
 			for (cx in -radius...radius + 1) {
 				for (cy in -radius...radius + 1) {
@@ -420,27 +408,10 @@ class Scene {
 				}
 			}
 
-			// for (chunk in chunks)
-			// 	if (chunk != null) {
-			// 		chunk.destroyGeometry();
-			// 	}
-
 			chunks = newChunks.copy();
 			chunkArrayOffsetX = cameraChunkX;
 			chunkArrayOffsetY = cameraChunkY;
 			chunkArrayOffsetZ = cameraChunkZ;
-		}
-
-		// Generate geom for one unit smaller than radius square (allows proper AO etc)
-		for (chunkOffset in chunksInView) {
-			var chunk = getChunk(cameraChunkX
-				+ Math.floor(chunkOffset.x), cameraChunkY
-				+ Math.floor(chunkOffset.y), cameraChunkZ
-				+ Math.floor(chunkOffset.z));
-			if (chunk != null && chunk.dirtyGeometry && shouldGenerateChunkGeometry(chunk.wx, chunk.wy, chunk.wz)) {
-				constructChunkGeometry(chunk);
-				continue; // Only generate one chunk per frame
-			}
 		}
 
 		prevCameraChunk = cameraChunk + "";
@@ -449,19 +420,35 @@ class Scene {
 	public function render(g:Graphics) {
 		g.setPipeline(pipeline);
 
-		if (camera.mvpDirty)
-			g.setMatrix(mvpID, camera.getMVP());
+		g.setMatrix(mvpID, camera.getMVP());
 		g.setTexture(textureID, kha.Assets.images.sprites);
 		g.setTextureParameters(textureID, Clamp, Clamp, TextureFilter.PointFilter, TextureFilter.PointFilter, MipMapFilter.NoMipFilter);
 
-		for (chunk in chunks) {
-			if (chunk == null || !chunk.hasGeometry()) {
+		for (chunk in chunks)
+			if (chunk != null) {
+				// chunk.destroyGeometry();
+			}
+
+		// Generate geom for one unit smaller than radius square (allows proper AO etc)
+		for (chunkOffset in chunksInView) {
+			var chunk = getChunk(cameraChunkX
+				+ Math.floor(chunkOffset.x), cameraChunkY
+				+ Math.floor(chunkOffset.y), cameraChunkZ
+				+ Math.floor(chunkOffset.z));
+
+			if (chunk == null) {
 				continue;
 			}
+			if (!chunk.hasGeometry() && !shouldGenerateChunkGeometry(chunk.wx, chunk.wy, chunk.wz)) {
+				continue;
+			}
+			if (!chunk.hasGeometry() || chunk.dirtyGeometry) {
+				constructChunkGeometry(chunk);
+			}
+			
 			g.setVertexBuffer(chunk.vertexBuffer);
 			g.setIndexBuffer(chunk.indexBuffer);
 			g.drawIndexedVertices();
-			continue;
 		}
 	}
 
@@ -471,8 +458,7 @@ class Scene {
 		var delta = look.mult(stepSize);
 		var rayBlock = 0;
 		var iterations = 0;
-		// var rayLength = 10;
-		var rayLength = 50;
+		var rayLength = 10;
 		var rayPos = camera.position.mult(1);
 		while (rayBlock == 0 && iterations++ < rayLength / stepSize) {
 			rayPos = rayPos.add(delta);

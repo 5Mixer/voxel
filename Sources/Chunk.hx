@@ -19,7 +19,7 @@ class Chunk {
 	public var indexBuffer:IndexBuffer;
 
 	public var dirtyGeometry = false;
-	public var visible = true;
+	public var visible = false;
 
 	public function new(wx, wy, wz) {
 		blocks = Bytes.alloc(chunkSizeCubed);
