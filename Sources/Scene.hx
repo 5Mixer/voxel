@@ -206,10 +206,6 @@ class Scene {
 	function constructChunkGeometry(chunk:Chunk) {
 		chunk.dirtyGeometry = false;
 
-		var chunkOriginWorldscaleX = chunk.pos.x * Chunk.chunkSize;
-		var chunkOriginWorldscaleY = chunk.pos.y * Chunk.chunkSize;
-		var chunkOriginWorldscaleZ = chunk.pos.z * Chunk.chunkSize;
-
 		var rightChunk = getChunkUnsafe(chunk.pos.x + 1, chunk.pos.y, chunk.pos.z);
 		var leftChunk = getChunkUnsafe(chunk.pos.x - 1, chunk.pos.y, chunk.pos.z);
 		var topChunk = getChunkUnsafe(chunk.pos.x, chunk.pos.y + 1, chunk.pos.z);
@@ -220,7 +216,7 @@ class Scene {
 		faceCullBuffer.fill(0, Chunk.chunkSizeCubed, (1 << 6) - 1); // Must always reset as buffer is reused.
 		var faces = 0;
 		for (blockIndex in 0...Chunk.chunkSizeCubed) {
-			if (chunk.blocks.get(blockIndex) == 0)
+			if (chunk.blocks.get(blockIndex) == BlockIdentifier.Air)
 				continue;
 
 			var lx = Math.floor(blockIndex / Chunk.chunkSizeSquared);
@@ -287,19 +283,19 @@ class Scene {
 
 		var blockIndex = 0;
 		for (lx in 0...Chunk.chunkSize) {
-			var x = chunkOriginWorldscaleX + lx;
+			var x = chunk.pos.x * Chunk.chunkSize + lx;
 
 			for (ly in 0...Chunk.chunkSize) {
-				var y = chunkOriginWorldscaleY + ly;
+				var y = chunk.pos.y * Chunk.chunkSize + ly;
 
 				for (lz in 0...Chunk.chunkSize) {
 					var block = chunk.blocks.get(blockIndex++);
 
-					if (block == 0) {
+					if (block == BlockIdentifier.Air) {
 						continue;
 					}
 
-					var z = chunkOriginWorldscaleZ + lz;
+					var z = chunk.pos.z * Chunk.chunkSize + lz;
 
 					var blockTextureX = block % 16;
 					var blockTextureY = Math.floor(block / 16);
@@ -444,7 +440,7 @@ class Scene {
 				cameraChunk.z + Math.floor(chunkOffset.z)
 			);
 
-			if (chunk == null) {
+			if (chunk == null || !chunk.visible) {
 				continue;
 			}
 			if (!chunk.hasGeometry() && !shouldGenerateChunkGeometry(chunk.pos)) {
