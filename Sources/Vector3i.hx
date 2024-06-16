@@ -20,4 +20,8 @@ class Vector3i {
         this.y = other.y;
         this.z = other.z;
     }
+
+    public function lengthSquared() {
+        return x * x + y * y + z * z;
+    }
 }

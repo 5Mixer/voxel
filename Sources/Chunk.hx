@@ -11,9 +11,7 @@ class Chunk {
 	public static inline var chunkSizeSquared = chunkSize * chunkSize;
 	public static inline var chunkSizeCubed = chunkSize * chunkSize * chunkSize;
 
-	public var wx:Int;
-	public var wy:Int;
-	public var wz:Int;
+	public var pos:Vector3i = new Vector3i(0,0,0);
 
 	public var vertexBuffer:VertexBuffer;
 	public var indexBuffer:IndexBuffer;
@@ -21,14 +19,12 @@ class Chunk {
 	public var dirtyGeometry = false;
 	public var visible = false;
 
-	public function new(wx, wy, wz) {
+	public function new() {
 		blocks = Bytes.alloc(chunkSizeCubed);
 	}
 
 	public function loadForLocation(wx, wy, wz, worldGenerator:WorldGenerator) {
-		this.wx = wx;
-		this.wy = wy;
-		this.wz = wz;
+		pos = new Vector3i(wx, wy, wz);
 
 		var worldSpaceX = wx * chunkSize;
 		var worldSpaceY = wy * chunkSize;
@@ -46,9 +42,7 @@ class Chunk {
 
 	public function loadData(data:Bytes) {
 		visible = true;
-		wx = data.getInt32(0);
-		wy = data.getInt32(4);
-		wz = data.getInt32(8);
+		pos = new Vector3i(data.getInt32(0), data.getInt32(4), data.getInt32(8));
 		if (data.get(12) == 1) {
 			visible = false;
 		} else {

@@ -41,7 +41,7 @@ class Scene {
 		for (cx in -radius + 1...radius)
 			for (cy in -radius + 1...radius)
 				for (cz in -radius + 1...radius)
-					new Vector3(cx, cy, cz)
+					new Vector3i(cx, cy, cz)
 	];
 
 	public function new(camera:Camera, requestChunk:(Int, Int, Int) -> Void, sendBlock:(Int, Int, Int, Int) -> Void) {
@@ -53,7 +53,7 @@ class Scene {
 		this.sendBlock = sendBlock;
 
 		setupPipeline();
-		chunksInView.sort(function(a, b) return a.length > b.length ? 1 : -1);
+		chunksInView.sort(function(a, b) return a.lengthSquared() > b.lengthSquared() ? 1 : -1);
 		loadChunks();
 	}
 
@@ -70,15 +70,17 @@ class Scene {
 
 	public function getChunkUnsafe(cx:Int, cy:Int, cz:Int) {
 		return chunks[
-			(cx - chunkArrayOffset.x + radius) * loadedChunksPerDimensionSquared + (cy - chunkArrayOffset.y + radius) * loadedChunksPerDimension + (cz
-				- chunkArrayOffset.z + radius)
+			(cx - chunkArrayOffset.x + radius) * loadedChunksPerDimensionSquared +
+			(cy - chunkArrayOffset.y + radius) * loadedChunksPerDimension +
+			(cz - chunkArrayOffset.z + radius)
 		];
 	}
 
 	public function registerChunk(cx:Int, cy:Int, cz:Int, chunk:Chunk) {
 		chunks[
-			(cx - chunkArrayOffset.x + radius) * loadedChunksPerDimensionSquared + (cy - chunkArrayOffset.y + radius) * loadedChunksPerDimension + (cz
-				- chunkArrayOffset.z + radius)
+			(cx - chunkArrayOffset.x + radius) * loadedChunksPerDimensionSquared +
+			(cy - chunkArrayOffset.y + radius) * loadedChunksPerDimension +
+			(cz - chunkArrayOffset.z + radius)
 		] = chunk;
 	}
 
@@ -88,15 +90,22 @@ class Scene {
 	}
 
 	inline public function getBlock(x, y, z):Null<Int> {
-		var chunk = getChunk(Math.floor(x / Chunk.chunkSize), Math.floor(y / Chunk.chunkSize), Math.floor(z / Chunk.chunkSize));
+		var chunk = getChunk(
+			Math.floor(x / Chunk.chunkSize),
+			Math.floor(y / Chunk.chunkSize),
+			Math.floor(z / Chunk.chunkSize)
+		);
 		if (chunk == null)
 			return null;
 		return chunk.getBlock(chunkMod(x), chunkMod(y), chunkMod(z));
 	}
 
 	inline public function getBlockUnsafe(x, y, z):Null<Int> {
-		return getChunkUnsafe(Math.floor(x / Chunk.chunkSize), Math.floor(y / Chunk.chunkSize),
-			Math.floor(z / Chunk.chunkSize)).getBlock(chunkMod(x), chunkMod(y), chunkMod(z));
+		return getChunkUnsafe(
+			Math.floor(x / Chunk.chunkSize),
+			Math.floor(y / Chunk.chunkSize),
+			Math.floor(z / Chunk.chunkSize)
+		).getBlock(chunkMod(x), chunkMod(y), chunkMod(z));
 	}
 
 	inline public function isCoordinateOnChunkBound(n:Int) {
@@ -104,7 +113,11 @@ class Scene {
 	}
 
 	public function setBlock(x, y, z, b, send = false) {
-		var chunk = getChunk(Math.floor(x / Chunk.chunkSize), Math.floor(y / Chunk.chunkSize), Math.floor(z / Chunk.chunkSize));
+		var chunk = getChunk(
+			Math.floor(x / Chunk.chunkSize),
+			Math.floor(y / Chunk.chunkSize),
+			Math.floor(z / Chunk.chunkSize)
+		);
 		if (chunk == null)
 			return;
 
@@ -116,8 +129,11 @@ class Scene {
 		for (xOffset in -1...2)
 			for (yOffset in -1...2)
 				for (zOffset in -1...2)
-					getChunk(Math.floor((x + xOffset) / Chunk.chunkSize), Math.floor((y + yOffset) / Chunk.chunkSize),
-						Math.floor((z + zOffset) / Chunk.chunkSize)).dirtyGeometry = true;
+					getChunk(
+						Math.floor((x + xOffset) / Chunk.chunkSize),
+						Math.floor((y + yOffset) / Chunk.chunkSize),
+						Math.floor((z + zOffset) / Chunk.chunkSize)
+					).dirtyGeometry = true;
 
 		chunk.setBlock(chunkMod(x), chunkMod(y), chunkMod(z), b);
 	}
@@ -162,13 +178,13 @@ class Scene {
 		textureID = pipeline.getTextureUnit("textureSampler");
 	}
 
-	function shouldGenerateChunkGeometry(cx, cy, cz) {
-		return (getChunk(cx + 1, cy, cz) != null)
-			&& (getChunk(cx - 1, cy, cz) != null)
-			&& (getChunk(cx, cy - 1, cz) != null)
-			&& (getChunk(cx, cy + 1, cz) != null)
-			&& (getChunk(cx, cy, cz + 1) != null)
-			&& (getChunk(cx, cy, cz - 1) != null);
+	function shouldGenerateChunkGeometry(pos:Vector3i) {
+		return (getChunk(pos.x + 1, pos.y, pos.z) != null)
+			&& (getChunk(pos.x - 1, pos.y, pos.z) != null)
+			&& (getChunk(pos.x, pos.y - 1, pos.z) != null)
+			&& (getChunk(pos.x, pos.y + 1, pos.z) != null)
+			&& (getChunk(pos.x, pos.y, pos.z + 1) != null)
+			&& (getChunk(pos.x, pos.y, pos.z - 1) != null);
 	}
 
 	public function loadChunkData(cx:Int, cy:Int, cz:Int, data) {
@@ -190,16 +206,16 @@ class Scene {
 	function constructChunkGeometry(chunk:Chunk) {
 		chunk.dirtyGeometry = false;
 
-		var chunkOriginWorldscaleX = chunk.wx * Chunk.chunkSize;
-		var chunkOriginWorldscaleY = chunk.wy * Chunk.chunkSize;
-		var chunkOriginWorldscaleZ = chunk.wz * Chunk.chunkSize;
+		var chunkOriginWorldscaleX = chunk.pos.x * Chunk.chunkSize;
+		var chunkOriginWorldscaleY = chunk.pos.y * Chunk.chunkSize;
+		var chunkOriginWorldscaleZ = chunk.pos.z * Chunk.chunkSize;
 
-		var rightChunk = getChunkUnsafe(chunk.wx + 1, chunk.wy, chunk.wz);
-		var leftChunk = getChunkUnsafe(chunk.wx - 1, chunk.wy, chunk.wz);
-		var topChunk = getChunkUnsafe(chunk.wx, chunk.wy + 1, chunk.wz);
-		var bottomChunk = getChunkUnsafe(chunk.wx, chunk.wy - 1, chunk.wz);
-		var frontChunk = getChunkUnsafe(chunk.wx, chunk.wy, chunk.wz + 1);
-		var backChunk = getChunkUnsafe(chunk.wx, chunk.wy, chunk.wz - 1);
+		var rightChunk = getChunkUnsafe(chunk.pos.x + 1, chunk.pos.y, chunk.pos.z);
+		var leftChunk = getChunkUnsafe(chunk.pos.x - 1, chunk.pos.y, chunk.pos.z);
+		var topChunk = getChunkUnsafe(chunk.pos.x, chunk.pos.y + 1, chunk.pos.z);
+		var bottomChunk = getChunkUnsafe(chunk.pos.x, chunk.pos.y - 1, chunk.pos.z);
+		var frontChunk = getChunkUnsafe(chunk.pos.x, chunk.pos.y, chunk.pos.z + 1);
+		var backChunk = getChunkUnsafe(chunk.pos.x, chunk.pos.y, chunk.pos.z - 1);
 
 		faceCullBuffer.fill(0, Chunk.chunkSizeCubed, (1 << 6) - 1); // Must always reset as buffer is reused.
 		var faces = 0;
@@ -386,7 +402,7 @@ class Scene {
 					if (existingChunk != null) {
 						newChunks[index] = existingChunk;
 					} else {
-						newChunks[index] = new Chunk(cameraChunk.x + cx, cameraChunk.y + cy, cameraChunk.z + cz);
+						newChunks[index] = new Chunk();
 
 						if (chunkData.exists('${cameraChunk.x + cx},${cameraChunk.y + cy},${cameraChunk.z + cz}')) {
 							newChunks[index].loadData(chunkData.get('${cameraChunk.x + cx},${cameraChunk.y + cy},${cameraChunk.z + cz}'));
@@ -400,9 +416,7 @@ class Scene {
 		}
 
 		chunks = newChunks.copy();
-		chunkArrayOffset.x = cameraChunk.x;
-		chunkArrayOffset.y = cameraChunk.y;
-		chunkArrayOffset.z = cameraChunk.z;
+		chunkArrayOffset.copy(cameraChunk);
 	}
 
 	public function update() {
@@ -433,7 +447,7 @@ class Scene {
 			if (chunk == null) {
 				continue;
 			}
-			if (!chunk.hasGeometry() && !shouldGenerateChunkGeometry(chunk.wx, chunk.wy, chunk.wz)) {
+			if (!chunk.hasGeometry() && !shouldGenerateChunkGeometry(chunk.pos)) {
 				continue;
 			}
 			if (!chunk.hasGeometry() || chunk.dirtyGeometry) {
