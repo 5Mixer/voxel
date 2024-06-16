@@ -11,6 +11,7 @@ class Camera {
 	public var projection:FastMatrix4;
 	public var view:FastMatrix4;
 	public var fov = 80 * Math.PI / 180;
+	public var realFov = 80 * Math.PI / 180;
 
 	public var mvpDirty = true;
 
@@ -36,7 +37,8 @@ class Camera {
 		if (!mvpDirty)
 			return mvp;
 
-		projection = FastMatrix4.perspectiveProjection(fov, aspectRatio, .15, 160);
+		realFov = (realFov + fov) / 2;
+		projection = FastMatrix4.perspectiveProjection(realFov, aspectRatio, .15, 160);
 		view = FastMatrix4.lookAt(position.fast(), position.add(getLookVector()).fast(), new FastVector3(0, 1, 0));
 		mvp = projection.multmat(view);
 

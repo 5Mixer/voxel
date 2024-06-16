@@ -74,7 +74,7 @@ class Main {
 
 	function update():Void {
 		camera.position = player.position.add(new Vector3(0, player.size.y, 0));
-		camera.fov = (sprinting ? 100 : 80) * Math.PI / 180;
+		camera.fov = (sprinting ? 90 : 80) * Math.PI / 180;
 		scene.update();
 		player.update();
 
