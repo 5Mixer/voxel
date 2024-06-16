@@ -26,7 +26,6 @@ class Main {
 	function new() {
 		camera = new Camera();
 		input = new Input(camera);
-		scene = new Scene(camera);
 		player = new Player();
 		lineRenderer = new LineRenderer(camera);
 
@@ -47,8 +46,7 @@ class Main {
 		connection.receiveBlock = function(x, y, z, b) {
 			scene.setBlock(x, y, z, b);
 		}
-		scene.requestChunk = connection.requestChunk;
-		scene.sendBlock = connection.sendBlock;
+		scene = new Scene(camera, connection.requestChunk, connection.sendBlock);
 
 		input.clickListeners.push(function(button) {
 			scene.ray(button == 0);

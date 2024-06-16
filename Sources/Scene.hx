@@ -24,23 +24,18 @@ class Scene {
 
 	var generator:WorldGenerator;
 
-	var prevCameraChunk = '';
-
-	public var requestChunk:(cx:Int, cy:Int, cz:Int) -> Void;
-	public var sendBlock:(x:Int, y:Int, z:Int, b:Int) -> Void;
+	var requestChunk:(cx:Int, cy:Int, cz:Int) -> Void;
+	var sendBlock:(x:Int, y:Int, z:Int, b:Int) -> Void;
 
 	static var radius = 6;
 	static var loadedChunksPerDimension = radius * 2 + 1; // -radius, 0, +radius
 	static var loadedChunksPerDimensionSquared = loadedChunksPerDimension * loadedChunksPerDimension;
 	static var loadedChunksPerDimensionCubed = loadedChunksPerDimension * loadedChunksPerDimension * loadedChunksPerDimension;
 
-	var cameraChunkX = 0;
-	var cameraChunkY = 0;
-	var cameraChunkZ = 0;
+	var cameraChunk:Vector3i = new Vector3i(0, 0, 0);
+	var prevCameraChunk:Vector3i = new Vector3i(0, 0, 0);
 
-	var chunkArrayOffsetX = 0;
-	var chunkArrayOffsetY = 0;
-	var chunkArrayOffsetZ = 0;
+	var chunkArrayOffset = new Vector3i(0, 0, 0);
 
 	var chunksInView = [
 		for (cx in -radius + 1...radius)
@@ -49,22 +44,25 @@ class Scene {
 					new Vector3(cx, cy, cz)
 	];
 
-	public function new(camera:Camera) {
+	public function new(camera:Camera, requestChunk:(Int, Int, Int) -> Void, sendBlock:(Int, Int, Int, Int) -> Void) {
 		this.camera = camera;
 		generator = new TerrainWorldGenerator();
 
 		// kha.Assets.images.sprites.generateMipmaps(1);
+		this.requestChunk = requestChunk;
+		this.sendBlock = sendBlock;
 
 		setupPipeline();
 		chunksInView.sort(function(a, b) return a.length > b.length ? 1 : -1);
+		loadChunks();
 	}
 
 	public function getChunk(cx:Int, cy:Int, cz:Int) {
-		if (cx - chunkArrayOffsetX + radius < 0 || cx - chunkArrayOffsetX + radius >= loadedChunksPerDimension)
+		if (cx - chunkArrayOffset.x + radius < 0 || cx - chunkArrayOffset.x + radius >= loadedChunksPerDimension)
 			return null;
-		if (cy - chunkArrayOffsetY + radius < 0 || cy - chunkArrayOffsetY + radius >= loadedChunksPerDimension)
+		if (cy - chunkArrayOffset.y + radius < 0 || cy - chunkArrayOffset.y + radius >= loadedChunksPerDimension)
 			return null;
-		if (cz - chunkArrayOffsetZ + radius < 0 || cz - chunkArrayOffsetZ + radius >= loadedChunksPerDimension)
+		if (cz - chunkArrayOffset.z + radius < 0 || cz - chunkArrayOffset.z + radius >= loadedChunksPerDimension)
 			return null;
 
 		return getChunkUnsafe(cx, cy, cz);
@@ -72,15 +70,15 @@ class Scene {
 
 	public function getChunkUnsafe(cx:Int, cy:Int, cz:Int) {
 		return chunks[
-			(cx - chunkArrayOffsetX + radius) * loadedChunksPerDimensionSquared + (cy - chunkArrayOffsetY + radius) * loadedChunksPerDimension + (cz
-				- chunkArrayOffsetZ + radius)
+			(cx - chunkArrayOffset.x + radius) * loadedChunksPerDimensionSquared + (cy - chunkArrayOffset.y + radius) * loadedChunksPerDimension + (cz
+				- chunkArrayOffset.z + radius)
 		];
 	}
 
 	public function registerChunk(cx:Int, cy:Int, cz:Int, chunk:Chunk) {
 		chunks[
-			(cx - chunkArrayOffsetX + radius) * loadedChunksPerDimensionSquared + (cy - chunkArrayOffsetY + radius) * loadedChunksPerDimension + (cz
-				- chunkArrayOffsetZ + radius)
+			(cx - chunkArrayOffset.x + radius) * loadedChunksPerDimensionSquared + (cy - chunkArrayOffset.y + radius) * loadedChunksPerDimension + (cz
+				- chunkArrayOffset.z + radius)
 		] = chunk;
 	}
 
@@ -378,43 +376,44 @@ class Scene {
 		chunk.indexBuffer.unlock();
 	}
 
-	public function update() {
-		cameraChunkX = Math.floor(camera.position.x / Chunk.chunkSize);
-		cameraChunkY = Math.floor(camera.position.y / Chunk.chunkSize);
-		cameraChunkZ = Math.floor(camera.position.z / Chunk.chunkSize);
-		var cameraChunk = '$cameraChunkX,$cameraChunkY,$cameraChunkZ';
+	function loadChunks() {
+		var index = 0;
+		for (cx in -radius...radius + 1) {
+			for (cy in -radius...radius + 1) {
+				for (cz in -radius...radius + 1) {
+					var existingChunk = getChunk(cx + cameraChunk.x, cy + cameraChunk.y, cz + cameraChunk.z); // Note cameraChunk != chunkArrayOffset yet, important.
 
-		if (cameraChunk != prevCameraChunk) {
-			var index = 0;
-			for (cx in -radius...radius + 1) {
-				for (cy in -radius...radius + 1) {
-					for (cz in -radius...radius + 1) {
-						var existingChunk = getChunk(cx + cameraChunkX, cy + cameraChunkY,
-							cz + cameraChunkZ); // Note cameraChunk != chunkArrayOffset yet, important.
+					if (existingChunk != null) {
+						newChunks[index] = existingChunk;
+					} else {
+						newChunks[index] = new Chunk(cameraChunk.x + cx, cameraChunk.y + cy, cameraChunk.z + cz);
 
-						if (existingChunk != null) {
-							newChunks[index] = existingChunk;
+						if (chunkData.exists('${cameraChunk.x + cx},${cameraChunk.y + cy},${cameraChunk.z + cz}')) {
+							newChunks[index].loadData(chunkData.get('${cameraChunk.x + cx},${cameraChunk.y + cy},${cameraChunk.z + cz}'));
 						} else {
-							newChunks[index] = new Chunk(cameraChunkX + cx, cameraChunkY + cy, cameraChunkZ + cz);
-
-							if (chunkData.exists('${cameraChunkX + cx},${cameraChunkY + cy},${cameraChunkZ + cz}')) {
-								newChunks[index].loadData(chunkData.get('${cameraChunkX + cx},${cameraChunkY + cy},${cameraChunkZ + cz}'));
-							} else {
-								requestChunk(cameraChunkX + cx, cameraChunkY + cy, cameraChunkZ + cz);
-							}
+							requestChunk(cameraChunk.x + cx, cameraChunk.y + cy, cameraChunk.z + cz);
 						}
-						index++;
 					}
+					index++;
 				}
 			}
-
-			chunks = newChunks.copy();
-			chunkArrayOffsetX = cameraChunkX;
-			chunkArrayOffsetY = cameraChunkY;
-			chunkArrayOffsetZ = cameraChunkZ;
 		}
 
-		prevCameraChunk = cameraChunk + "";
+		chunks = newChunks.copy();
+		chunkArrayOffset.x = cameraChunk.x;
+		chunkArrayOffset.y = cameraChunk.y;
+		chunkArrayOffset.z = cameraChunk.z;
+	}
+
+	public function update() {
+		cameraChunk.x = Math.floor(camera.position.x / Chunk.chunkSize);
+		cameraChunk.y = Math.floor(camera.position.y / Chunk.chunkSize);
+		cameraChunk.z = Math.floor(camera.position.z / Chunk.chunkSize);
+
+		if (!cameraChunk.equals(prevCameraChunk)) {
+			loadChunks();
+			prevCameraChunk.copy(cameraChunk);
+		}
 	}
 
 	public function render(g:Graphics) {
@@ -424,17 +423,12 @@ class Scene {
 		g.setTexture(textureID, kha.Assets.images.sprites);
 		g.setTextureParameters(textureID, Clamp, Clamp, TextureFilter.PointFilter, TextureFilter.PointFilter, MipMapFilter.NoMipFilter);
 
-		for (chunk in chunks)
-			if (chunk != null) {
-				// chunk.destroyGeometry();
-			}
-
-		// Generate geom for one unit smaller than radius square (allows proper AO etc)
 		for (chunkOffset in chunksInView) {
-			var chunk = getChunk(cameraChunkX
-				+ Math.floor(chunkOffset.x), cameraChunkY
-				+ Math.floor(chunkOffset.y), cameraChunkZ
-				+ Math.floor(chunkOffset.z));
+			var chunk = getChunk(
+				cameraChunk.x + Math.floor(chunkOffset.x),
+				cameraChunk.y + Math.floor(chunkOffset.y),
+				cameraChunk.z + Math.floor(chunkOffset.z)
+			);
 
 			if (chunk == null) {
 				continue;
