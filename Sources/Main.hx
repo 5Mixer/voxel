@@ -1,5 +1,7 @@
 package;
 
+import kha.Window;
+import kha.math.FastVector4;
 import kha.math.Vector2;
 import kha.math.FastMatrix3;
 import kha.math.Vector3;
@@ -196,16 +198,16 @@ class Main {
 	function render(framebuffer:Framebuffer):Void {
 		var g4 = framebuffer.g4;
 		g4.begin();
-		g4.clear(kha.Color.fromBytes(235, 255, 254), 1.0);
+		g4.clear(kha.Color.fromBytes(172, 219, 252), 1.0);
 		scene.render(g4);
 
 		lineRenderer.start(g4);
 		g4.clear(null, 1.0); // Clear depth
 		var playerGizmoPos = camera.position.add(camera.getLookVector().mult(5));
-		// lineRenderer.renderLine(playerGizmoPos.add(new Vector3(0,0,0)), playerGizmoPos.add(new Vector3(1,0,0)), kha.Color.Red);
-		// lineRenderer.renderLine(playerGizmoPos.add(new Vector3(0,0,0)), playerGizmoPos.add(new Vector3(0,1,0)), kha.Color.Green);
-		// lineRenderer.renderLine(playerGizmoPos.add(new Vector3(0,0,0)), playerGizmoPos.add(new Vector3(0,0,1)), kha.Color.Blue);
-		// lineRenderer.renderLine(new Vector3(0,1,0), new Vector3(0,1,5), kha.Color.Black);
+		lineRenderer.renderLine(playerGizmoPos.add(new Vector3(0,0,0)), playerGizmoPos.add(new Vector3(1,0,0)), kha.Color.Red);
+		lineRenderer.renderLine(playerGizmoPos.add(new Vector3(0,0,0)), playerGizmoPos.add(new Vector3(0,1,0)), kha.Color.Green);
+		lineRenderer.renderLine(playerGizmoPos.add(new Vector3(0,0,0)), playerGizmoPos.add(new Vector3(0,0,1)), kha.Color.Blue);
+		lineRenderer.renderLine(new Vector3(0,0,0), new Vector3(0,0,5), kha.Color.Black);
 
 		lineRenderer.end(g4);
 
@@ -215,6 +217,25 @@ class Main {
 		g2.begin(false);
 		g2.color = kha.Color.White;
 		g2.drawScaledImage(Assets.images.cursor, kha.Window.get(0).width / 2 - 16, kha.Window.get(0).height / 2 - 16, 32, 32);
+
+		g2.color = kha.Color.Magenta;
+		
+		for (screenSpaceOrigin in [
+			camera.getMVP().multvec(new FastVector4(0, 0, 0, 1)),
+			camera.getMVP().multvec(new FastVector4(1, 0, 0, 1)),
+			camera.getMVP().multvec(new FastVector4(0, 1, 0, 1)),
+			camera.getMVP().multvec(new FastVector4(1, 1, 0, 1)),
+
+			camera.getMVP().multvec(new FastVector4(0, 0, 1, 1)),
+			camera.getMVP().multvec(new FastVector4(1, 0, 1, 1)),
+			camera.getMVP().multvec(new FastVector4(0, 1, 1, 1)),
+			camera.getMVP().multvec(new FastVector4(1, 1, 1, 1)),
+		]) {
+			g2.fillRect(((screenSpaceOrigin.x/screenSpaceOrigin.w)+1)/2 * Window.get(0).width, ((-screenSpaceOrigin.y/screenSpaceOrigin.w)+1)/2 * Window.get(0).height, 15, 15);
+		}
+		g2.color = kha.Color.White;
+
+
 		g2.end();
 	}
 

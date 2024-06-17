@@ -12,8 +12,8 @@ uniform mat4 MVP;
 void main() {
 	vec4 clipSpace = MVP * vec4(pos, 1.0);
 	vec2 ndcSpace = clipSpace.xy / clipSpace.w;
-	ndcSpace *= 4/3; //Aspect ratio
-	gl_Position = clipSpace+vec4(normal,0)/80;
+	gl_Position = clipSpace+vec4(normal,0)/80; // Problem is this normal should be in screen space, as in ndcspace.
+	gl_Position = MVP * vec4(pos+normal*.01, 1.0);
 
 	vColour = colour;
 }

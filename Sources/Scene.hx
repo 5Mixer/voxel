@@ -449,6 +449,9 @@ class Scene {
 			if (!chunk.hasGeometry() || chunk.dirtyGeometry) {
 				constructChunkGeometry(chunk);
 			}
+			if (!chunk.visible) {
+				continue;
+			}
 			
 			g.setVertexBuffer(chunk.vertexBuffer);
 			g.setIndexBuffer(chunk.indexBuffer);
