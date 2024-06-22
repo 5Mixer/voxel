@@ -1,5 +1,6 @@
 const { trace } = require('console');
 const WebSocket = require('ws');
+const zlib = require('node:zlib');
 
 const wss = new WebSocket.Server({ port: 4646 });
 
@@ -65,7 +66,7 @@ wss.on('connection', function connection(ws) {
             var packetType = split[0];
 
             if (packetType == 'c')
-                ws.send(getChunkData(parseInt(split[1]), parseInt(split[2]), parseInt(split[3])));
+                ws.send(zlib.deflateSync(getChunkData(parseInt(split[1]), parseInt(split[2]), parseInt(split[3]))));
             if (packetType == 'b') {
                 setBlock(parseInt(split[1]), parseInt(split[2]), parseInt(split[3]), parseInt(split[4]));
                 wss.clients.forEach(function each(client) {

@@ -1,5 +1,6 @@
 package;
 
+import haxe.zip.Uncompress;
 import kha.Window;
 import kha.math.FastVector4;
 import kha.math.Vector2;
@@ -37,7 +38,8 @@ class Main {
 		BlockRegistry.register(BlockIdentifier.Stone, new Block("Stone", 3, 3, 3, 3, 3, 3));
 
 		connection = new ServerConnection();
-		connection.receiveChunk = function(data) {
+		connection.receiveChunk = function(compressed) {
+			var data = Uncompress.run(compressed);
 			var cx = data.getInt32(0);
 			var cy = data.getInt32(4);
 			var cz = data.getInt32(8);
