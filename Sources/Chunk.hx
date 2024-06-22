@@ -19,9 +19,7 @@ class Chunk {
 	public var dirtyGeometry = false;
 	public var visible = false;
 
-	public function new() {
-		blocks = Bytes.alloc(chunkSizeCubed);
-	}
+	public function new() {}
 
 	public function loadForLocation(wx, wy, wz, worldGenerator:WorldGenerator) {
 		pos = new Vector3i(wx, wy, wz);
@@ -34,7 +32,7 @@ class Chunk {
 			for (y in 0...chunkSize)
 				for (z in 0...chunkSize) {
 					var block = worldGenerator.getBlock(worldSpaceX + x, worldSpaceY + y, worldSpaceZ + z);
-					blocks.set(x * chunkSizeSquared + y * chunkSize + z, block);
+					setBlockByIndex(x * chunkSizeSquared + y * chunkSize + z, block);
 				}
 
 		dirtyGeometry = true;
@@ -43,20 +41,24 @@ class Chunk {
 	public function loadData(data:Bytes) {
 		visible = true;
 		pos = new Vector3i(data.getInt32(0), data.getInt32(4), data.getInt32(8));
-		if (data.get(12) == 1) {
-			visible = false;
-		} else {
-			blocks.blit(0, data, 13, chunkSizeCubed);
-		}
+		blocks = data;
 		dirtyGeometry = true;
 	}
 
 	inline public function getBlock(x, y, z) {
-		return blocks.get(x * chunkSizeSquared + y * chunkSize + z);
+		return blocks.get(12 + (x * chunkSizeSquared + y * chunkSize + z));
+	}
+
+	inline public function getBlockByIndex(index) {
+		return blocks.get(12 + index);
+	}
+	
+	inline public function setBlockByIndex(index, block) {
+		return blocks.set(12 + index, block);
 	}
 
 	inline public function setBlock(x, y, z, b) {
-		blocks.set(x * chunkSizeSquared + y * chunkSize + z, b);
+		blocks.set(12 + (x * chunkSizeSquared + y * chunkSize + z), b);
 		dirtyGeometry = true;
 	}
 
