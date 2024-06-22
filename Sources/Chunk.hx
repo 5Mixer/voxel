@@ -5,13 +5,13 @@ import kha.graphics4.IndexBuffer;
 import kha.graphics4.VertexBuffer;
 
 class Chunk {
-	public var blocks:Bytes;
+	var blocks:Bytes;
 
 	public static inline var chunkSize = 32;
 	public static inline var chunkSizeSquared = chunkSize * chunkSize;
 	public static inline var chunkSizeCubed = chunkSize * chunkSize * chunkSize;
 
-	public var pos:Vector3i = new Vector3i(0,0,0);
+	public var pos:Vector3i;
 
 	public var vertexBuffer:VertexBuffer;
 	public var indexBuffer:IndexBuffer;
@@ -38,11 +38,21 @@ class Chunk {
 		dirtyGeometry = true;
 	}
 
+	public function flagDirty() {
+		trace('Flagged chunk ${toString()} dirty');
+		dirtyGeometry = true;
+	}
+
+	public function isDataLoaded() {
+		return blocks != null;
+	}
+
 	public function loadData(data:Bytes) {
 		visible = true;
 		pos = new Vector3i(data.getInt32(0), data.getInt32(4), data.getInt32(8));
 		blocks = data;
 		dirtyGeometry = true;
+		trace('Loaded data for ${toString()}');
 	}
 
 	inline public function getBlock(x, y, z) {
@@ -73,5 +83,9 @@ class Chunk {
 		indexBuffer.delete();
 		vertexBuffer = null;
 		indexBuffer = null;
+	}
+
+	public function toString() {
+		return 'Chunk ${pos.toString()} [loaded: ${isDataLoaded()} visible: $visible]';
 	}
 }

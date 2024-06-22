@@ -24,4 +24,8 @@ class Vector3i {
     public function lengthSquared() {
         return x * x + y * y + z * z;
     }
+
+    public function toString() {
+        return '($x, $y, $z})';
+    }
 }

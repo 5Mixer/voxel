@@ -76,6 +76,16 @@ class Scene {
 		];
 	}
 
+	public function initChunkUnsafe(cx:Int, cy:Int, cz:Int) {
+		var newChunk = new Chunk();
+		chunks[
+			(cx - chunkArrayOffset.x + radius) * loadedChunksPerDimensionSquared +
+			(cy - chunkArrayOffset.y + radius) * loadedChunksPerDimension +
+			(cz - chunkArrayOffset.z + radius)
+		] = newChunk;
+		return newChunk;
+	}
+
 	public function registerChunk(cx:Int, cy:Int, cz:Int, chunk:Chunk) {
 		chunks[
 			(cx - chunkArrayOffset.x + radius) * loadedChunksPerDimensionSquared +
@@ -118,12 +128,16 @@ class Scene {
 			Math.floor(y / Chunk.chunkSize),
 			Math.floor(z / Chunk.chunkSize)
 		);
-		if (chunk == null)
+		if (chunk == null) {
+			trace('Attempted to place in null chunk ${chunk.toString()}');
 			return;
+		}
 
 		if (send) {
 			sendBlock(x, y, z, b);
 		}
+
+		chunk.setBlock(chunkMod(x), chunkMod(y), chunkMod(z), b);
 
 		// Set neighboring chunks to dirty geom so that lighting, ao, etc is recalculated
 		for (xOffset in -1...2)
@@ -133,16 +147,10 @@ class Scene {
 						Math.floor((x + xOffset) / Chunk.chunkSize),
 						Math.floor((y + yOffset) / Chunk.chunkSize),
 						Math.floor((z + zOffset) / Chunk.chunkSize)
-					).dirtyGeometry = true;
-
-		chunk.setBlock(chunkMod(x), chunkMod(y), chunkMod(z), b);
+					).flagDirty();
 	}
 
 	inline public function isAir(x:Int, y:Int, z:Int) {
-		return getBlock(x, y, z) == null || getBlock(x, y, z) == 0;
-	}
-
-	inline public function isExposed(x:Int, y:Int, z:Int) {
 		return getBlock(x, y, z) == null || getBlock(x, y, z) == 0;
 	}
 
@@ -179,20 +187,49 @@ class Scene {
 	}
 
 	function shouldGenerateChunkGeometry(pos:Vector3i) {
-		return (getChunk(pos.x + 1, pos.y, pos.z) != null)
-			&& (getChunk(pos.x - 1, pos.y, pos.z) != null)
-			&& (getChunk(pos.x, pos.y - 1, pos.z) != null)
-			&& (getChunk(pos.x, pos.y + 1, pos.z) != null)
-			&& (getChunk(pos.x, pos.y, pos.z + 1) != null)
-			&& (getChunk(pos.x, pos.y, pos.z - 1) != null);
+		// For AO we require all 3*3*3 surrounding chunks to be loaded (culling only requires 6 face neighbors)
+		for (xOffset in -1...2)
+			for (yOffset in -1...2)
+				for (zOffset in -1...2) {
+					var chunk = getChunk(pos.x + xOffset, pos.y + yOffset, pos.z + zOffset);
+					if (chunk?.isDataLoaded() != true)
+						return false;
+				}
+		return true;
+	}
+
+	function loadChunks() {
+		var index = 0;
+		for (cx in -radius...radius + 1) {
+			for (cy in -radius...radius + 1) {
+				for (cz in -radius...radius + 1) {
+					var existingChunk = getChunk(cx + cameraChunk.x, cy + cameraChunk.y, cz + cameraChunk.z); // Note cameraChunk != chunkArrayOffset yet, important.
+
+					if (existingChunk != null) {
+						newChunks[index] = existingChunk;
+					} else {
+						newChunks[index] = new Chunk();
+
+						if (chunkData.exists('${cameraChunk.x + cx},${cameraChunk.y + cy},${cameraChunk.z + cz}')) {
+							newChunks[index].loadData(chunkData.get('${cameraChunk.x + cx},${cameraChunk.y + cy},${cameraChunk.z + cz}'));
+						} else {
+							requestChunk(cameraChunk.x + cx, cameraChunk.y + cy, cameraChunk.z + cz);
+						}
+					}
+					index++;
+				}
+			}
+		}
+
+		chunks = newChunks.copy();
+		chunkArrayOffset.copy(cameraChunk);
 	}
 
 	public function loadChunkData(cx:Int, cy:Int, cz:Int, data) {
 		chunkData.set('$cx,$cy,$cz', data);
 		var chunk = getChunk(cx, cy, cz);
-		if (chunk != null) {
-			chunk.loadData(data);
-		}
+
+		chunk.loadData(data);
 
 		for (xOffset in -1...2)
 			for (yOffset in -1...2)
@@ -204,6 +241,7 @@ class Scene {
 	var faceCullBuffer = Bytes.alloc(Chunk.chunkSizeCubed);
 
 	function constructChunkGeometry(chunk:Chunk) {
+		trace('Constructing chunk geometry for ${chunk.toString()}');
 		chunk.dirtyGeometry = false;
 
 		var rightChunk = getChunkUnsafe(chunk.pos.x + 1, chunk.pos.y, chunk.pos.z);
@@ -216,14 +254,14 @@ class Scene {
 		faceCullBuffer.fill(0, Chunk.chunkSizeCubed, (1 << 6) - 1); // Must always reset as buffer is reused.
 		var faces = 0;
 		for (blockIndex in 0...Chunk.chunkSizeCubed) {
-			if (chunk.blocks.get(blockIndex) == BlockIdentifier.Air)
+			if (chunk.getBlockByIndex(blockIndex) == BlockIdentifier.Air)
 				continue;
 
 			var lx = Math.floor(blockIndex / Chunk.chunkSizeSquared);
 			var ly = Math.floor(blockIndex / Chunk.chunkSize) % Chunk.chunkSize;
 			var lz = blockIndex % Chunk.chunkSize;
 
-			var faceBitmap = (1 << 6) - 1;
+			var faceBitmap = (1 << 6) - 1; // 0b111111 (1 = cull face)
 
 			// Right face culling
 			if (lx != Chunk.chunkSize - 1 && chunk.getBlock(lx + 1, ly, lz) == 0 || lx == Chunk.chunkSize - 1 && rightChunk.getBlock(0, ly, lz) == 0) {
@@ -271,6 +309,8 @@ class Scene {
 			chunk.visible = false;
 			return;
 		}
+		chunk.visible = true;
+
 		// Stores the current quads four AO values, so the quad may be index flipped if required
 		var ao = new Vector<Float>(4);
 
@@ -289,7 +329,7 @@ class Scene {
 				var y = chunk.pos.y * Chunk.chunkSize + ly;
 
 				for (lz in 0...Chunk.chunkSize) {
-					var block = chunk.blocks.get(blockIndex++);
+					var block = chunk.getBlockByIndex(blockIndex++);
 
 					if (block == BlockIdentifier.Air) {
 						continue;
@@ -388,33 +428,6 @@ class Scene {
 		chunk.indexBuffer.unlock();
 	}
 
-	function loadChunks() {
-		var index = 0;
-		for (cx in -radius...radius + 1) {
-			for (cy in -radius...radius + 1) {
-				for (cz in -radius...radius + 1) {
-					var existingChunk = getChunk(cx + cameraChunk.x, cy + cameraChunk.y, cz + cameraChunk.z); // Note cameraChunk != chunkArrayOffset yet, important.
-
-					if (existingChunk != null) {
-						newChunks[index] = existingChunk;
-					} else {
-						newChunks[index] = new Chunk();
-
-						if (chunkData.exists('${cameraChunk.x + cx},${cameraChunk.y + cy},${cameraChunk.z + cz}')) {
-							newChunks[index].loadData(chunkData.get('${cameraChunk.x + cx},${cameraChunk.y + cy},${cameraChunk.z + cz}'));
-						} else {
-							requestChunk(cameraChunk.x + cx, cameraChunk.y + cy, cameraChunk.z + cz);
-						}
-					}
-					index++;
-				}
-			}
-		}
-
-		chunks = newChunks.copy();
-		chunkArrayOffset.copy(cameraChunk);
-	}
-
 	public function update() {
 		cameraChunk.x = Math.floor(camera.position.x / Chunk.chunkSize);
 		cameraChunk.y = Math.floor(camera.position.y / Chunk.chunkSize);
@@ -440,16 +453,15 @@ class Scene {
 				cameraChunk.z + Math.floor(chunkOffset.z)
 			);
 
-			if (chunk == null || !chunk.visible) {
-				continue;
-			}
-			if (!chunk.hasGeometry() && !shouldGenerateChunkGeometry(chunk.pos)) {
+			if (chunk == null || !chunk.isDataLoaded()) {
 				continue;
 			}
 			if (!chunk.hasGeometry() || chunk.dirtyGeometry) {
-				constructChunkGeometry(chunk);
+				if (shouldGenerateChunkGeometry(chunk.pos)) {
+					constructChunkGeometry(chunk);
+				}
 			}
-			if (!chunk.visible) {
+			if (!chunk.visible || !chunk.hasGeometry()) {
 				continue;
 			}
 			

@@ -5,7 +5,7 @@ project.addAssets('Assets/**');
 project.addLibrary("hxWebSockets");
 project.addLibrary("hxnoise");
 project.addSources('Sources');
-project.addParameter('-dce full');
+// project.addParameter('-dce full');
 
 if (platform == Platform.HTML5) {
     // project.addLibrary('closure');

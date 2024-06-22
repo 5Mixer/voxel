@@ -207,7 +207,15 @@ class Main {
 		lineRenderer.renderLine(playerGizmoPos.add(new Vector3(0,0,0)), playerGizmoPos.add(new Vector3(1,0,0)), kha.Color.Red);
 		lineRenderer.renderLine(playerGizmoPos.add(new Vector3(0,0,0)), playerGizmoPos.add(new Vector3(0,1,0)), kha.Color.Green);
 		lineRenderer.renderLine(playerGizmoPos.add(new Vector3(0,0,0)), playerGizmoPos.add(new Vector3(0,0,1)), kha.Color.Blue);
-		lineRenderer.renderLine(new Vector3(0,0,0), new Vector3(0,0,5), kha.Color.Black);
+		
+		var cs = Chunk.chunkSize;
+		var gridSize = 10;
+		for (x in 0...gridSize)
+			for (y in 0...gridSize) {
+				lineRenderer.renderLine(new Vector3(cs*x,cs*y,0), new Vector3(cs*x,cs*y,cs*gridSize), kha.Color.Black);
+				lineRenderer.renderLine(new Vector3(cs*x,0,cs*y), new Vector3(cs*x,cs*gridSize,cs*y), kha.Color.Black);
+				lineRenderer.renderLine(new Vector3(0,cs*x,cs*y), new Vector3(cs*gridSize,cs*x,cs*y), kha.Color.Black);
+			}
 
 		lineRenderer.end(g4);
 
@@ -219,7 +227,7 @@ class Main {
 		g2.drawScaledImage(Assets.images.cursor, kha.Window.get(0).width / 2 - 16, kha.Window.get(0).height / 2 - 16, 32, 32);
 
 		g2.color = kha.Color.Magenta;
-		
+
 		for (screenSpaceOrigin in [
 			camera.getMVP().multvec(new FastVector4(0, 0, 0, 1)),
 			camera.getMVP().multvec(new FastVector4(1, 0, 0, 1)),
@@ -231,7 +239,8 @@ class Main {
 			camera.getMVP().multvec(new FastVector4(0, 1, 1, 1)),
 			camera.getMVP().multvec(new FastVector4(1, 1, 1, 1)),
 		]) {
-			g2.fillRect(((screenSpaceOrigin.x/screenSpaceOrigin.w)+1)/2 * Window.get(0).width, ((-screenSpaceOrigin.y/screenSpaceOrigin.w)+1)/2 * Window.get(0).height, 15, 15);
+			if (screenSpaceOrigin.z > 0)
+				g2.fillRect(((screenSpaceOrigin.x/screenSpaceOrigin.w)+1)/2 * Window.get(0).width, ((-screenSpaceOrigin.y/screenSpaceOrigin.w)+1)/2 * Window.get(0).height, 15, 15);
 		}
 		g2.color = kha.Color.White;
 
