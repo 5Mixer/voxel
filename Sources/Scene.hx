@@ -210,11 +210,12 @@ class Scene {
 					} else {
 						newChunks[index] = new Chunk();
 
-						if (chunkData.exists('${cameraChunk.x + cx},${cameraChunk.y + cy},${cameraChunk.z + cz}')) {
-							newChunks[index].loadData(chunkData.get('${cameraChunk.x + cx},${cameraChunk.y + cy},${cameraChunk.z + cz}'));
-						} else {
-							requestChunk(cameraChunk.x + cx, cameraChunk.y + cy, cameraChunk.z + cz);
-						}
+						// if (chunkData.exists('${cameraChunk.x + cx},${cameraChunk.y + cy},${cameraChunk.z + cz}')) {
+							// newChunks[index].loadData(chunkData.get('${cameraChunk.x + cx},${cameraChunk.y + cy},${cameraChunk.z + cz}'));
+							newChunks[index].loadForLocation(cameraChunk.x + cx, cameraChunk.y + cy, cameraChunk.z + cz, generator);
+						// } else {
+							// requestChunk(cameraChunk.x + cx, cameraChunk.y + cy, cameraChunk.z + cz);
+						// }
 					}
 					index++;
 				}

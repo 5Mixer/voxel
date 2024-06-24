@@ -51,6 +51,7 @@ class Main {
 			scene.setBlock(x, y, z, b);
 		}
 		scene = new Scene(camera, connection.requestChunk, connection.sendBlock);
+		worldLoaded = true;
 
 		input.clickListeners.push(function(button) {
 			scene.ray(button == 0);

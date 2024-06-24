@@ -1,5 +1,6 @@
 package;
 
+import haxe.Timer;
 import haxe.io.Bytes;
 import kha.graphics4.IndexBuffer;
 import kha.graphics4.VertexBuffer;
@@ -19,23 +20,55 @@ class Chunk {
 	public var dirtyGeometry = false;
 	public var visible = false;
 
-	public function new() {}
+	var perlin:hxnoise.Perlin;
+
+	public function new() {
+        perlin = new hxnoise.Perlin();
+	}
 
 	public function loadForLocation(wx, wy, wz, worldGenerator:WorldGenerator) {
 		pos = new Vector3i(wx, wy, wz);
+		trace('Loading ${toString()}');
 
 		var worldSpaceX = wx * chunkSize;
 		var worldSpaceY = wy * chunkSize;
 		var worldSpaceZ = wz * chunkSize;
 
-		for (x in 0...chunkSize)
-			for (y in 0...chunkSize)
-				for (z in 0...chunkSize) {
-					var block = worldGenerator.getBlock(worldSpaceX + x, worldSpaceY + y, worldSpaceZ + z);
-					setBlockByIndex(x * chunkSizeSquared + y * chunkSize + z, block);
-				}
+		blocks = Bytes.alloc(12 + chunkSizeCubed);
+		blocks.setInt32(0, wx);
+		blocks.setInt32(4, wx);
+		blocks.setInt32(8, wx);
 
+		var start = Timer.stamp();
+
+		if (worldSpaceY < -70) {
+			for (x in 0...chunkSize)
+				for (y in 0...chunkSize)
+					for (z in 0...chunkSize)
+						setBlockByIndex(x * chunkSizeSquared + y * chunkSize + z, BlockIdentifier.Grass);
+		} else if (worldSpaceY > 30) {
+			for (x in 0...chunkSize)
+				for (y in 0...chunkSize)
+					for (z in 0...chunkSize)
+						setBlockByIndex(x * chunkSizeSquared + y * chunkSize + z, BlockIdentifier.Air);
+		} else {
+			for (x in 0...chunkSize)
+				for (z in 0...chunkSize) {
+					var height = perlin.OctavePerlin((worldSpaceX+x)/8,(worldSpaceZ+z)/8,.1, 3, .5, .25) * 50 - 20;
+					for (y in 0...chunkSize) {
+						// var block = 30 * Math.cos((x+z/2)/23) * Math.sin((x/4+z)/20) > y ? BlockIdentifier.Air : BlockIdentifier.Grass;
+						var block = height < worldSpaceY + y ? BlockIdentifier.Air : BlockIdentifier.Grass;
+						// var block = worldGenerator.getBlock(worldSpaceX + x, worldSpaceY + y, worldSpaceZ + z);
+						setBlockByIndex(x * chunkSizeSquared + y * chunkSize + z, block);
+					}
+				}
+		}
+		
+		trace('Took ${Timer.stamp() - start}s');
+
+		visible = true;
 		dirtyGeometry = true;
+		trace('Loaded ${toString()}');
 	}
 
 	public function flagDirty() {
