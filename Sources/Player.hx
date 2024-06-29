@@ -44,6 +44,8 @@ class Player {
 
 		var onFloor = moveAndSlide(movement, scene);
         if (onFloor && input.space) jump();
+        trace('${position.x}, ${position.y}, ${position.z}');
+        trace(movement.x);
     }
 
     function collides(scene:Scene) {
@@ -64,14 +66,14 @@ class Player {
 		if (!shouldMoveY) {
             var aabb = getAABB();
 			if (velocity.y > 0) {
-				position.y = Math.floor(aabb.max.y + velocity.y) - size.y;
+				position.y = Math.ceil(position.y - velocity.y + size.y) - size.y;
 				velocity.y = 0;
 			} else {
-				position.y = Math.ceil(aabb.min.y + velocity.y);
+				position.y = Math.floor(position.y - velocity.y);
 				jumps = 0;
 				velocity.y = 0;
                 onFloor = true;
-			}            
+			}
 		} else {
 			velocity.y -= .01;
 		}
@@ -80,7 +82,11 @@ class Player {
 		position.x += movement.x;
 		var shouldMoveX = !collides(scene);
 		if (!shouldMoveX) {
-			position.x -= movement.x;
+            if (movement.x > 0) {
+                position.x = Math.ceil(position.x - movement.x) - size.x/2;
+            } else {
+                position.x = Math.floor(position.x - movement.x) + size.x/2;
+            }
 			sprinting = false;
 		}
 
@@ -88,7 +94,11 @@ class Player {
 		position.z += movement.y;
 		var shouldMoveZ = !collides(scene);
 		if (!shouldMoveZ) {
-			position.z -= movement.y;
+            if (movement.y > 0) {
+                position.z = Math.ceil(position.z - movement.y) - size.z/2;
+            } else {
+                position.z = Math.floor(position.z - movement.y) + size.z/2;
+            }
 			sprinting = false;
 		}
 
