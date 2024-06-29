@@ -1,5 +1,8 @@
 package;
 
+import kha.Window;
+import kha.math.Vector2;
+import kha.math.FastVector4;
 import kha.math.Vector3;
 import kha.math.FastVector3;
 import kha.math.FastMatrix4;
@@ -33,12 +36,21 @@ class Camera {
 		return new Vector3(Math.cos(verticalAngle) * Math.sin(horizontalAngle), Math.sin(verticalAngle), Math.cos(verticalAngle) * Math.cos(horizontalAngle));
 	}
 
+	public function getScreenPosition(vec:Vector3) {
+		var transformed = getMVP().multvec(new FastVector4(vec.x, vec.y, vec.z));
+		if (transformed.z < 0) return null;
+		return new Vector2(
+			((transformed.x / transformed.w) + 1) / 2 * Window.get(0).width,
+			(-(transformed.y / transformed.w) + 1) / 2 * Window.get(0).height,
+		);
+	}
+
 	public function getMVP() {
 		if (!mvpDirty)
 			return mvp;
 
 		realFov = (realFov + fov) / 2;
-		projection = FastMatrix4.perspectiveProjection(realFov, aspectRatio, .15, 160);
+		projection = FastMatrix4.perspectiveProjection(realFov, aspectRatio, .05, 160);
 		view = FastMatrix4.lookAt(position.fast(), position.add(getLookVector()).fast(), new FastVector3(0, 1, 0));
 		mvp = projection.multmat(view);
 

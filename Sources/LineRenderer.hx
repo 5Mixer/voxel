@@ -106,10 +106,12 @@ class LineRenderer {
         vertices.push(colour.G);
         vertices.push(colour.B);
     }
+
     public function start(g:Graphics) {
         vertices = [];
         indices = [];
     }
+    
     public function end(g:Graphics) {
         vertexBuffer = new VertexBuffer(Std.int(vertices.length/9), structure, StaticUsage);
         indexBuffer = new IndexBuffer(indices.length, StaticUsage);
@@ -130,4 +132,24 @@ class LineRenderer {
         g.setIndexBuffer(indexBuffer);
         g.drawIndexedVertices();
     }
+
+	public function renderAABB(aabb:AABB, col = kha.Color.Blue) {
+		var min = aabb.min;
+		var max = aabb.max;
+		// Bottom of AABB
+		renderLine(new Vector3(min.x, min.y, min.z), new Vector3(max.x, min.y, min.z), col);
+		renderLine(new Vector3(min.x, min.y, min.z), new Vector3(min.x, min.y, max.z), col);
+		renderLine(new Vector3(max.x, min.y, max.z), new Vector3(min.x, min.y, max.z), col);
+		renderLine(new Vector3(max.x, min.y, max.z), new Vector3(max.x, min.y, min.z), col);
+		// Sides of AABB
+		renderLine(new Vector3(min.x, min.y, min.z), new Vector3(min.x, max.y, min.z), col);
+		renderLine(new Vector3(max.x, min.y, min.z), new Vector3(max.x, max.y, min.z), col);
+		renderLine(new Vector3(min.x, min.y, max.z), new Vector3(min.x, max.y, max.z), col);
+		renderLine(new Vector3(max.x, min.y, max.z), new Vector3(max.x, max.y, max.z), col);
+		// Top of AABB
+		renderLine(new Vector3(min.x, max.y, min.z), new Vector3(max.x, max.y, min.z), col);
+		renderLine(new Vector3(min.x, max.y, min.z), new Vector3(min.x, max.y, max.z), col);
+		renderLine(new Vector3(max.x, max.y, max.z), new Vector3(min.x, max.y, max.z), col);
+		renderLine(new Vector3(max.x, max.y, max.z), new Vector3(max.x, max.y, min.z), col);
+	}
 }
