@@ -15,8 +15,10 @@ class Main {
 	var scene:Scene;
 	var camera:Camera;
 	var player:Player;
+	var explosives = new Array<Explosive>();
 	var input:Input;
 	var lineRenderer:LineRenderer;
+	var entityRenderer:EntityRenderer;
 	var connection:ServerConnection;
 
 	var awaitingSprintStart = false;
@@ -31,6 +33,7 @@ class Main {
 		input = new Input(camera);
 		player = new Player();
 		lineRenderer = new LineRenderer(camera);
+		entityRenderer = new EntityRenderer(camera, explosives);
 
 		// Right left top bottom front back
 		BlockRegistry.register(BlockIdentifier.Dirt, new Block("Dirt", 0, 0, 0, 0, 0, 0));
@@ -82,10 +85,19 @@ class Main {
 		camera.fov = (sprinting ? 90 : 80) * Math.PI / 180;
 		scene.update();
 		player.update();
+		for (explosive in explosives) explosive.update();
 
-		for (i in 0...50)
-			if (input.rightMouseButtonDown)
-				scene.ray(false);
+		if (input.rightMouseButtonDown) {
+			var e = new Explosive();
+			e.position = player.position.mult(1);
+			e.position.y += 1;
+			e.velocity = camera.getLookVector();
+			explosives.push(e);
+		}
+
+		// for (i in 0...50)
+		// 	if (input.rightMouseButtonDown)
+		// 		scene.ray(false);
 
 		var localMovementVector = new Vector2(0, 0);
 		if (input.forwards) {
@@ -172,6 +184,38 @@ class Main {
 			player.position.z -= movement.y;
 			sprinting = false;
 		}
+		
+
+
+		for (explosive in explosives) {
+			var aabb = explosive.getAABB();
+
+			for (x in Math.floor(aabb.min.x)...Math.ceil(aabb.max.x))
+				for (y in Math.floor(aabb.min.y)...Math.ceil(aabb.max.y))
+					for (z in Math.floor(aabb.min.z)...Math.ceil(aabb.max.z))
+						if (!scene.isAir(x, y, z)) {
+
+							for (secondary in explosives) {
+								var delta = explosive.position.sub(secondary.position);
+								if (delta.length < 8 && delta.length != 0) {
+									secondary.velocity = secondary.velocity.sub(delta.mult(1/delta.length).mult(.5));
+								}
+							}
+
+							var radius = 3;
+							for (ox in -radius...radius) {
+								for (oy in -radius...radius) {
+									for (oz in -radius...radius) {
+										if (ox*ox+oy*oy+oz+oz < radius*radius) {
+											scene.setBlock(x+ox, y+oy, z+oz, BlockIdentifier.Air);
+										}
+
+									}
+								}
+							}
+							explosives.remove(explosive);
+						}
+		}
 	}
 
 	function renderAABB(aabb:AABB, col = kha.Color.Blue) {
@@ -203,24 +247,25 @@ class Main {
 		g4.begin();
 		g4.clear(kha.Color.fromBytes(172, 219, 252), 1.0);
 		scene.render(g4);
+		entityRenderer.render(g4);
 
-		lineRenderer.start(g4);
-		g4.clear(null, 1.0); // Clear depth
-		var playerGizmoPos = camera.position.add(camera.getLookVector().mult(5));
-		lineRenderer.renderLine(playerGizmoPos.add(new Vector3(0,0,0)), playerGizmoPos.add(new Vector3(1,0,0)), kha.Color.Red);
-		lineRenderer.renderLine(playerGizmoPos.add(new Vector3(0,0,0)), playerGizmoPos.add(new Vector3(0,1,0)), kha.Color.Green);
-		lineRenderer.renderLine(playerGizmoPos.add(new Vector3(0,0,0)), playerGizmoPos.add(new Vector3(0,0,1)), kha.Color.Blue);
+		// lineRenderer.start(g4);
+		// g4.clear(null, 1.0); // Clear depth
+		// var playerGizmoPos = camera.position.add(camera.getLookVector().mult(5));
+		// lineRenderer.renderLine(playerGizmoPos.add(new Vector3(0,0,0)), playerGizmoPos.add(new Vector3(1,0,0)), kha.Color.Red);
+		// lineRenderer.renderLine(playerGizmoPos.add(new Vector3(0,0,0)), playerGizmoPos.add(new Vector3(0,1,0)), kha.Color.Green);
+		// lineRenderer.renderLine(playerGizmoPos.add(new Vector3(0,0,0)), playerGizmoPos.add(new Vector3(0,0,1)), kha.Color.Blue);
 		
-		var cs = Chunk.chunkSize;
-		var gridSize = 10;
-		for (x in 0...gridSize)
-			for (y in 0...gridSize) {
-				lineRenderer.renderLine(new Vector3(cs*x,cs*y,0), new Vector3(cs*x,cs*y,cs*gridSize), kha.Color.Black);
-				lineRenderer.renderLine(new Vector3(cs*x,0,cs*y), new Vector3(cs*x,cs*gridSize,cs*y), kha.Color.Black);
-				lineRenderer.renderLine(new Vector3(0,cs*x,cs*y), new Vector3(cs*gridSize,cs*x,cs*y), kha.Color.Black);
-			}
+		// var cs = Chunk.chunkSize;
+		// var gridSize = 10;
+		// for (x in 0...gridSize)
+		// 	for (y in 0...gridSize) {
+		// 		lineRenderer.renderLine(new Vector3(cs*x,cs*y,0), new Vector3(cs*x,cs*y,cs*gridSize), kha.Color.Black);
+		// 		lineRenderer.renderLine(new Vector3(cs*x,0,cs*y), new Vector3(cs*x,cs*gridSize,cs*y), kha.Color.Black);
+		// 		lineRenderer.renderLine(new Vector3(0,cs*x,cs*y), new Vector3(cs*gridSize,cs*x,cs*y), kha.Color.Black);
+		// 	}
 
-		lineRenderer.end(g4);
+		// lineRenderer.end(g4);
 
 		g4.end();
 
@@ -230,7 +275,6 @@ class Main {
 		g2.drawScaledImage(Assets.images.cursor, kha.Window.get(0).width / 2 - 16, kha.Window.get(0).height / 2 - 16, 32, 32);
 
 		g2.color = kha.Color.Magenta;
-
 		for (screenSpaceOrigin in [
 			camera.getMVP().multvec(new FastVector4(0, 0, 0, 1)),
 			camera.getMVP().multvec(new FastVector4(1, 0, 0, 1)),
