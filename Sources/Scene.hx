@@ -24,10 +24,7 @@ class Scene {
 
 	var generator:WorldGenerator;
 
-	var requestChunk:(cx:Int, cy:Int, cz:Int) -> Void;
-	var sendBlock:(x:Int, y:Int, z:Int, b:Int) -> Void;
-
-	static var radius = 6;
+	static var radius = 5;
 	static var loadedChunksPerDimension = radius * 2 + 1; // -radius, 0, +radius
 	static var loadedChunksPerDimensionSquared = loadedChunksPerDimension * loadedChunksPerDimension;
 	static var loadedChunksPerDimensionCubed = loadedChunksPerDimension * loadedChunksPerDimension * loadedChunksPerDimension;
@@ -44,13 +41,11 @@ class Scene {
 					new Vector3i(cx, cy, cz)
 	];
 
-	public function new(camera:Camera, requestChunk:(Int, Int, Int) -> Void, sendBlock:(Int, Int, Int, Int) -> Void) {
+	public function new(camera:Camera) {
 		this.camera = camera;
 		generator = new TerrainWorldGenerator();
 
 		// kha.Assets.images.sprites.generateMipmaps(1);
-		this.requestChunk = requestChunk;
-		this.sendBlock = sendBlock;
 
 		setupPipeline();
 		chunksInView.sort(function(a, b) return a.lengthSquared() > b.lengthSquared() ? 1 : -1);
@@ -133,10 +128,6 @@ class Scene {
 			return;
 		}
 
-		if (send) {
-			sendBlock(x, y, z, b);
-		}
-
 		chunk.setBlock(chunkMod(x), chunkMod(y), chunkMod(z), b);
 
 		// Set neighboring chunks to dirty geom so that lighting, ao, etc is recalculated
@@ -210,12 +201,7 @@ class Scene {
 					} else {
 						newChunks[index] = new Chunk();
 
-						// if (chunkData.exists('${cameraChunk.x + cx},${cameraChunk.y + cy},${cameraChunk.z + cz}')) {
-							// newChunks[index].loadData(chunkData.get('${cameraChunk.x + cx},${cameraChunk.y + cy},${cameraChunk.z + cz}'));
-							newChunks[index].loadForLocation(cameraChunk.x + cx, cameraChunk.y + cy, cameraChunk.z + cz, generator);
-						// } else {
-							// requestChunk(cameraChunk.x + cx, cameraChunk.y + cy, cameraChunk.z + cz);
-						// }
+						newChunks[index].loadForLocation(cameraChunk.x + cx, cameraChunk.y + cy, cameraChunk.z + cz, generator);
 					}
 					index++;
 				}

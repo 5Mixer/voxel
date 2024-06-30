@@ -44,8 +44,6 @@ class Player {
 
 		var onFloor = moveAndSlide(movement, scene);
         if (onFloor && input.space) jump();
-        trace('${position.x}, ${position.y}, ${position.z}');
-        trace(movement.x);
     }
 
     function collides(scene:Scene) {
@@ -64,7 +62,6 @@ class Player {
 		position.y += velocity.y;
 		var shouldMoveY = !collides(scene);
 		if (!shouldMoveY) {
-            var aabb = getAABB();
 			if (velocity.y > 0) {
 				position.y = Math.ceil(position.y - velocity.y + size.y) - size.y;
 				velocity.y = 0;

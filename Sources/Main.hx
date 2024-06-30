@@ -1,6 +1,5 @@
 package;
 
-import haxe.zip.Uncompress;
 import kha.math.Vector3;
 import kha.Assets;
 import kha.Framebuffer;
@@ -15,7 +14,6 @@ class Main {
 	var input:Input;
 	var lineRenderer:LineRenderer;
 	var entityRenderer:EntityRenderer;
-	var connection:ServerConnection;
 
 	var awaitingSprintStart = false;
 
@@ -31,18 +29,7 @@ class Main {
 		BlockRegistry.register(BlockIdentifier.Grass, new Block("Grass", 1, 1, 2, 0, 1, 1));
 		BlockRegistry.register(BlockIdentifier.Stone, new Block("Stone", 3, 3, 3, 3, 3, 3));
 
-		connection = new ServerConnection();
-		connection.receiveChunk = function(compressed) {
-			var data = Uncompress.run(compressed);
-			var cx = data.getInt32(0);
-			var cy = data.getInt32(4);
-			var cz = data.getInt32(8);
-			scene.loadChunkData(cx, cy, cz, data);
-		}
-		connection.receiveBlock = function(x, y, z, b) {
-			scene.setBlock(x, y, z, b);
-		}
-		scene = new Scene(camera, connection.requestChunk, connection.sendBlock);
+		scene = new Scene(camera);
 
 		input.clickListeners.push(function(button) {
 			scene.ray(button == 0);
@@ -66,22 +53,23 @@ class Main {
 	}
 
 	var frame = 0;
-	function update():Void {
+	function update() {
 		camera.position = player.getHeadPosition();
 		camera.fov = (player.sprinting ? 90 : 80) * Math.PI / 180;
 		scene.update();
 		player.update(input, scene, camera);
-		for (explosive in explosives) explosive.update();
+		for (explosive in explosives) explosive.update(scene);
 
 		if (input.rightMouseButtonDown && frame++ % 60 == 0) {
 			var e = new Explosive();
-			e.position = player.position.mult(1);
+			e.position = player.position.mult(1).add(camera.getLookVector().mult(5));
 			e.position.y += 1;
-			e.velocity = camera.getLookVector();
+			e.velocity = camera.getLookVector().normalized().mult(.1);
 			explosives.push(e);
 		}
 
 		for (explosive in explosives) {
+			continue;
 			var aabb = explosive.getAABB();
 			var exploded = false;
 
