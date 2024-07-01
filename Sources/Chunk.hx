@@ -46,7 +46,7 @@ class Chunk {
 				for (y in 0...chunkSize)
 					for (z in 0...chunkSize)
 						setBlockByIndex(x * chunkSizeSquared + y * chunkSize + z, BlockIdentifier.Grass);
-		} else if (worldSpaceY > 30) {
+		} else if (worldSpaceY > 40) {
 			for (x in 0...chunkSize)
 				for (y in 0...chunkSize)
 					for (z in 0...chunkSize)
@@ -54,7 +54,7 @@ class Chunk {
 		} else {
 			for (x in 0...chunkSize)
 				for (z in 0...chunkSize) {
-					var height = perlin.OctavePerlin((worldSpaceX+x)/8,(worldSpaceZ+z)/8,.1, 3, .5, .25) * 50 - 20;
+					var height = perlin.OctavePerlin((worldSpaceX+x)/10,(worldSpaceZ+z)/10,.1, 3, .5, .25) * 100 - 50;
 					for (y in 0...chunkSize) {
 						// var block = 30 * Math.cos((x+z/2)/23) * Math.sin((x/4+z)/20) > y ? BlockIdentifier.Air : BlockIdentifier.Grass;
 						var block = height < worldSpaceY + y ? BlockIdentifier.Air : BlockIdentifier.Grass;
