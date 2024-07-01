@@ -17,16 +17,63 @@ class Explosive {
     }
 
     public function getAABB() {
-        return new AABB(position.sub(new Vector3(size.x/2,0,size.z/2)), position.add(new Vector3(size.x/2,size.y,size.z/2)));
+        return new AABB(position, position.add(size));
     }
 
-    public function update() {
-        position.x += velocity.x;
-        position.y += velocity.y;
-        position.z += velocity.z;
-        velocity.y -= 0.02;
-        velocity.x *= .9999;
-        velocity.z *= .9999;
+    public function update(scene:Scene) {
+        moveAndSlide(scene);
+    }
+
+    function collides(scene:Scene) {
+        var aabb = getAABB();
+        for (x in Math.floor(aabb.min.x)...Math.ceil(aabb.max.x))
+			for (y in Math.floor(aabb.min.y)...Math.ceil(aabb.max.y))
+				for (z in Math.floor(aabb.min.z)...Math.ceil(aabb.max.z))
+					if (!scene.isAir(x, y, z))
+                        return true;
+		return false;	
+    }
+
+    public function moveAndSlide(scene:Scene) {
+        // y movement and collision resolution
+		position.y += velocity.y;
+		var shouldMoveY = !collides(scene);
+		if (!shouldMoveY) {
+			if (velocity.y > 0) {
+				position.y = Math.ceil(position.y - velocity.y);
+			} else {
+				position.y = Math.floor(position.y - velocity.y);
+			}
+            velocity.y = 0;
+            // velocity.x *= .99;
+            // velocity.z *= .99;
+		} else {
+			// velocity.y -= .01;
+		}
+
+		// x movement and collision resolution
+		position.x += velocity.x;
+		var shouldMoveX = !collides(scene);
+		if (!shouldMoveX) {
+            if (velocity.x > 0) {
+                position.x = Math.ceil(position.x - velocity.x);
+            } else {
+                position.x = Math.floor(position.x - velocity.x);
+            }
+            velocity.x = 0;
+		}
+
+		// z movement and collision resolution
+		position.z += velocity.y;
+		var shouldMoveZ = !collides(scene);
+		if (!shouldMoveZ) {
+            if (velocity.y > 0) {
+                position.z = Math.ceil(position.z - velocity.y);
+            } else {
+                position.z = Math.floor(position.z - velocity.y);
+            }
+            velocity.z = 0;
+		}
     }
     
 
