@@ -23,6 +23,7 @@ class Scene {
 	var chunkData = new Map<String, Bytes>();
 
 	var generator:WorldGenerator;
+	var seed = Std.random(100000000);
 
 	static var radius = 5;
 	static var loadedChunksPerDimension = radius * 2 + 1; // -radius, 0, +radius
@@ -72,7 +73,7 @@ class Scene {
 	}
 
 	public function initChunkUnsafe(cx:Int, cy:Int, cz:Int) {
-		var newChunk = new Chunk();
+		var newChunk = new Chunk(seed);
 		chunks[
 			(cx - chunkArrayOffset.x + radius) * loadedChunksPerDimensionSquared +
 			(cy - chunkArrayOffset.y + radius) * loadedChunksPerDimension +
@@ -199,7 +200,7 @@ class Scene {
 					if (existingChunk != null) {
 						newChunks[index] = existingChunk;
 					} else {
-						newChunks[index] = new Chunk();
+						newChunks[index] = new Chunk(seed);
 
 						newChunks[index].loadForLocation(cameraChunk.x + cx, cameraChunk.y + cy, cameraChunk.z + cz, generator);
 					}
