@@ -41,6 +41,8 @@ class Scene {
 					new Vector3i(cx, cy, cz)
 	];
 
+	public var textureArray: kha.Image;
+
 	public function new(camera:Camera) {
 		this.camera = camera;
 		generator = new TerrainWorldGenerator();
@@ -48,8 +50,18 @@ class Scene {
 		// kha.Assets.images.sprites.generateMipmaps(1);
 
 		setupPipeline();
+		loadTextureArray();
 		chunksInView.sort(function(a, b) return a.lengthSquared() > b.lengthSquared() ? 1 : -1);
 		loadChunks();
+	}
+
+	public function loadTextureArray() {
+		var canvas = kha.Image.createRenderTarget(256, 256);
+		canvas.g2.begin();
+		canvas.g2.drawImage(kha.Assets.images.sprites, 0, 0);
+		canvas.g2.end();
+		var individualSprite = kha.Image.fromBytes(canvas.getPixels(), 256, 256, null, null, true);
+		textureArray = kha.Image.createArray([individualSprite]);
 	}
 
 	public function getChunk(cx:Int, cy:Int, cz:Int) {
@@ -429,7 +441,7 @@ class Scene {
 		g.setPipeline(pipeline);
 
 		g.setMatrix(mvpID, camera.getMVP());
-		g.setTexture(textureID, kha.Assets.images.sprites);
+		g.setTextureArray(textureID, textureArray);
 		g.setTextureParameters(textureID, Clamp, Clamp, TextureFilter.PointFilter, TextureFilter.PointFilter, MipMapFilter.NoMipFilter);
 
 		for (chunkOffset in chunksInView) {
