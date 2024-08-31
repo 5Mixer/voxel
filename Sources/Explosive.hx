@@ -45,10 +45,10 @@ class Explosive {
 				position.y = Math.floor(position.y - velocity.y);
 			}
             velocity.y = 0;
-            // velocity.x *= .99;
-            // velocity.z *= .99;
+            velocity.x *= .9;
+            velocity.z *= .9;
 		} else {
-			// velocity.y -= .01;
+			velocity.y -= .01;
 		}
 
 		// x movement and collision resolution
@@ -64,13 +64,13 @@ class Explosive {
 		}
 
 		// z movement and collision resolution
-		position.z += velocity.y;
+		position.z += velocity.z;
 		var shouldMoveZ = !collides(scene);
 		if (!shouldMoveZ) {
-            if (velocity.y > 0) {
-                position.z = Math.ceil(position.z - velocity.y);
+            if (velocity.z > 0) {
+                position.z = Math.ceil(position.z - velocity.z);
             } else {
-                position.z = Math.floor(position.z - velocity.y);
+                position.z = Math.floor(position.z - velocity.z);
             }
             velocity.z = 0;
 		}

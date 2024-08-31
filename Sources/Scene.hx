@@ -228,7 +228,6 @@ class Scene {
 	var faceCullBuffer = Bytes.alloc(Chunk.chunkSizeCubed);
 
 	function constructChunkGeometry(chunk:Chunk) {
-		trace('Constructing chunk geometry for ${chunk.toString()}');
 		chunk.dirtyGeometry = false;
 
 		var rightChunk = getChunkUnsafe(chunk.pos.x + 1, chunk.pos.y, chunk.pos.z);
